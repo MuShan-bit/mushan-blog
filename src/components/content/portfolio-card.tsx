@@ -17,7 +17,7 @@ const statusMap: Record<PortfolioEntry["status"], string> = {
 
 export function PortfolioCard({ entry, className }: PortfolioCardProps) {
   return (
-    <article className={cn("glass-panel group overflow-hidden rounded-[1.75rem]", className)}>
+    <article className={cn("glass-panel interactive-card group overflow-hidden rounded-[1.75rem]", className)}>
       <div className="relative aspect-[16/10] overflow-hidden">
         <Image
           src={entry.cover}
