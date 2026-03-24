@@ -1,0 +1,28 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="160" y1="80" x2="1420" y2="760" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E7FFF2"/>
+      <stop offset="0.48" stop-color="#EAF7FF"/>
+      <stop offset="1" stop-color="#F9F3E6"/>
+    </linearGradient>
+    <filter id="blur" x="-120" y="-120" width="1840" height="1140" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="50"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="900" rx="48" fill="url(#bg)"/>
+  <g filter="url(#blur)" opacity="0.7">
+    <circle cx="282" cy="212" r="146" fill="#8FE3BC"/>
+    <circle cx="1272" cy="186" r="138" fill="#95D2FF"/>
+    <circle cx="1110" cy="668" r="210" fill="#FFE1A6"/>
+  </g>
+  <rect x="214" y="156" width="1172" height="586" rx="38" fill="white" fill-opacity="0.56" stroke="#CBEAD8"/>
+  <rect x="274" y="230" width="494" height="332" rx="30" fill="#F3FBF7" stroke="#D6EEE0"/>
+  <rect x="832" y="230" width="494" height="86" rx="28" fill="white" fill-opacity="0.72" stroke="#D6EEE0"/>
+  <rect x="832" y="348" width="494" height="214" rx="30" fill="white" fill-opacity="0.72" stroke="#D6EEE0"/>
+  <path d="M308 426C402 336 486 316 592 366C692 414 728 404 812 316" stroke="#2B8C6B" stroke-width="18" stroke-linecap="round"/>
+  <path d="M868 420C930 380 1002 360 1098 372C1178 382 1238 412 1288 454" stroke="#77CBA7" stroke-width="14" stroke-linecap="round"/>
+  <path d="M868 482H1228" stroke="#B9DACC" stroke-width="12" stroke-linecap="round"/>
+  <path d="M868 534H1176" stroke="#B9DACC" stroke-width="12" stroke-linecap="round"/>
+  <text x="274" y="660" fill="#183629" font-family="Georgia, 'Times New Roman', serif" font-size="68" font-weight="700">Breathing Blog</text>
+  <text x="274" y="718" fill="#577062" font-family="Arial, sans-serif" font-size="26" letter-spacing="3">LIGHT  GLASS  MOTION  WHITESPACE</text>
+</svg>

@@ -1,0 +1,6 @@
+<svg width="320" height="320" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="320" height="320" rx="72" fill="#EEF7FF"/>
+  <circle cx="246" cy="80" r="64" fill="#95D2FF" fill-opacity="0.5"/>
+  <circle cx="110" cy="242" r="92" fill="#8FE3BC" fill-opacity="0.28"/>
+  <text x="64" y="190" fill="#183629" font-family="Georgia, 'Times New Roman', serif" font-size="84" font-weight="700">QC</text>
+</svg>

@@ -1,0 +1,122 @@
+---
+title: 代码块高亮与复制功能演示
+slug: code-block-showcase
+summary: 这是一篇专门用来验证代码高亮、一键复制和多语言代码块样式的示例文章。
+publishedAt: 2026-03-24
+category: 技术
+tags:
+  - Next.js
+  - MDX
+  - Code Highlight
+  - UX
+cover: /art/post-mdx-system.svg
+draft: false
+featured: false
+seoTitle: 代码块高亮与复制功能演示
+seoDescription: 用一篇模拟文章展示博客里的代码高亮、一键复制、行号和多语言代码块样式效果。
+---
+
+## 这篇文章是做什么的
+
+这是一篇模拟文章，目的很直接：让你在真实的文章页里检查代码块的语法高亮、复制按钮和排版节奏是否舒服。
+
+## TypeScript 代码块
+
+```ts
+import { z } from "zod";
+
+const postSchema = z.object({
+  title: z.string(),
+  slug: z.string(),
+  summary: z.string(),
+  publishedAt: z.string(),
+  tags: z.array(z.string()).default([]),
+});
+
+export function parsePost(input: unknown) {
+  return postSchema.parse(input);
+}
+```
+
+上面这段主要是看：
+
+- 关键字、字符串、属性名的颜色区分是否清楚
+- 行号有没有喧宾夺主
+- 复制之后内容是否完整
+
+## TSX 代码块
+
+```tsx
+export function HeroCard() {
+  return (
+    <section className="glass-panel rounded-[2rem] p-8">
+      <p className="section-kicker text-sm font-semibold">Featured</p>
+      <h2 className="font-display mt-3 text-4xl font-semibold text-foreground">
+        木杉的风与代码
+      </h2>
+      <p className="mt-4 max-w-2xl text-base leading-8 text-muted">
+        这里适合放博客的主视觉和一句简洁的自我介绍。
+      </p>
+    </section>
+  );
+}
+```
+
+## CSS 代码块
+
+```css
+.code-block {
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--border) 92%, transparent);
+  border-radius: 1.45rem;
+  background: color-mix(in oklab, var(--surface-strong) 70%, #0e1713 30%);
+}
+
+.code-block__language {
+  color: var(--accent-strong);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+```
+
+## JSON 代码块
+
+```json
+{
+  "name": "木杉的风与代码",
+  "theme": "verdant",
+  "features": ["blog", "gallery", "portfolio", "rss", "view-counter"],
+  "draft": false
+}
+```
+
+## Python 代码块
+
+```python
+from datetime import datetime
+
+def build_feed_title(name: str) -> str:
+    timestamp = datetime.now().strftime("%Y-%m-%d")
+    return f"{name} / RSS Preview / {timestamp}"
+
+print(build_feed_title("木杉"))
+```
+
+## Shell 代码块
+
+```bash
+npm run dev
+npm run typecheck
+npm run lint
+npm run build
+```
+
+Shell 这类代码块的重点是复制体验，因为命令类内容最常被直接带走执行。
+
+## 现在可以怎么验收
+
+你可以直接点每个代码块右上角的复制按钮，然后把内容粘贴到编辑器里，看看：
+
+1. 是否复制完整
+2. 是否保留换行
+3. 在不同主题下是否依然易读

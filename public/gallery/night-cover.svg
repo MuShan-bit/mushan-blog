@@ -1,0 +1,8 @@
+<svg width="1600" height="1200" viewBox="0 0 1600 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1200" rx="56" fill="#091523"/>
+  <circle cx="1224" cy="262" r="174" fill="#5C7DFF" fill-opacity="0.28"/>
+  <circle cx="320" cy="264" r="152" fill="#7FE8D5" fill-opacity="0.16"/>
+  <path d="M0 872C200 826 386 840 582 900C760 954 950 982 1130 926C1296 874 1456 870 1600 906V1200H0V872Z" fill="#0C1B31"/>
+  <path d="M236 716L426 498L620 680L820 414L1010 598L1198 454L1374 670" stroke="#B9DAFF" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="214" y="330" fill="#F4FBFF" font-family="Georgia, 'Times New Roman', serif" font-size="76" font-weight="700">Night Blue Notes</text>
+</svg>

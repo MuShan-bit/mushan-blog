@@ -1,0 +1,58 @@
+---
+title: 用 MDX + Zod 搭一个稳定的内容系统
+slug: building-content-with-mdx-and-zod
+summary: 文章、作品集和站点配置都采用本地内容管理，再通过 Zod 做结构约束。
+publishedAt: 2026-03-16
+category: 技术
+tags:
+  - Next.js
+  - MDX
+  - Zod
+  - SEO
+cover: /art/post-mdx-system.svg
+draft: false
+featured: true
+seoTitle: 用 Next.js、MDX 和 Zod 搭建个人博客内容系统
+seoDescription: 记录个人博客里文章、作品和配置的内容建模方式，以及为什么它适合长期维护。
+---
+
+## 为什么我还是更喜欢本地内容
+
+对个人博客来说，内容和代码放在一起有几个很直接的好处：
+
+- 版本清晰，修改文章和修改页面结构都能一起追踪。
+- 静态生成更稳定，不需要额外依赖一个 CMS 服务才能构建。
+- Markdown / MDX 对写作者非常友好，迁移成本也低。
+
+## Zod 的价值不只是校验
+
+很多时候，个人站点越做越散，不是因为功能太多，而是因为数据结构没有守住。文章、作品、友链、关于页资料，如果都靠“差不多就行”的对象结构堆起来，后面页面一多就会开始出问题。
+
+我更喜欢的做法是给每类内容都定义一个明确的 schema：
+
+```ts
+const postSchema = z.object({
+  title: z.string(),
+  slug: z.string(),
+  summary: z.string(),
+  publishedAt: z.string(),
+  category: z.string(),
+  tags: z.array(z.string()),
+});
+```
+
+这样做的好处是，错误会在构建阶段暴露，而不是上线后才发现某篇文章少了字段。
+
+## 内容层和展示层分开
+
+博客里最容易被忽视的一点，是把“读取内容”和“展示内容”混在一起写。现在我更倾向于：
+
+1. 先在 `content/` 下维护原始 MDX。
+2. 在 `lib/content.ts` 里统一解析、排序、聚合分类与标签。
+3. 页面只关心如何展示。
+
+这个边界一旦分清楚，后面扩展 RSS、sitemap、SEO 元信息都会顺很多。
+
+## 适合个人博客的原因
+
+如果这是一个多人协作的网站，我会认真评估 CMS 或数据库编辑后台。但对个人博客来说，本地内容是最轻、最稳、最容易长期维护的方案。它让写作更像写作，而不是在管理另一个系统。

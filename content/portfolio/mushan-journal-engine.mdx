@@ -1,0 +1,45 @@
+---
+title: Mushan Journal Engine
+slug: mushan-journal-engine
+summary: 一个为个人表达设计的静态博客引擎，聚合文章、作品、相册、友联、RSS 与阅读数统计。
+period: 2026 · 个人项目
+role: 产品设计 / 前端开发
+stack:
+  - Next.js
+  - MDX
+  - Supabase
+  - Tailwind CSS
+  - SEO
+cover: /art/portfolio-journal-engine.svg
+links:
+  - label: GitHub
+    url: https://github.com/mushan/mushan-blog
+    type: repo
+  - label: 在线预览
+    url: https://mushan.blog
+    type: demo
+featured: true
+status: active
+---
+
+## 项目背景
+
+我想要的不是传统意义上的“博客模板”，而是一个更完整的个人表达载体。它既要能认真承载文章，又需要有作品集、相册和关于页这样的展示空间。
+
+## 设计目标
+
+这个项目一开始就有几个明确方向：
+
+1. 内容优先，首页要像一个温和的入口，而不是夸张的品牌海报。
+2. 页面静态生成，保证性能、可维护性和 SEO。
+3. 视觉上保持清新、简洁，并在局部加入毛玻璃与液态动效。
+
+## 技术实现
+
+内容系统采用本地 MDX，并通过 Zod 做 frontmatter 校验。文章、作品和配置的结构都足够明确，所以 RSS、sitemap、分类标签页和元信息生成都能顺着内容层自动完成。
+
+访问量采用 Supabase 作为轻量存储，只把统计能力放进一个极小的接口层里，保持页面本身仍然是静态生成。
+
+## 结果
+
+这个项目最重要的成果不是“功能做全了”，而是建立了一套可以长期扩展的个人站点骨架。接下来无论是继续写作、增加作品案例，还是替换真实个人素材，都不需要再动结构。

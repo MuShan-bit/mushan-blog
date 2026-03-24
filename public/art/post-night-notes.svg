@@ -1,0 +1,20 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="224" y1="74" x2="1370" y2="830" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#081423"/>
+      <stop offset="0.52" stop-color="#13233D"/>
+      <stop offset="1" stop-color="#10294E"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" rx="48" fill="url(#bg)"/>
+  <circle cx="1260" cy="186" r="108" fill="#5C7DFF" fill-opacity="0.22"/>
+  <circle cx="350" cy="250" r="138" fill="#7FE8D5" fill-opacity="0.12"/>
+  <path d="M0 674C204 622 380 650 562 706C752 764 916 786 1106 724C1276 668 1434 660 1600 704V900H0V674Z" fill="#091015"/>
+  <path d="M0 722C216 674 406 692 582 746C760 800 948 822 1128 758C1288 702 1442 700 1600 738V900H0V722Z" fill="#0D1C2C"/>
+  <path d="M146 632L274 468L418 604L570 414L720 592L876 372L1014 534L1134 422L1300 612L1458 458" stroke="#B9DAFF" stroke-opacity="0.5" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="272" cy="466" r="15" fill="#FFE1A6"/>
+  <circle cx="878" cy="372" r="15" fill="#95D2FF"/>
+  <circle cx="1458" cy="458" r="15" fill="#8FE3BC"/>
+  <text x="174" y="186" fill="#F4FBFF" font-family="Georgia, 'Times New Roman', serif" font-size="68" font-weight="700">Night Walk Notes</text>
+  <text x="174" y="244" fill="#AEC4DE" font-family="Arial, sans-serif" font-size="26" letter-spacing="3">CITY  LIGHTS  HUMIDITY  QUIET  BLUE</text>
+</svg>

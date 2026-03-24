@@ -1,0 +1,16 @@
+<svg width="1200" height="1200" viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="140" y1="120" x2="1034" y2="1080" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EEFFF6"/>
+      <stop offset="0.55" stop-color="#EAF3FF"/>
+      <stop offset="1" stop-color="#FFF8EC"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1200" rx="96" fill="url(#bg)"/>
+  <path d="M601 190C474 190 376 292 376 420C376 512 427 592 502 632C468 660 448 700 448 756C448 792 456 830 472 874C500 950 568 1004 653 1004C738 1004 800 952 828 874C846 824 854 784 854 748C854 692 830 652 786 624C852 582 896 508 896 420C896 292 798 190 671 190H601Z" fill="white" fill-opacity="0.72" stroke="#CDE6D8" stroke-width="12"/>
+  <path d="M458 518C528 470 620 446 716 460C774 468 820 490 860 526" stroke="#2B8C6B" stroke-width="12" stroke-linecap="round"/>
+  <path d="M524 704H752" stroke="#A7D7C1" stroke-width="12" stroke-linecap="round"/>
+  <path d="M508 776H774" stroke="#A7D7C1" stroke-width="12" stroke-linecap="round"/>
+  <text x="350" y="1062" fill="#193127" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="700">Mushan / 木杉</text>
+  <text x="352" y="1118" fill="#577062" font-family="Arial, sans-serif" font-size="28" letter-spacing="5">TEXT  PORTRAIT  PLACEHOLDER</text>
+</svg>
