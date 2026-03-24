@@ -495,6 +495,93 @@ textarea {
   animation: tab-pending-pulse 1.15s ease-in-out infinite;
 }
 
+.mobile-nav-bar {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.6rem;
+  padding: 0.95rem;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    0 18px 54px color-mix(in oklab, var(--shadow) 18%, transparent);
+}
+
+.mobile-nav-bar::before,
+.mobile-nav-bar::after {
+  position: absolute;
+  top: 2.4rem;
+  bottom: 0.95rem;
+  width: 1.8rem;
+  content: "";
+  pointer-events: none;
+  z-index: 2;
+}
+
+.mobile-nav-bar::before {
+  left: 0;
+  background: linear-gradient(90deg, color-mix(in oklab, var(--surface-strong) 92%, transparent), transparent);
+}
+
+.mobile-nav-bar::after {
+  right: 0;
+  background: linear-gradient(270deg, color-mix(in oklab, var(--surface-strong) 92%, transparent), transparent);
+}
+
+.mobile-nav-bar__scroller {
+  display: flex;
+  gap: 0.7rem;
+  overflow-x: auto;
+  padding: 0.15rem 0;
+  scroll-snap-type: x proximity;
+}
+
+.mobile-nav-link {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid color-mix(in oklab, var(--border) 88%, transparent);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--surface-strong) 82%, transparent);
+  padding: 0.72rem 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1;
+  scroll-snap-align: start;
+  white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.mobile-nav-link--active {
+  border-color: color-mix(in oklab, var(--accent) 24%, transparent);
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--accent-soft) 86%, var(--surface-strong) 14%),
+      color-mix(in oklab, var(--surface-strong) 80%, transparent)
+    );
+  color: var(--accent-strong);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    0 12px 28px color-mix(in oklab, var(--accent-soft) 48%, transparent);
+}
+
+.mobile-nav-link--pending {
+  border-color: color-mix(in oklab, var(--accent) 18%, transparent);
+  color: var(--accent-strong);
+}
+
+.mobile-nav-link__pending-dot {
+  height: 0.44rem;
+  width: 0.44rem;
+  border-radius: 999px;
+  background: radial-gradient(circle at 35% 35%, color-mix(in oklab, white 72%, var(--accent-strong) 28%), var(--accent));
+  box-shadow:
+    0 0 0 0 color-mix(in oklab, var(--accent-soft) 64%, transparent),
+    0 0 16px color-mix(in oklab, var(--accent-soft) 52%, transparent);
+  animation: tab-pending-pulse 1.15s ease-in-out infinite;
+}
+
 .tab-accent {
   position: relative;
   display: inline-flex;
