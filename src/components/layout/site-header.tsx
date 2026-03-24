@@ -1,8 +1,6 @@
 import Link from "next/link";
-import { Rss } from "lucide-react";
+import { SiteNavTabs } from "@/components/layout/site-nav-tabs";
 import { AppearanceSwitcher } from "@/components/theme/appearance-switcher";
-import { siteConfig } from "@/lib/site";
-import { cn } from "@/lib/cn";
 
 export function SiteHeader() {
   return (
@@ -21,27 +19,7 @@ export function SiteHeader() {
         </Link>
 
         <div className="flex items-center gap-3">
-          <nav className="hidden items-center gap-2 lg:flex">
-            {siteConfig.nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "rounded-full px-4 py-2 text-sm text-muted",
-                  "hover:bg-accent-soft hover:text-accent-strong",
-                )}
-              >
-                {item.label}
-              </Link>
-            ))}
-            <Link
-              href="/rss.xml"
-              className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-muted hover:bg-accent-soft hover:text-accent-strong"
-            >
-              <Rss className="h-4 w-4" />
-              RSS
-            </Link>
-          </nav>
+          <SiteNavTabs />
           <AppearanceSwitcher />
         </div>
       </div>

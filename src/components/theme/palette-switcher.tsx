@@ -1,61 +1,53 @@
 "use client";
 
 import { Check, Palette } from "lucide-react";
-import { useMemo, useState, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
 import {
   colorPalettes,
-  defaultPalette,
-  normalizePalette,
-  paletteChangeEvent,
-  paletteStorageKey,
 } from "@/lib/color-themes";
 import { applyPalette } from "@/components/theme/color-theme-provider";
-
-function subscribe(callback: () => void) {
-  if (typeof window === "undefined") {
-    return () => undefined;
-  }
-
-  const onStorage = (event: StorageEvent) => {
-    if (event.key === paletteStorageKey) {
-      callback();
-    }
-  };
-
-  const onPaletteChange = () => callback();
-
-  window.addEventListener("storage", onStorage);
-  window.addEventListener(paletteChangeEvent, onPaletteChange);
-
-  return () => {
-    window.removeEventListener("storage", onStorage);
-    window.removeEventListener(paletteChangeEvent, onPaletteChange);
-  };
-}
-
-function getClientSnapshot() {
-  if (typeof window === "undefined") {
-    return defaultPalette;
-  }
-
-  return normalizePalette(window.localStorage.getItem(paletteStorageKey));
-}
-
-function getServerSnapshot() {
-  return defaultPalette;
-}
+import { useColorPalette } from "@/components/theme/use-color-palette";
 
 export function PaletteSwitcher() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
-  const activePalette = useSyncExternalStore(subscribe, getClientSnapshot, getServerSnapshot);
+  const activePalette = useColorPalette();
 
   const current = useMemo(() => {
     return colorPalettes.find((palette) => palette.id === activePalette) ?? colorPalettes[0];
   }, [activePalette]);
 
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    const onPointerDown = (event: PointerEvent) => {
+      if (containerRef.current?.contains(event.target as Node)) {
+        return;
+      }
+
+      setOpen(false);
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    };
+
+    window.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      window.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
   return (
-    <div className="relative">
+    <div ref={containerRef} className="relative">
       <button
         type="button"
         aria-label="切换配色方案"

@@ -1,6 +1,5 @@
-import { highlight } from "sugar-high";
-import { css, python } from "sugar-high/presets";
-import { CopyCodeButton } from "@/components/content/copy-code-button";
+import { codeToHtml } from "shiki";
+import { CodeBlockFrame } from "@/components/content/code-block-frame";
 
 type CodeBlockProps = {
   code: string;
@@ -20,53 +19,63 @@ const languageLabels: Record<string, string> = {
   html: "HTML",
   bash: "Bash",
   sh: "Shell",
+  shell: "Shell",
+  zsh: "Shell",
+  yaml: "YAML",
+  yml: "YAML",
 };
 
-function escapeHtml(value: string) {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-}
+const languageAliases: Record<string, string> = {
+  js: "javascript",
+  jsx: "jsx",
+  ts: "typescript",
+  tsx: "tsx",
+  css: "css",
+  py: "python",
+  python: "python",
+  json: "json",
+  mdx: "mdx",
+  html: "html",
+  bash: "bash",
+  sh: "bash",
+  shell: "bash",
+  zsh: "bash",
+  yaml: "yaml",
+  yml: "yaml",
+};
 
-function renderHighlightedCode(code: string, language?: string) {
+function normalizeLanguage(language?: string) {
   const normalizedLanguage = language?.toLowerCase();
-
-  if (normalizedLanguage === "css") {
-    return highlight(code, { ...css });
-  }
-
-  if (normalizedLanguage === "python" || normalizedLanguage === "py") {
-    return highlight(code, { ...python });
-  }
-
-  if (
-    !normalizedLanguage ||
-    ["js", "jsx", "ts", "tsx", "json", "mdx", "html"].includes(normalizedLanguage)
-  ) {
-    return highlight(code);
-  }
-
-  return code
-    .split("\n")
-    .map((line) => `<span class="sh__line">${escapeHtml(line) || " "}</span>`)
-    .join("\n");
+  return normalizedLanguage ? languageAliases[normalizedLanguage] ?? normalizedLanguage : "text";
 }
 
-export function CodeBlock({ code, language }: CodeBlockProps) {
+async function renderHighlightedCode(code: string, language?: string) {
+  const normalizedLanguage = normalizeLanguage(language);
+
+  try {
+    return await codeToHtml(code, {
+      lang: normalizedLanguage,
+      themes: {
+        light: "github-light",
+        dark: "github-dark",
+      },
+    });
+  } catch {
+    return await codeToHtml(code, {
+      lang: "text",
+      themes: {
+        light: "github-light",
+        dark: "github-dark",
+      },
+    });
+  }
+}
+
+export async function CodeBlock({ code, language }: CodeBlockProps) {
   const normalizedLanguage = language?.toLowerCase();
   const label = normalizedLanguage ? languageLabels[normalizedLanguage] ?? normalizedLanguage.toUpperCase() : "Code";
-  const highlighted = renderHighlightedCode(code, normalizedLanguage);
+  const highlighted = await renderHighlightedCode(code, normalizedLanguage);
+  const lineCount = code.split("\n").length;
 
-  return (
-    <figure className="code-block not-prose">
-      <figcaption className="code-block__header">
-        <span className="code-block__language">{label}</span>
-        <CopyCodeButton code={code} />
-      </figcaption>
-      <pre className="code-block__pre">
-        <code dangerouslySetInnerHTML={{ __html: highlighted }} />
-      </pre>
-    </figure>
-  );
+  return <CodeBlockFrame code={code} label={label} highlighted={highlighted} lineCount={lineCount} />;
 }

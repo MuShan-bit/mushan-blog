@@ -6,6 +6,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import { CodeBlock } from "@/components/content/code-block";
+import { MermaidBlock } from "@/components/content/mermaid-block";
 
 type CodeElementProps = ComponentProps<"code"> & {
   children?: ReactNode;
@@ -30,6 +31,8 @@ function getTextContent(node: ReactNode): string {
 const components = {
   a: ({ href = "", children, ...props }: ComponentProps<"a">) => {
     const isInternal = href.startsWith("/");
+    const isHashLink = href.startsWith("#");
+    const isExternalLink = href.startsWith("http://") || href.startsWith("https://");
 
     if (isInternal) {
       return (
@@ -39,8 +42,16 @@ const components = {
       );
     }
 
+    if (isHashLink) {
+      return (
+        <a href={href} {...props}>
+          {children}
+        </a>
+      );
+    }
+
     return (
-      <a href={href} target="_blank" rel="noreferrer" {...props}>
+      <a href={href} target={isExternalLink ? "_blank" : undefined} rel={isExternalLink ? "noreferrer" : undefined} {...props}>
         {children}
       </a>
     );
@@ -54,8 +65,17 @@ const components = {
     const language = className.match(/language-([\w-]+)/)?.[1];
     const code = getTextContent(children.props.children).replace(/\n$/, "");
 
+    if (language === "mermaid") {
+      return <MermaidBlock chart={code} />;
+    }
+
     return <CodeBlock code={code} language={language} />;
   },
+  table: ({ children, ...props }: ComponentProps<"table">) => (
+    <div className="content-table not-prose">
+      <table {...props}>{children}</table>
+    </div>
+  ),
 };
 
 export async function MdxContent({ source }: { source: string }) {

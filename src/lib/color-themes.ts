@@ -43,3 +43,47 @@ export function isPaletteId(value: string | null | undefined): value is string {
 export function normalizePalette(value: string | null | undefined) {
   return isPaletteId(value) ? value : defaultPalette;
 }
+
+export function subscribePalette(callback: () => void) {
+  if (typeof window === "undefined") {
+    return () => undefined;
+  }
+
+  const onStorage = (event: StorageEvent) => {
+    if (event.key === paletteStorageKey) {
+      callback();
+    }
+  };
+
+  const onPaletteChange = () => callback();
+
+  window.addEventListener("storage", onStorage);
+  window.addEventListener(paletteChangeEvent, onPaletteChange);
+
+  return () => {
+    window.removeEventListener("storage", onStorage);
+    window.removeEventListener(paletteChangeEvent, onPaletteChange);
+  };
+}
+
+export function getPaletteClientSnapshot() {
+  if (typeof window === "undefined") {
+    return defaultPalette;
+  }
+
+  try {
+    const storedPalette = window.localStorage.getItem(paletteStorageKey);
+
+    if (isPaletteId(storedPalette)) {
+      return storedPalette;
+    }
+  } catch {
+    return normalizePalette(document.documentElement.dataset.palette);
+  }
+
+  return normalizePalette(document.documentElement.dataset.palette);
+}
+
+export function getPaletteServerSnapshot() {
+  return defaultPalette;
+}

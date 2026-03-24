@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Fraunces, Manrope, Space_Mono } from "next/font/google";
+import Script from "next/script";
+import localFont from "next/font/local";
+import { Fraunces, Manrope } from "next/font/google";
 import { SiteBackground } from "@/components/layout/site-background";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { ViewTracker } from "@/components/analytics/view-tracker";
+import { ThemeClickFeedback } from "@/components/theme/theme-click-feedback";
 import { ColorThemeProvider } from "@/components/theme/color-theme-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { colorPalettes, defaultPalette, paletteStorageKey } from "@/lib/color-themes";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
@@ -20,10 +24,21 @@ const fraunces = Fraunces({
   subsets: ["latin"],
 });
 
-const spaceMono = Space_Mono({
-  variable: "--font-space-mono",
-  weight: ["400", "700"],
-  subsets: ["latin"],
+const mapleMono = localFont({
+  variable: "--font-maple-mono",
+  display: "swap",
+  src: [
+    {
+      path: "./fonts/MapleMono[wght]-VF.woff2",
+      style: "normal",
+      weight: "100 700",
+    },
+    {
+      path: "./fonts/MapleMono-Italic[wght]-VF.woff2",
+      style: "italic",
+      weight: "100 700",
+    },
+  ],
 });
 
 export const metadata: Metadata = {
@@ -54,6 +69,25 @@ export const metadata: Metadata = {
   },
 };
 
+const paletteIds = colorPalettes.map((palette) => palette.id);
+const paletteInitScript = `
+(() => {
+  const storageKey = ${JSON.stringify(paletteStorageKey)};
+  const fallbackPalette = ${JSON.stringify(defaultPalette)};
+  const validPalettes = new Set(${JSON.stringify(paletteIds)});
+
+  try {
+    const storedPalette = window.localStorage.getItem(storageKey);
+    const nextPalette = validPalettes.has(storedPalette) ? storedPalette : fallbackPalette;
+    document.documentElement.dataset.palette = nextPalette;
+  } catch {
+    document.documentElement.dataset.palette = fallbackPalette;
+  }
+
+  document.documentElement.dataset.paletteReady = "true";
+})();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -64,8 +98,17 @@ export default function RootLayout({
       lang="zh-CN"
       suppressHydrationWarning
       data-palette="verdant"
-      className={`${manrope.variable} ${fraunces.variable} ${spaceMono.variable} h-full antialiased`}
+      data-palette-ready="false"
+      className={`${manrope.variable} ${fraunces.variable} ${mapleMono.variable} h-full antialiased`}
     >
+      <head>
+        <Script id="palette-init" strategy="beforeInteractive">
+          {paletteInitScript}
+        </Script>
+        <noscript>
+          <style>{`html[data-palette-ready="false"] body { opacity: 1 !important; }`}</style>
+        </noscript>
+      </head>
       <body className="min-h-full overflow-x-hidden">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <ColorThemeProvider>
@@ -77,6 +120,7 @@ export default function RootLayout({
               </main>
               <SiteFooter />
             </div>
+            <ThemeClickFeedback />
             <ViewTracker />
           </ColorThemeProvider>
         </ThemeProvider>

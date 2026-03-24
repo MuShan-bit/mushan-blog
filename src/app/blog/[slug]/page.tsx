@@ -3,6 +3,7 @@ import Link from "next/link";
 import { CalendarDays, Clock3, Hash, Layers3 } from "lucide-react";
 import { notFound } from "next/navigation";
 import { ViewCount } from "@/components/analytics/view-count";
+import { ArticleReaderShell } from "@/components/content/article-reader-shell";
 import { MdxContent } from "@/components/content/mdx-components";
 import { PostCard } from "@/components/content/post-card";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -63,117 +64,117 @@ export default async function PostPage({ params }: PostPageProps) {
         ])}
       />
 
-      <article className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_20rem]">
-        <div className="space-y-6">
-          <header className="glass-panel overflow-hidden rounded-[2.2rem]">
-            <div className="relative aspect-[16/8] overflow-hidden">
-              <Image
-                src={post.cover}
-                alt={post.title}
-                fill
-                priority
-                className="object-cover"
-                sizes="(min-width: 1280px) 70vw, 100vw"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-white/10" />
-            </div>
-            <div className="space-y-6 p-7 sm:p-10">
-              <div className="flex flex-wrap items-center gap-3 text-sm text-muted">
-                <Link
-                  href={`/categories/${slugify(post.category)}`}
-                  className="rounded-full bg-accent-soft px-4 py-2 text-accent-strong"
-                >
-                  {post.category}
-                </Link>
-                <span className="inline-flex items-center gap-1.5">
-                  <CalendarDays className="h-4 w-4" />
-                  {formatDate(post.publishedAt)}
-                </span>
-                <span className="inline-flex items-center gap-1.5">
-                  <Clock3 className="h-4 w-4" />
-                  {post.readingTime.text}
-                </span>
-                <ViewCount path={`/blog/${post.slug}`} />
+      <ArticleReaderShell
+        sidebar={
+          <>
+            <div className="glass-panel rounded-[1.8rem] p-6">
+              <div className="flex items-center gap-3 text-accent-strong">
+                <Layers3 className="h-5 w-5" />
+                <h2 className="font-medium">文章信息</h2>
               </div>
-
-              <div className="space-y-4">
-                <h1 className="font-display text-4xl font-semibold tracking-[-0.05em] text-foreground sm:text-5xl">
-                  {post.title}
-                </h1>
-                <p className="max-w-3xl text-base leading-8 text-muted sm:text-lg">{post.summary}</p>
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                {post.tags.map((tag) => (
-                  <Link
-                    key={tag}
-                    href={`/tags/${slugify(tag)}`}
-                    className="rounded-full border border-border bg-white/35 px-4 py-2 text-sm text-muted hover:border-accent/20 hover:text-accent-strong dark:bg-white/5"
-                  >
-                    #{tag}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </header>
-
-          <section className="glass-panel rounded-[2.2rem] p-7 sm:p-10">
-            <MdxContent source={post.content} />
-          </section>
-        </div>
-
-        <aside className="space-y-5 xl:sticky xl:top-28 xl:self-start">
-          <div className="glass-panel rounded-[1.8rem] p-6">
-            <div className="flex items-center gap-3 text-accent-strong">
-              <Layers3 className="h-5 w-5" />
-              <h2 className="font-medium">文章信息</h2>
-            </div>
-            <dl className="mt-5 grid gap-4 text-sm">
-              <div>
-                <dt className="text-muted">分类</dt>
-                <dd className="mt-1 text-foreground">{post.category}</dd>
-              </div>
-              <div>
-                <dt className="text-muted">发布时间</dt>
-                <dd className="mt-1 text-foreground">{formatDate(post.publishedAt)}</dd>
-              </div>
-              {post.updatedAt ? (
+              <dl className="mt-5 grid gap-4 text-sm">
                 <div>
-                  <dt className="text-muted">更新日期</dt>
-                  <dd className="mt-1 text-foreground">{formatDate(post.updatedAt)}</dd>
+                  <dt className="text-muted">分类</dt>
+                  <dd className="mt-1 text-foreground">{post.category}</dd>
                 </div>
-              ) : null}
-              <div>
-                <dt className="text-muted">阅读时长</dt>
-                <dd className="mt-1 text-foreground">{post.readingTime.text}</dd>
-              </div>
-            </dl>
-          </div>
+                <div>
+                  <dt className="text-muted">发布时间</dt>
+                  <dd className="mt-1 text-foreground">{formatDate(post.publishedAt)}</dd>
+                </div>
+                {post.updatedAt ? (
+                  <div>
+                    <dt className="text-muted">更新日期</dt>
+                    <dd className="mt-1 text-foreground">{formatDate(post.updatedAt)}</dd>
+                  </div>
+                ) : null}
+                <div>
+                  <dt className="text-muted">阅读时长</dt>
+                  <dd className="mt-1 text-foreground">{post.readingTime.text}</dd>
+                </div>
+              </dl>
+            </div>
 
-          <div className="glass-panel rounded-[1.8rem] p-6">
-            <div className="flex items-center gap-3 text-accent-strong">
-              <Hash className="h-5 w-5" />
-              <h2 className="font-medium">相关文章</h2>
+            <div className="glass-panel rounded-[1.8rem] p-6">
+              <div className="flex items-center gap-3 text-accent-strong">
+                <Hash className="h-5 w-5" />
+                <h2 className="font-medium">相关文章</h2>
+              </div>
+              <div className="mt-5 grid gap-4">
+                {relatedPosts.length ? (
+                  relatedPosts.map((entry) => (
+                    <Link
+                      key={entry.slug}
+                      href={`/blog/${entry.slug}`}
+                      className="rounded-[1.25rem] border border-border bg-white/35 p-4 text-sm hover:border-accent/20 dark:bg-white/5"
+                    >
+                      <p className="font-medium text-foreground">{entry.title}</p>
+                      <p className="mt-2 leading-7 text-muted">{entry.summary}</p>
+                    </Link>
+                  ))
+                ) : (
+                  <p className="text-sm leading-7 text-muted">更多相关文章会随着内容增加逐步丰富起来。</p>
+                )}
+              </div>
             </div>
-            <div className="mt-5 grid gap-4">
-              {relatedPosts.length ? (
-                relatedPosts.map((entry) => (
-                  <Link
-                    key={entry.slug}
-                    href={`/blog/${entry.slug}`}
-                    className="rounded-[1.25rem] border border-border bg-white/35 p-4 text-sm hover:border-accent/20 dark:bg-white/5"
-                  >
-                    <p className="font-medium text-foreground">{entry.title}</p>
-                    <p className="mt-2 leading-7 text-muted">{entry.summary}</p>
-                  </Link>
-                ))
-              ) : (
-                <p className="text-sm leading-7 text-muted">更多相关文章会随着内容增加逐步丰富起来。</p>
-              )}
+          </>
+        }
+      >
+        <header className="glass-panel overflow-hidden rounded-[2.2rem]">
+          <div className="relative aspect-[16/8] overflow-hidden">
+            <Image
+              src={post.cover}
+              alt={post.title}
+              fill
+              priority
+              className="object-cover"
+              sizes="(min-width: 1280px) 70vw, 100vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-white/10" />
+          </div>
+          <div className="space-y-6 p-7 sm:p-10">
+            <div className="flex flex-wrap items-center gap-3 text-sm text-muted">
+              <Link
+                href={`/categories/${slugify(post.category)}`}
+                className="rounded-full bg-accent-soft px-4 py-2 text-accent-strong"
+              >
+                {post.category}
+              </Link>
+              <span className="inline-flex items-center gap-1.5">
+                <CalendarDays className="h-4 w-4" />
+                {formatDate(post.publishedAt)}
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <Clock3 className="h-4 w-4" />
+                {post.readingTime.text}
+              </span>
+              <ViewCount path={`/blog/${post.slug}`} />
+            </div>
+
+            <div className="space-y-4">
+              <h1 className="font-display text-4xl font-semibold tracking-[-0.05em] text-foreground sm:text-5xl">
+                {post.title}
+              </h1>
+              <p className="max-w-3xl text-base leading-8 text-muted sm:text-lg">{post.summary}</p>
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              {post.tags.map((tag) => (
+                <Link
+                  key={tag}
+                  href={`/tags/${slugify(tag)}`}
+                  className="rounded-full border border-border bg-white/35 px-4 py-2 text-sm text-muted hover:border-accent/20 hover:text-accent-strong dark:bg-white/5"
+                >
+                  #{tag}
+                </Link>
+              ))}
             </div>
           </div>
-        </aside>
-      </article>
+        </header>
+
+        <section className="glass-panel rounded-[2.2rem] p-7 sm:p-10">
+          <MdxContent source={post.content} />
+        </section>
+      </ArticleReaderShell>
 
       {relatedPosts.length ? (
         <section className="site-grid">
