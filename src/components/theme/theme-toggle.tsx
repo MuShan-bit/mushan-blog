@@ -21,8 +21,8 @@ export function ThemeToggle() {
       aria-label="切换主题"
       onClick={() => setTheme(isDark ? "light" : "dark")}
       className={cn(
-        "glass-panel interactive-icon-button soft-ring inline-flex h-11 w-11 items-center justify-center rounded-full text-foreground/80",
-        "hover:text-foreground",
+        "glass-panel soft-ring inline-flex h-11 w-11 items-center justify-center rounded-full text-foreground/80",
+        "hover:-translate-y-0.5 hover:text-foreground",
       )}
     >
       {isDark ? <SunMedium className="h-5 w-5" /> : <MoonStar className="h-5 w-5" />}

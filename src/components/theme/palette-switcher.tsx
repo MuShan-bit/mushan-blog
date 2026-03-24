@@ -54,8 +54,8 @@ export function PaletteSwitcher() {
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
         className={cn(
-          "glass-panel interactive-button soft-ring inline-flex h-11 items-center gap-2 rounded-full px-4 text-sm text-foreground/80",
-          "hover:text-foreground",
+          "glass-panel soft-ring inline-flex h-11 items-center gap-2 rounded-full px-4 text-sm text-foreground/80",
+          "hover:-translate-y-0.5 hover:text-foreground",
         )}
       >
         <Palette className="h-4 w-4" />
@@ -82,7 +82,7 @@ export function PaletteSwitcher() {
                     setOpen(false);
                   }}
                   className={cn(
-                    "interactive-panel flex items-start gap-3 rounded-[1.1rem] border px-3 py-3 text-left",
+                    "flex items-start gap-3 rounded-[1.1rem] border px-3 py-3 text-left",
                     isActive
                       ? "border-accent/30 bg-accent-soft"
                       : "border-border bg-white/35 hover:border-accent/20 hover:bg-white/50 dark:bg-white/5 dark:hover:bg-white/8",

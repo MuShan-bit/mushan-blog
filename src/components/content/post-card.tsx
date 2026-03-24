@@ -17,7 +17,7 @@ export function PostCard({ post, className }: PostCardProps) {
   return (
     <article
       className={cn(
-        "glass-panel interactive-card soft-ring group flex h-full flex-col overflow-hidden rounded-[1.75rem]",
+        "glass-panel soft-ring group flex h-full flex-col overflow-hidden rounded-[1.75rem]",
         className,
       )}
     >

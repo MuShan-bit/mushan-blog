@@ -294,136 +294,6 @@ textarea {
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
   backdrop-filter: blur(24px);
-  transition:
-    border-color 220ms ease,
-    box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 220ms ease,
-    transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.page-transition-shell {
-  position: relative;
-}
-
-.page-transition-shell::before {
-  position: absolute;
-  left: 50%;
-  top: -1.5rem;
-  height: 18rem;
-  width: min(72rem, 92vw);
-  border-radius: 999px;
-  background:
-    radial-gradient(
-      circle,
-      color-mix(in oklab, var(--accent-soft) 62%, rgba(255, 255, 255, 0.24)) 0%,
-      transparent 68%
-    );
-  content: "";
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(-50%) scale(0.9);
-  animation: page-wash-enter 760ms cubic-bezier(0.18, 0.9, 0.22, 1) both;
-}
-
-.page-transition-shell > * {
-  opacity: 0;
-  filter: blur(10px);
-  transform: translateY(1rem) scale(0.988);
-  animation: page-section-enter 720ms cubic-bezier(0.2, 0.9, 0.22, 1) both;
-}
-
-.page-transition-shell > *:nth-child(2) {
-  animation-delay: 80ms;
-}
-
-.page-transition-shell > *:nth-child(3) {
-  animation-delay: 140ms;
-}
-
-.page-transition-shell > *:nth-child(4) {
-  animation-delay: 200ms;
-}
-
-.page-transition-shell > *:nth-child(5) {
-  animation-delay: 260ms;
-}
-
-.page-transition-shell > *:nth-child(6) {
-  animation-delay: 320ms;
-}
-
-.interactive-card,
-.interactive-panel,
-.interactive-button,
-.interactive-icon-button {
-  position: relative;
-  isolation: isolate;
-}
-
-.interactive-card::before,
-.interactive-panel::before,
-.interactive-button::before,
-.interactive-icon-button::before {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.24), transparent 34%),
-    radial-gradient(circle at top right, color-mix(in oklab, var(--accent-soft) 72%, transparent), transparent 44%);
-  content: "";
-  opacity: 0;
-  pointer-events: none;
-  transition:
-    opacity 260ms ease,
-    transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.interactive-card::before,
-.interactive-panel::before {
-  transform: translateY(0.8rem) scale(0.98);
-}
-
-.interactive-button::before,
-.interactive-icon-button::before {
-  border-radius: inherit;
-  transform: scale(0.96);
-}
-
-.interactive-card:hover {
-  border-color: color-mix(in oklab, var(--accent) 24%, transparent);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    0 26px 80px color-mix(in oklab, var(--shadow) 34%, transparent);
-  transform: translateY(-0.42rem) scale(1.006);
-}
-
-.interactive-card:hover::before,
-.interactive-panel:hover::before,
-.interactive-button:hover::before,
-.interactive-icon-button:hover::before {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-.interactive-panel:hover {
-  border-color: color-mix(in oklab, var(--accent) 18%, transparent);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.28),
-    0 20px 72px color-mix(in oklab, var(--shadow) 30%, transparent);
-  transform: translateY(-0.25rem);
-}
-
-.interactive-button:hover,
-.interactive-icon-button:hover {
-  border-color: color-mix(in oklab, var(--accent) 22%, transparent);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.28),
-    0 16px 42px color-mix(in oklab, var(--shadow) 24%, transparent);
-  transform: translateY(-0.18rem) scale(1.01);
-}
-
-.interactive-icon-button {
-  overflow: hidden;
 }
 
 .loading-skeleton {
@@ -598,37 +468,6 @@ textarea {
   align-items: center;
   gap: 0.6rem;
   border: 1px solid transparent;
-  overflow: hidden;
-}
-
-.tab-link::before {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent 42%),
-    radial-gradient(circle at top right, color-mix(in oklab, var(--accent-soft) 86%, transparent), transparent 48%);
-  content: "";
-  opacity: 0;
-  pointer-events: none;
-  transition:
-    opacity 240ms ease,
-    transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
-  transform: translateY(0.5rem) scale(0.96);
-}
-
-.tab-link:hover {
-  border-color: color-mix(in oklab, var(--accent) 14%, transparent);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    0 14px 32px color-mix(in oklab, var(--accent-soft) 52%, transparent);
-  transform: translateY(-0.14rem);
-}
-
-.tab-link:hover::before,
-.tab-link--active::before,
-.tab-link--pending::before {
-  opacity: 1;
-  transform: translateY(0) scale(1);
 }
 
 .tab-link--active {
@@ -820,38 +659,6 @@ textarea {
   }
   50% {
     transform: translateY(-0.04rem) rotate(7deg);
-  }
-}
-
-@keyframes page-wash-enter {
-  0% {
-    opacity: 0;
-    transform: translateX(-50%) scale(0.88);
-  }
-  35% {
-    opacity: 0.65;
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(-50%) scale(1.04);
-  }
-}
-
-@keyframes page-section-enter {
-  0% {
-    opacity: 0;
-    filter: blur(10px);
-    transform: translateY(1rem) scale(0.988);
-  }
-  60% {
-    opacity: 1;
-    filter: blur(0);
-    transform: translateY(-0.12rem) scale(1.002);
-  }
-  100% {
-    opacity: 1;
-    filter: blur(0);
-    transform: translateY(0) scale(1);
   }
 }
 
@@ -1865,32 +1672,10 @@ textarea {
   .mermaid-preview[data-state="exiting"] .mermaid-block,
   .mermaid-preview[data-state="entering"],
   .mermaid-preview[data-state="exiting"],
-  .page-transition-shell::before,
-  .page-transition-shell > *,
   .loading-skeleton::after,
   .loading-badge__dot,
   .tab-link__pending {
     animation: none;
-  }
-
-  .interactive-card,
-  .interactive-panel,
-  .interactive-button,
-  .interactive-icon-button,
-  .tab-link {
-    transition:
-      border-color 180ms ease,
-      color 180ms ease,
-      background-color 180ms ease,
-      box-shadow 180ms ease;
-  }
-
-  .interactive-card:hover,
-  .interactive-panel:hover,
-  .interactive-button:hover,
-  .interactive-icon-button:hover,
-  .tab-link:hover {
-    transform: none;
   }
 }
 

@@ -67,7 +67,7 @@ export default async function PostPage({ params }: PostPageProps) {
       <ArticleReaderShell
         sidebar={
           <>
-            <div className="glass-panel interactive-panel rounded-[1.8rem] p-6">
+            <div className="glass-panel rounded-[1.8rem] p-6">
               <div className="flex items-center gap-3 text-accent-strong">
                 <Layers3 className="h-5 w-5" />
                 <h2 className="font-medium">文章信息</h2>
@@ -94,7 +94,7 @@ export default async function PostPage({ params }: PostPageProps) {
               </dl>
             </div>
 
-            <div className="glass-panel interactive-panel rounded-[1.8rem] p-6">
+            <div className="glass-panel rounded-[1.8rem] p-6">
               <div className="flex items-center gap-3 text-accent-strong">
                 <Hash className="h-5 w-5" />
                 <h2 className="font-medium">相关文章</h2>
@@ -105,7 +105,7 @@ export default async function PostPage({ params }: PostPageProps) {
                     <Link
                       key={entry.slug}
                       href={`/blog/${entry.slug}`}
-                      className="interactive-panel rounded-[1.25rem] border border-border bg-white/35 p-4 text-sm hover:border-accent/20 dark:bg-white/5"
+                      className="rounded-[1.25rem] border border-border bg-white/35 p-4 text-sm hover:border-accent/20 dark:bg-white/5"
                     >
                       <p className="font-medium text-foreground">{entry.title}</p>
                       <p className="mt-2 leading-7 text-muted">{entry.summary}</p>

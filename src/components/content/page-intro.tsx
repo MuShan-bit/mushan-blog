@@ -17,7 +17,7 @@ export function PageIntro({
   className,
 }: PageIntroProps) {
   return (
-    <section className={cn("glass-panel interactive-panel rounded-[2rem] p-7 sm:p-10", className)}>
+    <section className={cn("glass-panel rounded-[2rem] p-7 sm:p-10", className)}>
       <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-3xl space-y-4">
           <p className="section-kicker text-sm font-semibold">{eyebrow}</p>

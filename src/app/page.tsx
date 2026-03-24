@@ -45,7 +45,7 @@ export default async function Home() {
       <JsonLd data={websiteJsonLd} />
 
       <section className="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
-        <div className="glass-panel interactive-panel relative overflow-hidden rounded-[2.4rem] p-7 sm:p-10">
+        <div className="glass-panel relative overflow-hidden rounded-[2.4rem] p-7 sm:p-10">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_10%,rgba(120,221,178,0.22),transparent_28%),radial-gradient(circle_at_85%_18%,rgba(114,198,255,0.18),transparent_24%)]" />
           <div className="relative space-y-8">
             <div className="space-y-4">
@@ -61,14 +61,14 @@ export default async function Home() {
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/blog"
-                className="liquid-button interactive-button inline-flex items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-medium text-white hover:bg-accent-strong"
+                className="liquid-button inline-flex items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-medium text-white hover:-translate-y-0.5 hover:bg-accent-strong"
               >
                 进入文章
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/about"
-                className="interactive-button inline-flex items-center gap-2 rounded-full border border-border bg-white/45 px-5 py-3 text-sm font-medium text-foreground hover:border-accent/20 hover:text-accent-strong dark:bg-white/5"
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-white/45 px-5 py-3 text-sm font-medium text-foreground hover:-translate-y-0.5 hover:border-accent/20 hover:text-accent-strong dark:bg-white/5"
               >
                 关于木杉
               </Link>
@@ -98,7 +98,7 @@ export default async function Home() {
         </div>
 
         <div className="grid gap-6">
-          <div className="glass-panel interactive-panel rounded-[2.2rem] p-7">
+          <div className="glass-panel rounded-[2.2rem] p-7">
             <div className="flex items-center gap-3 text-accent-strong">
               <Sparkles className="h-5 w-5" />
               <p className="text-sm font-medium">内容优先的入口结构</p>
@@ -107,7 +107,7 @@ export default async function Home() {
               首页先建立个人识别，再把文章、作品、相册和友联作为连续展开的栏目。阅读和浏览都尽量干净，不让结构打断情绪。
             </p>
           </div>
-          <div className="glass-panel interactive-panel rounded-[2.2rem] p-7">
+          <div className="glass-panel rounded-[2.2rem] p-7">
             <p className="font-display text-3xl font-semibold tracking-[-0.05em] text-foreground">
               {profile.motto}
             </p>
@@ -168,7 +168,7 @@ export default async function Home() {
             ))}
           </div>
         </div>
-        <aside className="glass-panel interactive-panel rounded-[2rem] p-6">
+        <aside className="glass-panel rounded-[2rem] p-6">
           <div className="flex items-center gap-3 text-accent-strong">
             <LayoutPanelLeft className="h-5 w-5" />
             <p className="text-sm font-medium">站点模块</p>
@@ -231,7 +231,7 @@ export default async function Home() {
           </div>
         </div>
 
-        <aside className="glass-panel interactive-panel rounded-[2rem] p-6">
+        <aside className="glass-panel rounded-[2rem] p-6">
           <div className="space-y-5">
             <div className="flex items-center gap-3 text-accent-strong">
               <BookOpenText className="h-5 w-5" />

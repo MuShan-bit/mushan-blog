@@ -94,7 +94,7 @@ export default async function PortfolioDetailPage({ params }: PortfolioDetailPag
         </div>
 
         <aside className="space-y-5 xl:sticky xl:top-28 xl:self-start">
-          <div className="glass-panel interactive-panel rounded-[1.8rem] p-6">
+          <div className="glass-panel rounded-[1.8rem] p-6">
             <h2 className="font-medium text-accent-strong">项目链接</h2>
             <div className="mt-5 grid gap-3">
               {entry.links.map((link) => (
@@ -103,7 +103,7 @@ export default async function PortfolioDetailPage({ params }: PortfolioDetailPag
                   href={link.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="interactive-panel flex items-center justify-between rounded-[1.2rem] border border-border bg-white/35 px-4 py-3 text-sm text-foreground hover:border-accent/20 hover:text-accent-strong dark:bg-white/5"
+                  className="flex items-center justify-between rounded-[1.2rem] border border-border bg-white/35 px-4 py-3 text-sm text-foreground hover:border-accent/20 hover:text-accent-strong dark:bg-white/5"
                 >
                   <span>
                     {link.label}

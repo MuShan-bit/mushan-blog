@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 import Script from "next/script";
 import localFont from "next/font/local";
 import { Fraunces, Manrope } from "next/font/google";
-import { PageTransitionShell } from "@/components/layout/page-transition-shell";
 import { SiteBackground } from "@/components/layout/site-background";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
@@ -117,7 +116,7 @@ export default function RootLayout({
               <SiteBackground />
               <SiteHeader />
               <main className="relative z-10 flex-1 px-5 pb-20 pt-8 sm:px-8 lg:px-10">
-                <PageTransitionShell>{children}</PageTransitionShell>
+                <div className="mx-auto flex w-full max-w-7xl flex-col gap-12">{children}</div>
               </main>
               <SiteFooter />
             </div>
