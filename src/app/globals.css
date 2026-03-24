@@ -495,91 +495,121 @@ textarea {
   animation: tab-pending-pulse 1.15s ease-in-out infinite;
 }
 
-.mobile-nav-bar {
-  position: relative;
-  overflow: hidden;
-  border-radius: 1.6rem;
-  padding: 0.95rem;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.24),
-    0 18px 54px color-mix(in oklab, var(--shadow) 18%, transparent);
+.site-header {
+  transition:
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 220ms ease;
+  will-change: transform, opacity;
 }
 
-.mobile-nav-bar::before,
-.mobile-nav-bar::after {
-  position: absolute;
-  top: 2.4rem;
-  bottom: 0.95rem;
-  width: 1.8rem;
-  content: "";
+.site-header--visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.site-header--hidden {
+  transform: translateY(calc(-100% - 1rem));
+  opacity: 0.01;
   pointer-events: none;
-  z-index: 2;
 }
 
-.mobile-nav-bar::before {
-  left: 0;
-  background: linear-gradient(90deg, color-mix(in oklab, var(--surface-strong) 92%, transparent), transparent);
-}
-
-.mobile-nav-bar::after {
-  right: 0;
-  background: linear-gradient(270deg, color-mix(in oklab, var(--surface-strong) 92%, transparent), transparent);
-}
-
-.mobile-nav-bar__scroller {
-  display: flex;
-  gap: 0.7rem;
-  overflow-x: auto;
-  padding: 0.15rem 0;
-  scroll-snap-type: x proximity;
-}
-
-.mobile-nav-link {
+.mobile-menu-trigger,
+.mobile-menu-close {
   display: inline-flex;
-  flex: none;
   align-items: center;
-  gap: 0.55rem;
-  border: 1px solid color-mix(in oklab, var(--border) 88%, transparent);
-  border-radius: 999px;
-  background: color-mix(in oklab, var(--surface-strong) 82%, transparent);
-  padding: 0.72rem 1rem;
-  color: var(--muted);
-  font-size: 0.9rem;
-  font-weight: 600;
-  line-height: 1;
-  scroll-snap-align: start;
-  white-space: nowrap;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  justify-content: center;
+  flex: none;
+  border: 1px solid color-mix(in oklab, var(--border) 92%, transparent);
+  border-radius: 1.05rem;
+  background: color-mix(in oklab, var(--surface-strong) 86%, transparent);
+  color: var(--foreground);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.26),
+    0 14px 40px color-mix(in oklab, var(--shadow) 18%, transparent);
 }
 
-.mobile-nav-link--active {
+.mobile-menu-trigger {
+  height: 2.85rem;
+  width: 2.85rem;
+}
+
+.mobile-menu-close {
+  height: 2.45rem;
+  width: 2.45rem;
+}
+
+.mobile-menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  padding-right: 3rem;
+  background: color-mix(in oklab, var(--foreground) 28%, transparent);
+  backdrop-filter: blur(12px);
+  animation: mobile-menu-backdrop-in 220ms ease both;
+}
+
+.mobile-menu-panel {
+  width: min(23rem, calc(100vw - 3rem));
+  height: 100%;
+  border-right: 1px solid color-mix(in oklab, var(--border) 96%, transparent);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--surface-strong) 92%, white 8%) 0%,
+      color-mix(in oklab, var(--surface) 94%, var(--accent-soft) 6%) 100%
+    );
+  padding: 1.15rem 1rem 1rem;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 24px 80px color-mix(in oklab, var(--shadow) 28%, transparent);
+  animation: mobile-menu-panel-in 260ms cubic-bezier(0.18, 0.9, 0.22, 1) both;
+}
+
+.mobile-menu-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  border: 1px solid color-mix(in oklab, var(--border) 90%, transparent);
+  border-radius: 1.25rem;
+  background: color-mix(in oklab, var(--surface-strong) 84%, transparent);
+  padding: 0.9rem;
+}
+
+.mobile-menu-link--active {
   border-color: color-mix(in oklab, var(--accent) 24%, transparent);
   background:
     linear-gradient(
       135deg,
-      color-mix(in oklab, var(--accent-soft) 86%, var(--surface-strong) 14%),
-      color-mix(in oklab, var(--surface-strong) 80%, transparent)
+      color-mix(in oklab, var(--accent-soft) 84%, var(--surface-strong) 16%),
+      color-mix(in oklab, var(--surface-strong) 92%, transparent)
     );
-  color: var(--accent-strong);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.32),
-    0 12px 28px color-mix(in oklab, var(--accent-soft) 48%, transparent);
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 14px 36px color-mix(in oklab, var(--accent-soft) 38%, transparent);
 }
 
-.mobile-nav-link--pending {
-  border-color: color-mix(in oklab, var(--accent) 18%, transparent);
+.mobile-menu-link__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.08rem;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 0.85rem;
+  background: color-mix(in oklab, var(--accent-soft) 74%, var(--surface-strong) 26%);
   color: var(--accent-strong);
+  flex: none;
 }
 
-.mobile-nav-link__pending-dot {
-  height: 0.44rem;
-  width: 0.44rem;
-  border-radius: 999px;
-  background: radial-gradient(circle at 35% 35%, color-mix(in oklab, white 72%, var(--accent-strong) 28%), var(--accent));
-  box-shadow:
-    0 0 0 0 color-mix(in oklab, var(--accent-soft) 64%, transparent),
-    0 0 16px color-mix(in oklab, var(--accent-soft) 52%, transparent);
-  animation: tab-pending-pulse 1.15s ease-in-out infinite;
+.mobile-menu-note {
+  margin-top: 1rem;
+  border: 1px solid color-mix(in oklab, var(--border) 88%, transparent);
+  border-radius: 1.25rem;
+  background: color-mix(in oklab, var(--surface-strong) 80%, transparent);
+  padding: 0.95rem 1rem;
 }
 
 .tab-accent {
@@ -746,6 +776,26 @@ textarea {
   }
   50% {
     transform: translateY(-0.04rem) rotate(7deg);
+  }
+}
+
+@keyframes mobile-menu-backdrop-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes mobile-menu-panel-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-1.2rem) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
   }
 }
 
@@ -1759,6 +1809,8 @@ textarea {
   .mermaid-preview[data-state="exiting"] .mermaid-block,
   .mermaid-preview[data-state="entering"],
   .mermaid-preview[data-state="exiting"],
+  .mobile-menu-backdrop,
+  .mobile-menu-panel,
   .loading-skeleton::after,
   .loading-badge__dot,
   .tab-link__pending {
