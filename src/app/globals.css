@@ -296,6 +296,80 @@ textarea {
   backdrop-filter: blur(24px);
 }
 
+.loading-skeleton {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--surface-strong) 88%, white 12%) 0%,
+      color-mix(in oklab, var(--background-muted) 82%, var(--accent-soft) 18%) 100%
+    );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.loading-skeleton::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    112deg,
+    transparent 0%,
+    transparent 36%,
+    rgba(255, 255, 255, 0.58) 50%,
+    transparent 64%,
+    transparent 100%
+  );
+  content: "";
+  transform: translateX(-120%);
+  animation: loading-shimmer 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.dark .loading-skeleton {
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--surface-soft) 82%, #0b121a 18%) 0%,
+      color-mix(in oklab, var(--surface-strong) 72%, #0a1118 28%) 100%
+    );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.dark .loading-skeleton::after {
+  background: linear-gradient(
+    112deg,
+    transparent 0%,
+    transparent 34%,
+    rgba(255, 255, 255, 0.18) 50%,
+    transparent 66%,
+    transparent 100%
+  );
+}
+
+.loading-badge {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.6rem;
+  border: 1px solid color-mix(in oklab, var(--accent) 18%, transparent);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--surface-strong) 80%, transparent);
+  padding: 0.48rem 0.85rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.loading-badge__dot {
+  height: 0.58rem;
+  width: 0.58rem;
+  border-radius: 999px;
+  background: radial-gradient(circle at 35% 35%, color-mix(in oklab, white 68%, var(--accent-strong) 32%), var(--accent));
+  box-shadow: 0 0 0 0 color-mix(in oklab, var(--accent-soft) 78%, transparent);
+  animation: loading-badge-breathe 1.7s ease-in-out infinite;
+}
+
 .soft-ring {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.24),
@@ -401,6 +475,24 @@ textarea {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.24),
     0 12px 30px color-mix(in oklab, var(--accent-soft) 55%, transparent);
+}
+
+.tab-link--pending {
+  border-color: color-mix(in oklab, var(--accent) 14%, transparent);
+  background: color-mix(in oklab, var(--surface-strong) 84%, var(--accent-soft) 16%);
+  color: var(--accent-strong);
+}
+
+.tab-link__pending {
+  height: 0.42rem;
+  width: 0.42rem;
+  flex: none;
+  border-radius: 999px;
+  background: radial-gradient(circle at 35% 35%, color-mix(in oklab, white 72%, var(--accent-strong) 28%), var(--accent));
+  box-shadow:
+    0 0 0 0 color-mix(in oklab, var(--accent-soft) 76%, transparent),
+    0 0 16px color-mix(in oklab, var(--accent-soft) 58%, transparent);
+  animation: tab-pending-pulse 1.15s ease-in-out infinite;
 }
 
 .tab-accent {
@@ -567,6 +659,47 @@ textarea {
   }
   50% {
     transform: translateY(-0.04rem) rotate(7deg);
+  }
+}
+
+@keyframes loading-shimmer {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes loading-badge-breathe {
+  0%,
+  100% {
+    transform: scale(0.96);
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--accent-soft) 64%, transparent);
+    opacity: 0.88;
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 0.32rem color-mix(in oklab, var(--accent-soft) 24%, transparent);
+    opacity: 1;
+  }
+}
+
+@keyframes tab-pending-pulse {
+  0%,
+  100% {
+    transform: scale(0.9);
+    box-shadow:
+      0 0 0 0 color-mix(in oklab, var(--accent-soft) 68%, transparent),
+      0 0 12px color-mix(in oklab, var(--accent-soft) 48%, transparent);
+    opacity: 0.82;
+  }
+  50% {
+    transform: scale(1.16);
+    box-shadow:
+      0 0 0 0.28rem color-mix(in oklab, var(--accent-soft) 22%, transparent),
+      0 0 18px color-mix(in oklab, var(--accent-soft) 62%, transparent);
+    opacity: 1;
   }
 }
 
@@ -1538,7 +1671,10 @@ textarea {
   .mermaid-preview[data-state="entering"] .mermaid-block,
   .mermaid-preview[data-state="exiting"] .mermaid-block,
   .mermaid-preview[data-state="entering"],
-  .mermaid-preview[data-state="exiting"] {
+  .mermaid-preview[data-state="exiting"],
+  .loading-skeleton::after,
+  .loading-badge__dot,
+  .tab-link__pending {
     animation: none;
   }
 }
