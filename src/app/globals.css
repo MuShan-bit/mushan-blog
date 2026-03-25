@@ -405,23 +405,27 @@ textarea {
 
 .interactive-glass-card::after {
   position: absolute;
-  inset: -34% auto -34% -80%;
-  width: 56%;
-  border-radius: 42%;
+  inset: -50% auto -50% -68%;
+  width: 38%;
+  border-radius: 2.4rem;
   background: linear-gradient(
-    115deg,
+    114deg,
     transparent 0%,
-    transparent 26%,
-    rgba(255, 255, 255, 0.08) 38%,
-    rgba(255, 255, 255, 0.46) 50%,
-    rgba(255, 255, 255, 0.14) 60%,
-    transparent 74%,
+    transparent 30%,
+    rgba(255, 255, 255, 0.05) 38%,
+    rgba(255, 255, 255, 0.26) 43%,
+    rgba(255, 255, 255, 0.82) 47%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(255, 255, 255, 0.48) 53%,
+    rgba(255, 255, 255, 0.1) 58%,
+    transparent 66%,
     transparent 100%
   );
   content: "";
   opacity: 0;
   pointer-events: none;
-  transform: translate3d(-135%, 0, 0) rotate(14deg);
+  mix-blend-mode: screen;
+  transform: translate3d(-168%, -8%, 0) rotate(18deg);
   transform-origin: center;
 }
 
@@ -457,54 +461,41 @@ textarea {
 
 .dark .interactive-glass-card::after {
   background: linear-gradient(
-    115deg,
+    114deg,
     transparent 0%,
-    transparent 26%,
-    rgba(255, 255, 255, 0.04) 38%,
-    rgba(255, 255, 255, 0.18) 50%,
-    rgba(255, 255, 255, 0.08) 60%,
-    transparent 74%,
+    transparent 30%,
+    rgba(255, 255, 255, 0.03) 38%,
+    rgba(255, 255, 255, 0.16) 43%,
+    rgba(255, 255, 255, 0.52) 47%,
+    rgba(255, 255, 255, 0.82) 50%,
+    rgba(255, 255, 255, 0.3) 53%,
+    rgba(255, 255, 255, 0.06) 58%,
+    transparent 66%,
     transparent 100%
   );
 }
 
 @keyframes card-glass-sweep-enter {
   0% {
-    opacity: 0;
-    transform: translate3d(-135%, 0, 0) rotate(14deg);
-  }
-
-  16% {
-    opacity: 0.92;
-  }
-
-  54% {
-    opacity: 0.88;
+    opacity: 0.96;
+    transform: translate3d(-168%, -8%, 0) rotate(18deg);
   }
 
   100% {
-    opacity: 0;
-    transform: translate3d(230%, 0, 0) rotate(14deg);
+    opacity: 0.96;
+    transform: translate3d(276%, 8%, 0) rotate(18deg);
   }
 }
 
 @keyframes card-glass-sweep-leave {
   0% {
-    opacity: 0;
-    transform: translate3d(230%, 0, 0) rotate(14deg);
-  }
-
-  16% {
-    opacity: 0.82;
-  }
-
-  54% {
-    opacity: 0.76;
+    opacity: 0.96;
+    transform: translate3d(276%, 8%, 0) rotate(18deg);
   }
 
   100% {
-    opacity: 0;
-    transform: translate3d(-135%, 0, 0) rotate(14deg);
+    opacity: 0.96;
+    transform: translate3d(-168%, -8%, 0) rotate(18deg);
   }
 }
 
