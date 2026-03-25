@@ -9,6 +9,7 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { ViewTracker } from "@/components/analytics/view-tracker";
 import { ThemeClickFeedback } from "@/components/theme/theme-click-feedback";
 import { ColorThemeProvider } from "@/components/theme/color-theme-provider";
+import { FocusModeProvider } from "@/components/providers/focus-mode-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { colorPalettes, defaultPalette, paletteStorageKey } from "@/lib/color-themes";
 import { siteConfig } from "@/lib/site";
@@ -112,16 +113,18 @@ export default function RootLayout({
       <body className="min-h-full overflow-x-hidden">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <ColorThemeProvider>
-            <div className="relative isolate flex min-h-screen flex-col">
-              <SiteBackground />
-              <SiteHeader />
-              <main className="relative z-10 flex-1 px-5 pb-20 pt-8 sm:px-8 lg:px-10">
-                <div className="mx-auto flex w-full max-w-7xl flex-col gap-12">{children}</div>
-              </main>
-              <SiteFooter />
-            </div>
-            <ThemeClickFeedback />
-            <ViewTracker />
+            <FocusModeProvider>
+              <div className="relative isolate flex min-h-screen flex-col">
+                <SiteBackground />
+                <SiteHeader />
+                <main className="relative z-10 flex-1 px-5 pb-20 pt-8 sm:px-8 lg:px-10">
+                  <div className="mx-auto flex w-full max-w-7xl flex-col gap-12">{children}</div>
+                </main>
+                <SiteFooter />
+              </div>
+              <ThemeClickFeedback />
+              <ViewTracker />
+            </FocusModeProvider>
           </ColorThemeProvider>
         </ThemeProvider>
       </body>
