@@ -19,16 +19,14 @@ const homeModules = [
 export function HomeHero({ postCount, portfolioCount, albumCount }: HomeHeroProps) {
   return (
     <section className="home-hero">
-      <div className="home-hero__backtype">Mushan</div>
-
       <div className="relative mx-auto flex min-h-[inherit] w-full max-w-7xl flex-col justify-between gap-10 px-6 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12">
         <div className="flex flex-1 items-center">
           <div className="grid w-full gap-10 lg:grid-cols-[minmax(0,1.18fr)_minmax(19rem,0.82fr)] lg:gap-12">
             <div className="flex min-h-[22rem] flex-col justify-center lg:pt-6">
-              <p className="section-kicker text-sm font-semibold">Mushan Personal Blog</p>
-
-              <div className="mt-5 space-y-6">
-                <div className="space-y-4">
+              <div className="home-hero__headline-wrap">
+                <div className="home-hero__backtype">Mushan</div>
+                <div className="relative z-10 space-y-4">
+                  <p className="section-kicker text-sm font-semibold">Mushan Personal Blog</p>
                   <p className="text-sm font-medium tracking-[0.02em] text-accent-strong">{profile.headline}</p>
                   <h1 className="font-display max-w-5xl text-5xl font-semibold tracking-[-0.065em] text-foreground sm:text-6xl lg:text-7xl xl:text-[5.4rem]">
                     {siteConfig.title}
@@ -36,7 +34,9 @@ export function HomeHero({ postCount, portfolioCount, albumCount }: HomeHeroProp
                   <p className="max-w-2xl text-base leading-8 text-muted sm:text-lg">{siteConfig.description}</p>
                   <p className="max-w-3xl text-sm leading-8 text-muted sm:text-base">{profile.intro}</p>
                 </div>
+              </div>
 
+              <div className="mt-6 space-y-6">
                 <div className="flex flex-wrap gap-2.5">
                   {profile.skills.slice(0, 6).map((skill) => (
                     <span

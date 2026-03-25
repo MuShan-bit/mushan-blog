@@ -474,18 +474,24 @@ textarea {
   pointer-events: none;
 }
 
+.home-hero__headline-wrap {
+  position: relative;
+  padding-top: clamp(2rem, 5vw, 4rem);
+}
+
 .home-hero__backtype {
   position: absolute;
-  left: clamp(-0.25rem, 1vw, 1rem);
-  top: clamp(1rem, 1.6vw, 1.5rem);
+  left: clamp(-0.35rem, -0.4vw, 0rem);
+  top: clamp(-0.15rem, 0.9vw, 0.8rem);
   font-family: var(--font-fraunces), "STSong", "Songti SC", serif;
-  font-size: clamp(5rem, 16vw, 14rem);
+  font-size: clamp(4.6rem, 13vw, 10.5rem);
   font-weight: 600;
   letter-spacing: -0.085em;
   line-height: 0.88;
-  color: color-mix(in oklab, var(--foreground) 8%, transparent);
+  color: color-mix(in oklab, var(--foreground) 10%, transparent);
   pointer-events: none;
   user-select: none;
+  white-space: nowrap;
 }
 
 .home-hero__rail {
@@ -617,9 +623,14 @@ textarea {
     min-height: 100svh;
   }
 
+  .home-hero__headline-wrap {
+    padding-top: 1.8rem;
+  }
+
   .home-hero__backtype {
-    font-size: clamp(3.8rem, 24vw, 7rem);
-    top: 1.2rem;
+    left: -0.1rem;
+    top: 0.15rem;
+    font-size: clamp(3.8rem, 22vw, 6.2rem);
   }
 }
 
