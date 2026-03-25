@@ -552,21 +552,29 @@ textarea {
 }
 
 .mobile-menu-panel {
+  position: relative;
+  isolation: isolate;
   width: min(23rem, calc(100vw - 3rem));
   height: 100%;
+  overflow-y: auto;
   border-right: 1px solid color-mix(in oklab, var(--border) 96%, transparent);
-  background:
+  background-color: var(--background-muted);
+  background-image:
+    radial-gradient(
+      circle at top right,
+      color-mix(in oklab, var(--accent) 10%, var(--background) 90%) 0%,
+      transparent 34%
+    ),
     linear-gradient(
       180deg,
       color-mix(in oklab, var(--background) 88%, white 12%) 0%,
-      color-mix(in oklab, var(--background-muted) 92%, white 8%) 52%,
-      color-mix(in oklab, var(--background-muted) 84%, var(--accent-soft) 16%) 100%
+      color-mix(in oklab, var(--background-muted) 96%, white 4%) 54%,
+      color-mix(in oklab, var(--background-muted) 92%, var(--background) 8%) 100%
     );
   padding: 1.15rem 1rem 1rem;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.28),
     0 24px 80px color-mix(in oklab, var(--shadow) 28%, transparent);
-  backdrop-filter: blur(18px) saturate(1.05);
   animation: mobile-menu-panel-in 260ms cubic-bezier(0.18, 0.9, 0.22, 1) both;
 }
 
@@ -576,23 +584,23 @@ textarea {
   gap: 0.85rem;
   border: 1px solid color-mix(in oklab, var(--border) 90%, transparent);
   border-radius: 1.25rem;
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in oklab, var(--surface-strong) 94%, white 6%),
-      color-mix(in oklab, var(--background-muted) 94%, white 6%)
-    );
+  background-color: color-mix(in oklab, var(--background) 72%, white 28%);
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--background) 82%, white 18%),
+    color-mix(in oklab, var(--background-muted) 94%, white 6%)
+  );
   padding: 0.9rem;
 }
 
 .mobile-menu-link--active {
   border-color: color-mix(in oklab, var(--accent) 24%, transparent);
-  background:
-    linear-gradient(
-      135deg,
-      color-mix(in oklab, var(--accent-soft) 84%, var(--surface-strong) 16%),
-      color-mix(in oklab, var(--surface-strong) 92%, transparent)
-    );
+  background-color: color-mix(in oklab, var(--background) 74%, white 26%);
+  background-image: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--accent) 12%, var(--background) 88%),
+    color-mix(in oklab, var(--background-muted) 92%, white 8%)
+  );
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.3),
     0 14px 36px color-mix(in oklab, var(--accent-soft) 38%, transparent);
@@ -606,7 +614,7 @@ textarea {
   height: 2rem;
   width: 2rem;
   border-radius: 0.85rem;
-  background: color-mix(in oklab, var(--accent-soft) 74%, var(--surface-strong) 26%);
+  background-color: color-mix(in oklab, var(--accent) 14%, var(--background) 86%);
   color: var(--accent-strong);
   flex: none;
 }
@@ -615,22 +623,28 @@ textarea {
   margin-top: 1rem;
   border: 1px solid color-mix(in oklab, var(--border) 88%, transparent);
   border-radius: 1.25rem;
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in oklab, var(--background-muted) 90%, white 10%),
-      color-mix(in oklab, var(--background) 88%, var(--accent-soft) 12%)
-    );
+  background-color: color-mix(in oklab, var(--background) 78%, white 22%);
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--background-muted) 92%, white 8%),
+    color-mix(in oklab, var(--background) 90%, var(--background-muted) 10%)
+  );
   padding: 0.95rem 1rem;
 }
 
 .dark .mobile-menu-panel {
-  background:
+  background-color: var(--background-muted);
+  background-image:
+    radial-gradient(
+      circle at top right,
+      color-mix(in oklab, var(--accent) 14%, var(--background) 86%) 0%,
+      transparent 34%
+    ),
     linear-gradient(
       180deg,
-      color-mix(in oklab, var(--background) 90%, #121a20 10%) 0%,
-      color-mix(in oklab, var(--background-muted) 88%, #131d26 12%) 54%,
-      color-mix(in oklab, var(--background-muted) 82%, var(--accent-soft) 18%) 100%
+      color-mix(in oklab, var(--background) 94%, #121920 6%) 0%,
+      color-mix(in oklab, var(--background-muted) 90%, #141d25 10%) 54%,
+      color-mix(in oklab, var(--background-muted) 86%, var(--background) 14%) 100%
     );
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.06),
@@ -638,21 +652,34 @@ textarea {
 }
 
 .dark .mobile-menu-link {
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in oklab, var(--surface-strong) 82%, #121a22 18%),
-      color-mix(in oklab, var(--background-muted) 88%, #111922 12%)
-    );
+  background-color: color-mix(in oklab, var(--background) 76%, #121920 24%);
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--background) 82%, #151d25 18%),
+    color-mix(in oklab, var(--background-muted) 92%, #10171e 8%)
+  );
+}
+
+.dark .mobile-menu-link--active {
+  background-color: color-mix(in oklab, var(--background) 72%, #141b22 28%);
+  background-image: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--accent) 14%, var(--background) 86%),
+    color-mix(in oklab, var(--background-muted) 92%, #111820 8%)
+  );
 }
 
 .dark .mobile-menu-note {
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in oklab, var(--background-muted) 84%, #141d26 16%),
-      color-mix(in oklab, var(--background) 86%, var(--accent-soft) 14%)
-    );
+  background-color: color-mix(in oklab, var(--background) 76%, #151d25 24%);
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--background-muted) 88%, #141c24 12%),
+    color-mix(in oklab, var(--background) 92%, #11171d 8%)
+  );
+}
+
+.dark .mobile-menu-link__icon {
+  background-color: color-mix(in oklab, var(--accent) 16%, var(--background) 84%);
 }
 
 .tab-accent {
