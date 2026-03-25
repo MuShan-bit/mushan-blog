@@ -5,7 +5,7 @@ import type { GalleryAlbum } from "@/lib/types";
 
 export function AlbumCard({ album }: { album: GalleryAlbum }) {
   return (
-    <article className="glass-panel group overflow-hidden rounded-[1.75rem]">
+    <article className="glass-panel interactive-glass-card group overflow-hidden rounded-[1.75rem]">
       <div className="relative aspect-[4/3] overflow-hidden">
         <Image
           src={album.cover}

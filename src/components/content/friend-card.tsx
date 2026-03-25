@@ -5,7 +5,7 @@ import type { FriendLink } from "@/lib/types";
 
 export function FriendCard({ friend }: { friend: FriendLink }) {
   return (
-    <article className="glass-panel rounded-[1.6rem] p-5">
+    <article className="glass-panel interactive-glass-card group rounded-[1.6rem] p-5">
       <div className="flex items-start gap-4">
         <div className="relative h-16 w-16 overflow-hidden rounded-2xl border border-border bg-white/45 dark:bg-white/5">
           <Image src={friend.avatar} alt={friend.name} fill className="object-cover" sizes="64px" />
