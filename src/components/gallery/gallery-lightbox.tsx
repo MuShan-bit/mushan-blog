@@ -42,6 +42,19 @@ export function GalleryLightbox({ albumTitle, photos }: GalleryLightboxProps) {
     };
   }, [activeIndex, photos.length]);
 
+  useEffect(() => {
+    if (activeIndex === null) {
+      delete document.body.dataset.galleryLightbox;
+      return;
+    }
+
+    document.body.dataset.galleryLightbox = "open";
+
+    return () => {
+      delete document.body.dataset.galleryLightbox;
+    };
+  }, [activeIndex]);
+
   const activePhoto = activeIndex === null ? null : photos[activeIndex];
 
   return (

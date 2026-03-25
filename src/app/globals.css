@@ -547,6 +547,13 @@ textarea {
   cursor: wait;
 }
 
+body[data-gallery-lightbox="open"] .site-header,
+body[data-gallery-lightbox="open"] .site-footer {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .home-theme-dot:hover {
   transform: translateY(-1px);
 }
