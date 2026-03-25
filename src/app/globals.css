@@ -377,6 +377,7 @@ textarea {
 }
 
 .interactive-glass-card {
+  --card-metal-beam-width: 48%;
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -405,8 +406,10 @@ textarea {
 
 .interactive-glass-card::after {
   position: absolute;
-  inset: -56% auto -56% -76%;
-  width: 48%;
+  top: -56%;
+  bottom: -56%;
+  left: calc(-1 * var(--card-metal-beam-width));
+  width: var(--card-metal-beam-width);
   border-radius: 2.8rem;
   background: linear-gradient(
     114deg,
@@ -427,8 +430,6 @@ textarea {
   opacity: 0;
   pointer-events: none;
   mix-blend-mode: screen;
-  transform: translate3d(-168%, -8%, 0) rotate(18deg);
-  transform-origin: center;
 }
 
 .interactive-glass-card[data-card-hovered="true"],
@@ -482,24 +483,24 @@ textarea {
 @keyframes card-glass-sweep-enter {
   0% {
     opacity: 0.96;
-    transform: translate3d(-168%, -8%, 0) rotate(18deg);
+    left: calc(-1 * var(--card-metal-beam-width));
   }
 
   100% {
     opacity: 0.96;
-    transform: translate3d(276%, 8%, 0) rotate(18deg);
+    left: 100%;
   }
 }
 
 @keyframes card-glass-sweep-leave {
   0% {
     opacity: 0.96;
-    transform: translate3d(276%, 8%, 0) rotate(18deg);
+    left: 100%;
   }
 
   100% {
     opacity: 0.96;
-    transform: translate3d(-168%, -8%, 0) rotate(18deg);
+    left: calc(-1 * var(--card-metal-beam-width));
   }
 }
 
