@@ -551,7 +551,6 @@ textarea {
   position: relative;
   aspect-ratio: 16 / 8;
   overflow: hidden;
-  isolation: isolate;
 }
 
 .article-hero__media::after {
@@ -561,28 +560,19 @@ textarea {
     linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, transparent 28%, rgba(13, 22, 36, 0.08) 56%, rgba(13, 22, 36, 0.42) 100%),
     linear-gradient(135deg, color-mix(in oklab, var(--accent-soft) 32%, transparent) 0%, transparent 54%);
   content: "";
-  pointer-events: none;
-  z-index: 1;
 }
 
 .article-hero__body {
   position: relative;
   z-index: 1;
-  margin-top: clamp(-4rem, -6vw, -2.6rem);
-  padding-top: clamp(4.2rem, 7vw, 5.3rem);
-  padding-bottom: clamp(2.4rem, 4vw, 3.2rem);
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in oklab, var(--surface-strong) 96%, white 4%) 0%,
-      color-mix(in oklab, var(--surface) 88%, transparent) 100%
-    );
+  padding-bottom: clamp(5.75rem, 10vw, 7.5rem);
+  background: linear-gradient(180deg, color-mix(in oklab, var(--surface-strong) 8%, transparent) 0%, transparent 100%);
 }
 
 .article-hero__wave {
   position: absolute;
-  inset: auto -8% -1px -8%;
-  height: clamp(5.5rem, 10vw, 8rem);
+  inset: auto 0 -1px 0;
+  height: clamp(4.75rem, 9vw, 6.75rem);
   overflow: hidden;
   pointer-events: none;
   z-index: 2;
@@ -590,9 +580,9 @@ textarea {
 
 .article-hero__wave-layer {
   position: absolute;
-  left: -16%;
+  left: -26%;
   bottom: -1px;
-  width: 132%;
+  width: 152%;
   height: 100%;
   will-change: transform;
 }
@@ -600,20 +590,20 @@ textarea {
 .article-hero__wave-layer--back {
   fill: color-mix(in oklab, white 72%, var(--background-muted) 28%);
   opacity: 0.46;
-  filter: blur(1.5px);
-  animation: article-hero-wave-back 16s ease-in-out infinite;
+  filter: blur(1px);
+  animation: article-hero-wave-back 20s linear infinite;
 }
 
 .article-hero__wave-layer--mid {
   fill: color-mix(in oklab, var(--background-muted) 80%, white 20%);
   opacity: 0.8;
-  animation: article-hero-wave-mid 11s ease-in-out infinite;
+  animation: article-hero-wave-mid 14s linear infinite;
 }
 
 .article-hero__wave-layer--front {
-  fill: color-mix(in oklab, var(--surface-strong) 96%, white 4%);
+  fill: var(--background);
   opacity: 1;
-  animation: article-hero-wave-front 8s ease-in-out infinite;
+  animation: article-hero-wave-front 10s linear infinite;
 }
 
 .home-theme-dot {
@@ -784,12 +774,7 @@ body[data-gallery-lightbox="open"] .site-footer {
 }
 
 .dark .article-hero__body {
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in oklab, var(--surface-soft) 94%, #09121c 6%) 0%,
-      color-mix(in oklab, var(--surface) 82%, transparent) 100%
-    );
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
 }
 
 .dark .article-hero__wave-layer--back {
@@ -803,7 +788,7 @@ body[data-gallery-lightbox="open"] .site-footer {
 }
 
 .dark .article-hero__wave-layer--front {
-  fill: color-mix(in oklab, var(--surface-soft) 94%, #09121c 6%);
+  fill: var(--background);
 }
 
 .dark .home-hero__backtype {
@@ -846,43 +831,43 @@ body[data-gallery-lightbox="open"] .site-footer {
 
 @keyframes article-hero-wave-back {
   0% {
-    transform: translate3d(-3%, 0.35rem, 0) scaleY(0.94) scaleX(1.02);
+    transform: translate3d(-4%, 0, 0);
   }
 
   50% {
-    transform: translate3d(1.5%, -0.2rem, 0) scaleY(1.04) scaleX(0.99);
+    transform: translate3d(0%, 0, 0);
   }
 
   100% {
-    transform: translate3d(-3%, 0.35rem, 0) scaleY(0.94) scaleX(1.02);
+    transform: translate3d(-4%, 0, 0);
   }
 }
 
 @keyframes article-hero-wave-mid {
   0% {
-    transform: translate3d(-1.4%, 0.2rem, 0) scaleY(0.98);
+    transform: translate3d(-2%, 0, 0);
   }
 
   50% {
-    transform: translate3d(1.8%, -0.28rem, 0) scaleY(1.05);
+    transform: translate3d(2%, 0, 0);
   }
 
   100% {
-    transform: translate3d(-1.4%, 0.2rem, 0) scaleY(0.98);
+    transform: translate3d(-2%, 0, 0);
   }
 }
 
 @keyframes article-hero-wave-front {
   0% {
-    transform: translate3d(0%, 0.16rem, 0) scaleY(0.99);
+    transform: translate3d(0%, 0, 0);
   }
 
   50% {
-    transform: translate3d(-1.8%, -0.22rem, 0) scaleY(1.07);
+    transform: translate3d(-3%, 0, 0);
   }
 
   100% {
-    transform: translate3d(0%, 0.16rem, 0) scaleY(0.99);
+    transform: translate3d(0%, 0, 0);
   }
 }
 
@@ -2808,9 +2793,7 @@ body[data-gallery-lightbox="open"] .site-footer {
 
   .music-player-dock__glow,
   .music-player-dock__bars span,
-  .article-hero__wave-layer,
-  .article-hero__wave animate,
-  .article-hero__wave animateTransform {
+  .article-hero__wave-layer {
     animation: none;
   }
 
