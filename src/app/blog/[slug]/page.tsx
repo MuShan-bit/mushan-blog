@@ -4,6 +4,7 @@ import { CalendarDays, Clock3, Hash, Layers3 } from "lucide-react";
 import { notFound } from "next/navigation";
 import { ViewCount } from "@/components/analytics/view-count";
 import { ArticleReaderShell } from "@/components/content/article-reader-shell";
+import { HeroWaveDivider } from "@/components/content/hero-wave-divider";
 import { MdxContent } from "@/components/content/mdx-components";
 import { PostCard } from "@/components/content/post-card";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -120,8 +121,8 @@ export default async function PostPage({ params }: PostPageProps) {
           </>
         }
       >
-        <header className="glass-panel overflow-hidden rounded-[2.2rem]">
-          <div className="relative aspect-[16/8] overflow-hidden">
+        <header className="article-hero glass-panel overflow-hidden rounded-[2.2rem]">
+          <div className="article-hero__media">
             <Image
               src={post.cover}
               alt={post.title}
@@ -130,9 +131,8 @@ export default async function PostPage({ params }: PostPageProps) {
               className="object-cover"
               sizes="(min-width: 1280px) 70vw, 100vw"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-white/10" />
           </div>
-          <div className="space-y-6 p-7 sm:p-10">
+          <div className="article-hero__body space-y-6 p-7 sm:p-10">
             <div className="flex flex-wrap items-center gap-3 text-sm text-muted">
               <Link
                 href={`/categories/${slugify(post.category)}`}
@@ -170,6 +170,7 @@ export default async function PostPage({ params }: PostPageProps) {
               ))}
             </div>
           </div>
+          <HeroWaveDivider />
         </header>
 
         <section className="glass-panel rounded-[2.2rem] p-7 sm:p-10">

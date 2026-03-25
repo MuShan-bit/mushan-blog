@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ExternalLink, Sparkles } from "lucide-react";
 import { notFound } from "next/navigation";
 import { ArticleReaderShell } from "@/components/content/article-reader-shell";
+import { HeroWaveDivider } from "@/components/content/hero-wave-divider";
 import { MdxContent } from "@/components/content/mdx-components";
 import { JsonLd } from "@/components/seo/json-ld";
 import { getAllPortfolioEntries, getPortfolioEntryBySlug } from "@/lib/content";
@@ -73,8 +74,8 @@ export default async function PortfolioDetailPage({ params }: PortfolioDetailPag
         }
       >
         <>
-          <header className="glass-panel overflow-hidden rounded-[2.2rem]">
-            <div className="relative aspect-[16/8] overflow-hidden">
+          <header className="article-hero glass-panel overflow-hidden rounded-[2.2rem]">
+            <div className="article-hero__media">
               <Image
                 src={entry.cover}
                 alt={entry.title}
@@ -83,9 +84,8 @@ export default async function PortfolioDetailPage({ params }: PortfolioDetailPag
                 className="object-cover"
                 sizes="(min-width: 1280px) 70vw, 100vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-white/10" />
             </div>
-            <div className="space-y-6 p-7 sm:p-10">
+            <div className="article-hero__body space-y-6 p-7 sm:p-10">
               <div className="flex flex-wrap items-center gap-3 text-sm text-muted">
                 <span className="rounded-full bg-accent-soft px-4 py-2 text-accent-strong">{entry.role}</span>
                 <span>{entry.period}</span>
@@ -111,6 +111,7 @@ export default async function PortfolioDetailPage({ params }: PortfolioDetailPag
                 ))}
               </div>
             </div>
+            <HeroWaveDivider />
           </header>
 
           <section className="glass-panel rounded-[2.2rem] p-7 md:hidden sm:p-10">
