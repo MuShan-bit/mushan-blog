@@ -65,6 +65,7 @@ export default async function PostPage({ params }: PostPageProps) {
       />
 
       <ArticleReaderShell
+        shareTitle={post.title}
         sidebar={
           <>
             <div className="glass-panel rounded-[1.8rem] p-6">

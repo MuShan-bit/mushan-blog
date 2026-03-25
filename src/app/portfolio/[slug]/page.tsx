@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink, Sparkles } from "lucide-react";
 import { notFound } from "next/navigation";
+import { ArticleReaderShell } from "@/components/content/article-reader-shell";
 import { MdxContent } from "@/components/content/mdx-components";
 import { JsonLd } from "@/components/seo/json-ld";
 import { getAllPortfolioEntries, getPortfolioEntryBySlug } from "@/lib/content";
@@ -46,8 +47,32 @@ export default async function PortfolioDetailPage({ params }: PortfolioDetailPag
         ])}
       />
 
-      <article className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_20rem]">
-        <div className="space-y-6">
+      <ArticleReaderShell
+        shareTitle={entry.title}
+        sidebar={
+          <div className="glass-panel rounded-[1.8rem] p-6">
+            <h2 className="font-medium text-accent-strong">项目链接</h2>
+            <div className="mt-5 grid gap-3">
+              {entry.links.map((link) => (
+                <Link
+                  key={link.url}
+                  href={link.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-between rounded-[1.2rem] border border-border bg-white/35 px-4 py-3 text-sm text-foreground hover:border-accent/20 hover:text-accent-strong dark:bg-white/5"
+                >
+                  <span>
+                    {link.label}
+                    <span className="ml-2 text-xs text-muted">{link.type}</span>
+                  </span>
+                  <ExternalLink className="h-4 w-4" />
+                </Link>
+              ))}
+            </div>
+          </div>
+        }
+      >
+        <>
           <header className="glass-panel overflow-hidden rounded-[2.2rem]">
             <div className="relative aspect-[16/8] overflow-hidden">
               <Image
@@ -88,18 +113,15 @@ export default async function PortfolioDetailPage({ params }: PortfolioDetailPag
             </div>
           </header>
 
-          <section className="glass-panel rounded-[2.2rem] p-7 sm:p-10">
-            <MdxContent source={entry.content} />
-          </section>
-        </div>
-
-        <aside className="space-y-5 xl:sticky xl:top-28 xl:self-start">
-          <div className="glass-panel rounded-[1.8rem] p-6">
-            <h2 className="font-medium text-accent-strong">项目链接</h2>
+          <section className="glass-panel rounded-[2.2rem] p-7 md:hidden sm:p-10">
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="font-medium text-accent-strong">项目链接</h2>
+              <span className="text-xs text-muted">手机端内联展示</span>
+            </div>
             <div className="mt-5 grid gap-3">
               {entry.links.map((link) => (
                 <Link
-                  key={link.url}
+                  key={`${link.url}-mobile`}
                   href={link.url}
                   target="_blank"
                   rel="noreferrer"
@@ -113,9 +135,13 @@ export default async function PortfolioDetailPage({ params }: PortfolioDetailPag
                 </Link>
               ))}
             </div>
-          </div>
-        </aside>
-      </article>
+          </section>
+
+          <section className="glass-panel rounded-[2.2rem] p-7 sm:p-10">
+            <MdxContent source={entry.content} />
+          </section>
+        </>
+      </ArticleReaderShell>
     </>
   );
 }
