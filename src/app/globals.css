@@ -558,13 +558,15 @@ textarea {
   background:
     linear-gradient(
       180deg,
-      color-mix(in oklab, var(--surface-strong) 92%, white 8%) 0%,
-      color-mix(in oklab, var(--surface) 94%, var(--accent-soft) 6%) 100%
+      color-mix(in oklab, var(--background) 88%, white 12%) 0%,
+      color-mix(in oklab, var(--background-muted) 92%, white 8%) 52%,
+      color-mix(in oklab, var(--background-muted) 84%, var(--accent-soft) 16%) 100%
     );
   padding: 1.15rem 1rem 1rem;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.28),
     0 24px 80px color-mix(in oklab, var(--shadow) 28%, transparent);
+  backdrop-filter: blur(18px) saturate(1.05);
   animation: mobile-menu-panel-in 260ms cubic-bezier(0.18, 0.9, 0.22, 1) both;
 }
 
@@ -574,7 +576,12 @@ textarea {
   gap: 0.85rem;
   border: 1px solid color-mix(in oklab, var(--border) 90%, transparent);
   border-radius: 1.25rem;
-  background: color-mix(in oklab, var(--surface-strong) 84%, transparent);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--surface-strong) 94%, white 6%),
+      color-mix(in oklab, var(--background-muted) 94%, white 6%)
+    );
   padding: 0.9rem;
 }
 
@@ -608,8 +615,44 @@ textarea {
   margin-top: 1rem;
   border: 1px solid color-mix(in oklab, var(--border) 88%, transparent);
   border-radius: 1.25rem;
-  background: color-mix(in oklab, var(--surface-strong) 80%, transparent);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--background-muted) 90%, white 10%),
+      color-mix(in oklab, var(--background) 88%, var(--accent-soft) 12%)
+    );
   padding: 0.95rem 1rem;
+}
+
+.dark .mobile-menu-panel {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--background) 90%, #121a20 10%) 0%,
+      color-mix(in oklab, var(--background-muted) 88%, #131d26 12%) 54%,
+      color-mix(in oklab, var(--background-muted) 82%, var(--accent-soft) 18%) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 24px 80px color-mix(in oklab, var(--shadow) 42%, transparent);
+}
+
+.dark .mobile-menu-link {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--surface-strong) 82%, #121a22 18%),
+      color-mix(in oklab, var(--background-muted) 88%, #111922 12%)
+    );
+}
+
+.dark .mobile-menu-note {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--background-muted) 84%, #141d26 16%),
+      color-mix(in oklab, var(--background) 86%, var(--accent-soft) 14%)
+    );
 }
 
 .tab-accent {
