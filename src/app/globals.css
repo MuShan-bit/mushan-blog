@@ -405,20 +405,22 @@ textarea {
 
 .interactive-glass-card::after {
   position: absolute;
-  inset: -50% auto -50% -68%;
-  width: 38%;
-  border-radius: 2.4rem;
+  inset: -56% auto -56% -76%;
+  width: 48%;
+  border-radius: 2.8rem;
   background: linear-gradient(
     114deg,
     transparent 0%,
-    transparent 30%,
-    rgba(255, 255, 255, 0.05) 38%,
-    rgba(255, 255, 255, 0.26) 43%,
-    rgba(255, 255, 255, 0.82) 47%,
+    transparent 26%,
+    rgba(255, 255, 255, 0.04) 34%,
+    rgba(255, 255, 255, 0.18) 40%,
+    rgba(255, 255, 255, 0.52) 45%,
+    rgba(255, 255, 255, 0.82) 48%,
     rgba(255, 255, 255, 1) 50%,
-    rgba(255, 255, 255, 0.48) 53%,
-    rgba(255, 255, 255, 0.1) 58%,
-    transparent 66%,
+    rgba(255, 255, 255, 0.7) 52%,
+    rgba(255, 255, 255, 0.28) 56%,
+    rgba(255, 255, 255, 0.08) 62%,
+    transparent 72%,
     transparent 100%
   );
   content: "";
@@ -463,14 +465,16 @@ textarea {
   background: linear-gradient(
     114deg,
     transparent 0%,
-    transparent 30%,
-    rgba(255, 255, 255, 0.03) 38%,
-    rgba(255, 255, 255, 0.16) 43%,
-    rgba(255, 255, 255, 0.52) 47%,
+    transparent 26%,
+    rgba(255, 255, 255, 0.02) 34%,
+    rgba(255, 255, 255, 0.12) 40%,
+    rgba(255, 255, 255, 0.34) 45%,
+    rgba(255, 255, 255, 0.62) 48%,
     rgba(255, 255, 255, 0.82) 50%,
-    rgba(255, 255, 255, 0.3) 53%,
-    rgba(255, 255, 255, 0.06) 58%,
-    transparent 66%,
+    rgba(255, 255, 255, 0.46) 52%,
+    rgba(255, 255, 255, 0.18) 56%,
+    rgba(255, 255, 255, 0.05) 62%,
+    transparent 72%,
     transparent 100%
   );
 }
