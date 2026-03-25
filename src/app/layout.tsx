@@ -9,7 +9,8 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { ViewTracker } from "@/components/analytics/view-tracker";
 import { ThemeClickFeedback } from "@/components/theme/theme-click-feedback";
 import { ColorThemeProvider } from "@/components/theme/color-theme-provider";
-import { FocusModeProvider } from "@/components/providers/focus-mode-provider";
+import { MusicFloatingPlayer } from "@/components/media/music-floating-player";
+import { MusicPlayerProvider } from "@/components/providers/music-player-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { colorPalettes, defaultPalette, paletteStorageKey } from "@/lib/color-themes";
 import { siteConfig } from "@/lib/site";
@@ -113,7 +114,7 @@ export default function RootLayout({
       <body className="min-h-full overflow-x-hidden">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <ColorThemeProvider>
-            <FocusModeProvider>
+            <MusicPlayerProvider>
               <div className="relative isolate flex min-h-screen flex-col">
                 <SiteBackground />
                 <SiteHeader />
@@ -122,9 +123,10 @@ export default function RootLayout({
                 </main>
                 <SiteFooter />
               </div>
+              <MusicFloatingPlayer />
               <ThemeClickFeedback />
               <ViewTracker />
-            </FocusModeProvider>
+            </MusicPlayerProvider>
           </ColorThemeProvider>
         </ThemeProvider>
       </body>

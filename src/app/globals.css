@@ -543,10 +543,6 @@ textarea {
   padding: 0;
 }
 
-.home-theme-dot:disabled {
-  cursor: wait;
-}
-
 body[data-gallery-lightbox="open"] .site-header,
 body[data-gallery-lightbox="open"] .site-footer {
   opacity: 0;
@@ -567,8 +563,7 @@ body[data-gallery-lightbox="open"] .site-footer {
 }
 
 .home-theme-dot__swatch,
-.home-theme-dot__mode,
-.home-theme-dot__note {
+.home-theme-dot__mode {
   position: relative;
   display: inline-flex;
   height: 1rem;
@@ -623,31 +618,6 @@ body[data-gallery-lightbox="open"] .site-footer {
   inset: 0.08rem;
   border-radius: inherit;
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.28), transparent 54%);
-}
-
-.home-theme-dot__note {
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.34);
-  background:
-    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.76) 0%, rgba(255, 255, 255, 0.18) 22%, transparent 42%),
-    linear-gradient(135deg, color-mix(in oklab, var(--accent-strong) 78%, white 22%), var(--accent));
-  color: white;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.24),
-    0 0 0.8rem color-mix(in oklab, var(--accent-soft) 66%, transparent);
-}
-
-.home-theme-dot--note.home-theme-dot--focus-active {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.22),
-    0 10px 24px color-mix(in oklab, var(--shadow) 10%, transparent),
-    0 0 0 0 color-mix(in oklab, var(--accent-soft) 42%, transparent);
-  animation: home-focus-dot-pulse 2.2s ease-in-out infinite;
-}
-
-.home-theme-dot--busy .home-theme-dot__note {
-  animation: home-focus-dot-spin 1.2s linear infinite;
 }
 
 .home-scroll-cue {
@@ -738,33 +708,6 @@ body[data-gallery-lightbox="open"] .site-footer {
 .site-header--floating {
   position: fixed;
   inset: 0 0 auto 0;
-}
-
-@keyframes home-focus-dot-pulse {
-  0%,
-  100% {
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.22),
-      0 10px 24px color-mix(in oklab, var(--shadow) 10%, transparent),
-      0 0 0 0 color-mix(in oklab, var(--accent-soft) 42%, transparent);
-  }
-
-  50% {
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.22),
-      0 10px 24px color-mix(in oklab, var(--shadow) 10%, transparent),
-      0 0 0 0.3rem color-mix(in oklab, var(--accent-soft) 18%, transparent);
-  }
-}
-
-@keyframes home-focus-dot-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 @keyframes home-scroll-cue-bob {
@@ -2477,6 +2420,193 @@ body[data-gallery-lightbox="open"] .site-footer {
   background: color-mix(in oklab, var(--surface-soft) 74%, transparent);
 }
 
+.music-player-dock {
+  position: fixed;
+  left: clamp(1rem, 2vw, 1.5rem);
+  bottom: calc(1rem + env(safe-area-inset-bottom));
+  z-index: 65;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  pointer-events: none;
+}
+
+.music-player-dock > * {
+  pointer-events: auto;
+}
+
+.music-player-dock__meta {
+  min-width: 0;
+  max-width: 0;
+  overflow: hidden;
+  padding: 0.74rem 1rem 0.74rem 1.05rem;
+  opacity: 0;
+  transform: translateX(-0.35rem);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--surface-strong) 82%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    0 14px 40px color-mix(in oklab, var(--shadow) 18%, transparent);
+  backdrop-filter: blur(24px);
+  white-space: nowrap;
+  transition:
+    max-width 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 180ms ease,
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.music-player-dock:hover .music-player-dock__meta,
+.music-player-dock:focus-within .music-player-dock__meta,
+.music-player-dock[data-playing="true"] .music-player-dock__meta {
+  max-width: min(16rem, calc(100vw - 7rem));
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.music-player-dock__eyebrow,
+.music-player-dock__title,
+.music-player-dock__artist {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-player-dock__eyebrow {
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.music-player-dock__title {
+  margin-top: 0.08rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.music-player-dock__artist {
+  margin-top: 0.08rem;
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+
+.music-player-dock__controls {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.music-player-dock__button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--surface-strong) 78%, transparent);
+  color: color-mix(in oklab, var(--foreground) 84%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 16px 40px color-mix(in oklab, var(--shadow) 18%, transparent);
+  backdrop-filter: blur(24px);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.music-player-dock__button:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--accent) 26%, transparent);
+  color: var(--accent-strong);
+}
+
+.music-player-dock__button--primary {
+  height: 3.15rem;
+  width: 3.15rem;
+}
+
+.music-player-dock__button--shuffle {
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
+.music-player-dock__button--active {
+  border-color: color-mix(in oklab, var(--accent) 26%, transparent);
+  background: color-mix(in oklab, var(--accent-soft) 82%, var(--surface-strong) 18%);
+  color: var(--accent-strong);
+}
+
+.music-player-dock__glow {
+  position: absolute;
+  inset: 22%;
+  border-radius: 999px;
+  background: radial-gradient(circle, color-mix(in oklab, var(--accent) 38%, white 62%) 0%, transparent 70%);
+  filter: blur(12px);
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.music-player-dock[data-playing="true"] .music-player-dock__glow {
+  opacity: 0.72;
+  animation: music-player-glow 3.8s ease-in-out infinite;
+}
+
+.music-player-dock__badge {
+  position: absolute;
+  left: 0.45rem;
+  top: 0.42rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: color-mix(in oklab, var(--accent-strong) 90%, white 10%);
+  opacity: 0.92;
+}
+
+.music-player-dock__bars {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.48rem;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.12rem;
+  height: 0.82rem;
+}
+
+.music-player-dock__bars span {
+  display: inline-flex;
+  width: 0.13rem;
+  height: 0.34rem;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0.34;
+  transform-origin: center bottom;
+}
+
+.music-player-dock[data-playing="true"] .music-player-dock__bars span,
+.music-player-dock[data-loading="true"] .music-player-dock__bars span {
+  opacity: 0.82;
+  animation: music-player-bars 1.15s ease-in-out infinite;
+}
+
+.music-player-dock__bars span:nth-child(2) {
+  height: 0.52rem;
+  animation-delay: 120ms;
+}
+
+.music-player-dock__bars span:nth-child(3) {
+  height: 0.66rem;
+  animation-delay: 220ms;
+}
+
+.dark .music-player-dock__meta,
+.dark .music-player-dock__button {
+  background: color-mix(in oklab, var(--surface-soft) 74%, transparent);
+}
+
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -2497,6 +2627,11 @@ body[data-gallery-lightbox="open"] .site-footer {
     transform: none;
   }
 
+  .music-player-dock__glow,
+  .music-player-dock__bars span {
+    animation: none;
+  }
+
   *,
   *::before,
   *::after {
@@ -2504,5 +2639,49 @@ body[data-gallery-lightbox="open"] .site-footer {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .music-player-dock {
+    left: 0.85rem;
+    bottom: calc(0.85rem + env(safe-area-inset-bottom));
+    gap: 0.5rem;
+  }
+
+  .music-player-dock__meta {
+    display: none;
+  }
+
+  .music-player-dock__button--primary {
+    height: 3rem;
+    width: 3rem;
+  }
+
+  .music-player-dock__button--shuffle {
+    height: 2.35rem;
+    width: 2.35rem;
+  }
+}
+
+@keyframes music-player-bars {
+  0%,
+  100% {
+    transform: scaleY(0.45);
+  }
+
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes music-player-glow {
+  0%,
+  100% {
+    transform: scale(0.92);
+  }
+
+  50% {
+    transform: scale(1.08);
   }
 }
