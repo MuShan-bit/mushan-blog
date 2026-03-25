@@ -134,43 +134,49 @@ export function FriendCardSkeleton() {
 export function HomePageSkeleton() {
   return (
     <>
-      <section className="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
-        <div className="glass-panel relative overflow-hidden rounded-[2.4rem] p-7 sm:p-10">
-          <div className="relative space-y-8">
-            <div className="space-y-4">
-              <LoadingBadge label="正在铺开首页内容" />
-              <SkeletonBlock className="h-16 w-full max-w-3xl rounded-[1.8rem] sm:h-20" />
-              <div className="space-y-3">
-                <SkeletonBlock className="h-4 w-full max-w-2xl rounded-full" />
-                <SkeletonBlock className="h-4 w-[84%] max-w-xl rounded-full" />
-              </div>
+      <section className="home-hero px-6 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.18fr)_minmax(19rem,0.82fr)] lg:gap-12">
+          <div className="space-y-6">
+            <LoadingBadge label="正在铺开首页内容" />
+            <SkeletonBlock className="h-6 w-56 rounded-full" />
+            <SkeletonBlock className="h-20 w-full max-w-4xl rounded-[2rem] sm:h-24" />
+            <div className="space-y-3">
+              <SkeletonBlock className="h-4 w-full max-w-2xl rounded-full" />
+              <SkeletonBlock className="h-4 w-[88%] max-w-3xl rounded-full" />
+              <SkeletonBlock className="h-4 w-[72%] max-w-2xl rounded-full" />
+            </div>
+
+            <div className="flex flex-wrap gap-3">
+              {Array.from({ length: 6 }).map((_, item) => (
+                <SkeletonBlock key={item} className="h-9 w-20 rounded-full" />
+              ))}
             </div>
 
             <div className="flex flex-wrap gap-3">
               <SkeletonBlock className="h-12 w-32 rounded-full" />
               <SkeletonBlock className="h-12 w-32 rounded-full" />
             </div>
+          </div>
 
-            <div className="grid gap-4 sm:grid-cols-3">
-              {[0, 1, 2].map((item) => (
-                <div key={item} className="rounded-[1.6rem] border border-border bg-white/45 p-5 dark:bg-white/5">
-                  <SkeletonBlock className="h-4 w-20 rounded-full" />
-                  <SkeletonBlock className="mt-4 h-10 w-16 rounded-[1rem]" />
+          <div className="grid gap-4">
+            {[0, 1].map((item) => (
+              <div key={item} className="glass-panel rounded-[2rem] p-6">
+                <SkeletonBlock className="h-5 w-40 rounded-full" />
+                <div className="mt-4 space-y-3">
+                  <SkeletonBlock className="h-4 w-full rounded-full" />
+                  <SkeletonBlock className="h-4 w-[84%] rounded-full" />
+                  <SkeletonBlock className="h-4 w-[70%] rounded-full" />
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="grid gap-6">
-          {[0, 1].map((item) => (
-            <div key={item} className="glass-panel rounded-[2.2rem] p-7">
-              <SkeletonBlock className="h-5 w-36 rounded-full" />
-              <div className="mt-4 space-y-3">
-                <SkeletonBlock className="h-4 w-full rounded-full" />
-                <SkeletonBlock className="h-4 w-[85%] rounded-full" />
-                <SkeletonBlock className="h-4 w-[68%] rounded-full" />
-              </div>
+        <div className="mt-8 grid gap-4 sm:grid-cols-3">
+          {[0, 1, 2].map((item) => (
+            <div key={item} className="glass-panel rounded-[1.6rem] p-5">
+              <SkeletonBlock className="h-4 w-20 rounded-full" />
+              <SkeletonBlock className="mt-4 h-10 w-16 rounded-[1rem]" />
             </div>
           ))}
         </div>
