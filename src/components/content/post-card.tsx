@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Clock3, Layers3 } from "lucide-react";
 import { ViewCount } from "@/components/analytics/view-count";
+import { InteractiveCard } from "@/components/content/interactive-card";
 import { cn } from "@/lib/cn";
 import type { Post } from "@/lib/types";
 import { formatDate, slugify } from "@/lib/utils";
@@ -15,9 +16,9 @@ export function PostCard({ post, className }: PostCardProps) {
   const postPath = `/blog/${post.slug}`;
 
   return (
-    <article
+    <InteractiveCard
       className={cn(
-        "glass-panel soft-ring interactive-glass-card group flex h-full flex-col overflow-hidden rounded-[1.75rem]",
+        "glass-panel soft-ring group flex h-full flex-col overflow-hidden rounded-[1.75rem]",
         className,
       )}
     >
@@ -72,6 +73,6 @@ export function PostCard({ post, className }: PostCardProps) {
           <ViewCount path={postPath} />
         </div>
       </div>
-    </article>
+    </InteractiveCard>
   );
 }

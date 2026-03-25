@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Sparkles } from "lucide-react";
+import { InteractiveCard } from "@/components/content/interactive-card";
 import { cn } from "@/lib/cn";
 import type { PortfolioEntry } from "@/lib/types";
 
@@ -17,7 +18,7 @@ const statusMap: Record<PortfolioEntry["status"], string> = {
 
 export function PortfolioCard({ entry, className }: PortfolioCardProps) {
   return (
-    <article className={cn("glass-panel interactive-glass-card group overflow-hidden rounded-[1.75rem]", className)}>
+    <InteractiveCard className={cn("glass-panel group overflow-hidden rounded-[1.75rem]", className)}>
       <div className="relative aspect-[16/10] overflow-hidden">
         <Image
           src={entry.cover}
@@ -57,6 +58,6 @@ export function PortfolioCard({ entry, className }: PortfolioCardProps) {
           ))}
         </div>
       </div>
-    </article>
+    </InteractiveCard>
   );
 }
