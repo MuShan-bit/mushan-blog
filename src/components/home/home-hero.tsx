@@ -69,7 +69,7 @@ export function HomeHero({ postCount, portfolioCount, albumCount }: HomeHeroProp
               </div>
             </div>
 
-            <div className="home-hero__rail">
+            <div className="home-hero__rail hidden lg:flex">
               <div className="home-hero__panel">
                 <div className="flex items-center gap-3 text-accent-strong">
                   <Sparkles className="h-5 w-5" />
@@ -113,7 +113,7 @@ export function HomeHero({ postCount, portfolioCount, albumCount }: HomeHeroProp
         </div>
 
         <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
-          <div className="grid gap-4 sm:grid-cols-3 xl:flex-1">
+          <div className="hidden gap-4 lg:grid lg:grid-cols-3 xl:flex-1">
             <div className="home-hero__metric">
               <p className="text-sm text-muted">已收录文章</p>
               <p className="mt-3 font-display text-4xl font-semibold tracking-[-0.05em] text-foreground">{postCount}</p>
