@@ -52,7 +52,7 @@ export function SiteHeader() {
   return (
     <header className={cn("site-header sticky top-0 z-40 px-5 pt-5 sm:px-8 lg:px-10", visible ? "site-header--visible" : "site-header--hidden")}>
       <div className="mx-auto max-w-7xl">
-        <div className="flex items-center justify-between gap-4 rounded-[2rem] border border-border bg-surface/90 px-4 py-3 shadow-[0_18px_60px_rgba(17,34,28,0.08)] backdrop-blur-2xl sm:px-6">
+        <div className="flex items-center justify-between gap-4 rounded-[2rem] border border-border/90 bg-surface-strong px-4 py-3 shadow-[0_18px_60px_rgba(17,34,28,0.1)] sm:px-6">
           <Link href="/" className="group hidden min-w-0 items-center gap-3 lg:flex">
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-accent-soft text-sm font-semibold text-accent-strong">
               木杉
