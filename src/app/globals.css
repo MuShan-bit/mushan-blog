@@ -377,7 +377,6 @@ textarea {
 }
 
 .interactive-glass-card {
-  --card-metal-beam-width: 48%;
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -404,35 +403,7 @@ textarea {
   pointer-events: none;
 }
 
-.interactive-glass-card::after {
-  position: absolute;
-  top: -56%;
-  bottom: -56%;
-  left: calc(-1 * var(--card-metal-beam-width));
-  width: var(--card-metal-beam-width);
-  border-radius: 2.8rem;
-  background: linear-gradient(
-    114deg,
-    transparent 0%,
-    transparent 26%,
-    rgba(255, 255, 255, 0.04) 34%,
-    rgba(255, 255, 255, 0.18) 40%,
-    rgba(255, 255, 255, 0.52) 45%,
-    rgba(255, 255, 255, 0.82) 48%,
-    rgba(255, 255, 255, 1) 50%,
-    rgba(255, 255, 255, 0.7) 52%,
-    rgba(255, 255, 255, 0.28) 56%,
-    rgba(255, 255, 255, 0.08) 62%,
-    transparent 72%,
-    transparent 100%
-  );
-  content: "";
-  opacity: 0;
-  pointer-events: none;
-  mix-blend-mode: screen;
-}
-
-.interactive-glass-card[data-card-hovered="true"],
+.interactive-glass-card:hover,
 .interactive-glass-card:focus-within {
   border-color: color-mix(in oklab, var(--accent) 34%, var(--border));
   box-shadow:
@@ -441,14 +412,6 @@ textarea {
     0 0 0 1px color-mix(in oklab, var(--accent-soft) 18%, transparent);
   transform: translateY(-3px);
   will-change: transform, box-shadow, border-color;
-}
-
-.interactive-glass-card[data-card-shimmer="entering"]::after {
-  animation: card-glass-sweep-enter 760ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-.interactive-glass-card[data-card-shimmer="leaving"]::after {
-  animation: card-glass-sweep-leave 760ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .dark .interactive-glass-card::before {
@@ -460,48 +423,6 @@ textarea {
       transparent 44%,
       transparent 100%
     );
-}
-
-.dark .interactive-glass-card::after {
-  background: linear-gradient(
-    114deg,
-    transparent 0%,
-    transparent 26%,
-    rgba(255, 255, 255, 0.02) 34%,
-    rgba(255, 255, 255, 0.12) 40%,
-    rgba(255, 255, 255, 0.34) 45%,
-    rgba(255, 255, 255, 0.62) 48%,
-    rgba(255, 255, 255, 0.82) 50%,
-    rgba(255, 255, 255, 0.46) 52%,
-    rgba(255, 255, 255, 0.18) 56%,
-    rgba(255, 255, 255, 0.05) 62%,
-    transparent 72%,
-    transparent 100%
-  );
-}
-
-@keyframes card-glass-sweep-enter {
-  0% {
-    opacity: 0.96;
-    left: calc(-1 * var(--card-metal-beam-width));
-  }
-
-  100% {
-    opacity: 0.96;
-    left: 100%;
-  }
-}
-
-@keyframes card-glass-sweep-leave {
-  0% {
-    opacity: 0.96;
-    left: 100%;
-  }
-
-  100% {
-    opacity: 0.96;
-    left: calc(-1 * var(--card-metal-beam-width));
-  }
 }
 
 .section-kicker {
