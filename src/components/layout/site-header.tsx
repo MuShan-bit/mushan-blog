@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SiteMobileNav } from "@/components/layout/site-mobile-nav";
 import { SiteNavTabs } from "@/components/layout/site-nav-tabs";
@@ -8,7 +9,9 @@ import { AppearanceSwitcher } from "@/components/theme/appearance-switcher";
 import { cn } from "@/lib/cn";
 
 export function SiteHeader() {
-  const [visible, setVisible] = useState(true);
+  const pathname = usePathname();
+  const isImmersiveHome = pathname === "/";
+  const [visible, setVisible] = useState(!isImmersiveHome);
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -17,8 +20,33 @@ export function SiteHeader() {
     const updateVisibility = () => {
       const currentScrollY = window.scrollY;
       const delta = currentScrollY - lastScrollY;
+      const homeRevealThreshold = Math.max(window.innerHeight - 72, window.innerHeight * 0.92);
+      const homeAutoHideThreshold = homeRevealThreshold + 112;
 
-      if (currentScrollY <= 12) {
+      if (isImmersiveHome) {
+        if (currentScrollY < homeRevealThreshold) {
+          setVisible(false);
+          lastScrollY = currentScrollY;
+          frameId = 0;
+          return;
+        }
+
+        if (lastScrollY < homeRevealThreshold && currentScrollY >= homeRevealThreshold) {
+          setVisible(true);
+          lastScrollY = currentScrollY;
+          frameId = 0;
+          return;
+        }
+
+        if (currentScrollY < homeAutoHideThreshold) {
+          setVisible(true);
+          lastScrollY = currentScrollY;
+          frameId = 0;
+          return;
+        }
+      }
+
+      if (currentScrollY <= 12 && !isImmersiveHome) {
         setVisible((current) => (current ? current : true));
       } else if (delta > 10) {
         setVisible((current) => (current ? false : current));
@@ -39,6 +67,7 @@ export function SiteHeader() {
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
+    updateVisibility();
 
     return () => {
       if (frameId !== 0) {
@@ -47,10 +76,16 @@ export function SiteHeader() {
 
       window.removeEventListener("scroll", onScroll);
     };
-  }, []);
+  }, [isImmersiveHome]);
 
   return (
-    <header className={cn("site-header sticky top-0 z-40 px-5 pt-5 sm:px-8 lg:px-10", visible ? "site-header--visible" : "site-header--hidden")}>
+    <header
+      className={cn(
+        "site-header z-40 px-5 pt-5 sm:px-8 lg:px-10",
+        isImmersiveHome ? "site-header--floating" : "sticky top-0",
+        visible ? "site-header--visible" : "site-header--hidden",
+      )}
+    >
       <div className="mx-auto max-w-7xl">
         <div className="flex items-center justify-between gap-4 rounded-[2rem] border border-border/90 bg-surface-strong px-4 py-3 shadow-[0_18px_60px_rgba(17,34,28,0.1)] sm:px-6">
           <Link href="/" className="group hidden min-w-0 items-center gap-3 lg:flex">

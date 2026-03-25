@@ -21,7 +21,7 @@ export function HomeHero({ postCount, portfolioCount, albumCount }: HomeHeroProp
     <section className="home-hero">
       <div className="home-hero__backtype">Mushan</div>
 
-      <div className="relative flex min-h-[inherit] flex-col justify-between gap-10 px-6 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12">
+      <div className="relative mx-auto flex min-h-[inherit] w-full max-w-7xl flex-col justify-between gap-10 px-6 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1.18fr)_minmax(19rem,0.82fr)] lg:gap-12">
           <div className="flex min-h-[22rem] flex-col justify-center">
             <p className="section-kicker text-sm font-semibold">Mushan Personal Blog</p>

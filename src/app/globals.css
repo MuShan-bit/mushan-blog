@@ -427,10 +427,13 @@ textarea {
 
 .home-hero {
   position: relative;
-  min-height: clamp(42rem, calc(100svh - 7.75rem), 58rem);
+  min-height: 100svh;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  margin-top: -2rem;
   overflow: hidden;
-  border: 1px solid color-mix(in oklab, var(--border) 90%, transparent);
-  border-radius: 2.8rem;
+  border-bottom: 1px solid color-mix(in oklab, var(--border) 90%, transparent);
   background:
     radial-gradient(circle at 14% 12%, color-mix(in oklab, var(--accent-soft) 78%, transparent) 0%, transparent 30%),
     radial-gradient(circle at 87% 16%, color-mix(in oklab, var(--orb-sky) 40%, transparent) 0%, transparent 28%),
@@ -448,7 +451,6 @@ textarea {
 .home-hero::before {
   position: absolute;
   inset: 0;
-  border-radius: inherit;
   background:
     linear-gradient(120deg, rgba(255, 255, 255, 0.14), transparent 28%, transparent 74%, rgba(255, 255, 255, 0.08)),
     repeating-linear-gradient(
@@ -465,7 +467,6 @@ textarea {
 .home-hero::after {
   position: absolute;
   inset: 0;
-  border-radius: inherit;
   background:
     radial-gradient(circle at 78% 82%, color-mix(in oklab, var(--accent) 14%, transparent) 0%, transparent 24%),
     radial-gradient(circle at 18% 82%, rgba(255, 255, 255, 0.12), transparent 22%);
@@ -595,6 +596,11 @@ textarea {
   background: color-mix(in oklab, var(--surface) 90%, var(--accent-soft) 10%);
 }
 
+.site-header--floating {
+  position: fixed;
+  inset: 0 0 auto 0;
+}
+
 @keyframes home-scroll-cue-bob {
   0%,
   100% {
@@ -608,8 +614,7 @@ textarea {
 
 @media (max-width: 767px) {
   .home-hero {
-    min-height: auto;
-    border-radius: 2.2rem;
+    min-height: 100svh;
   }
 
   .home-hero__backtype {
