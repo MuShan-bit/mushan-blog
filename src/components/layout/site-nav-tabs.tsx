@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { Rss } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { TabAccentIcon } from "@/components/layout/tab-accent-icon";
@@ -61,15 +60,6 @@ export function SiteNavTabs() {
           </Link>
         );
       })}
-      <Link
-        href="/rss.xml"
-        className="rounded-full px-4 py-2 text-sm text-muted hover:bg-accent-soft hover:text-accent-strong"
-      >
-        <span className="inline-flex items-center gap-2">
-          <Rss className="h-4 w-4" />
-          RSS
-        </span>
-      </Link>
     </nav>
   );
 }
