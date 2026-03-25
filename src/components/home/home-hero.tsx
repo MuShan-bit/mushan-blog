@@ -20,16 +20,16 @@ const homeModules = [
 export function HomeHero({ postCount, portfolioCount, albumCount }: HomeHeroProps) {
   return (
     <section className="home-hero">
-      <div className="relative mx-auto flex min-h-[inherit] w-full max-w-7xl flex-col justify-between gap-10 px-6 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12">
+      <div className="relative mx-auto flex min-h-[inherit] w-full max-w-7xl flex-col justify-between gap-10 px-6 py-8 sm:px-8 sm:py-10 xl:px-12 xl:py-12">
         <div className="flex flex-1 items-center">
-          <div className="grid w-full gap-10 lg:grid-cols-[minmax(0,1.18fr)_minmax(19rem,0.82fr)] lg:gap-12">
-            <div className="flex min-h-[22rem] flex-col justify-center lg:pt-6">
+          <div className="grid w-full gap-10 xl:grid-cols-[minmax(0,1.18fr)_minmax(19rem,0.82fr)] xl:gap-12">
+            <div className="flex min-h-[22rem] flex-col justify-center xl:pt-6">
               <div className="home-hero__headline-wrap">
                 <div className="home-hero__backtype">Mushan</div>
                 <div className="relative z-10 space-y-4">
                   <p className="section-kicker text-sm font-semibold">Mushan Personal Blog</p>
                   <p className="text-sm font-medium tracking-[0.02em] text-accent-strong">{profile.headline}</p>
-                  <h1 className="font-display max-w-5xl text-5xl font-semibold tracking-[-0.065em] text-foreground sm:text-6xl lg:text-7xl xl:text-[5.4rem]">
+                  <h1 className="font-display max-w-5xl text-5xl font-semibold tracking-[-0.065em] text-foreground sm:text-6xl xl:text-7xl 2xl:text-[5.4rem]">
                     {siteConfig.title}
                   </h1>
                   <p className="max-w-2xl text-base leading-8 text-muted sm:text-lg">{siteConfig.description}</p>
@@ -69,7 +69,7 @@ export function HomeHero({ postCount, portfolioCount, albumCount }: HomeHeroProp
               </div>
             </div>
 
-            <div className="home-hero__rail hidden lg:flex">
+            <div className="home-hero__rail hidden xl:grid">
               <div className="home-hero__panel">
                 <div className="flex items-center gap-3 text-accent-strong">
                   <Sparkles className="h-5 w-5" />
@@ -113,7 +113,7 @@ export function HomeHero({ postCount, portfolioCount, albumCount }: HomeHeroProp
         </div>
 
         <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
-          <div className="hidden gap-4 lg:grid lg:grid-cols-3 xl:flex-1">
+          <div className="hidden gap-4 xl:grid xl:grid-cols-3 xl:flex-1">
             <div className="home-hero__metric">
               <p className="text-sm text-muted">已收录文章</p>
               <p className="mt-3 font-display text-4xl font-semibold tracking-[-0.05em] text-foreground">{postCount}</p>
