@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowDown, ArrowRight, Github, Sparkles } from "lucide-react";
+import { HomeThemeDots } from "@/components/home/home-theme-dots";
 import { profile } from "@/data/profile";
 import { siteConfig } from "@/lib/site";
 
@@ -63,6 +64,8 @@ export function HomeHero({ postCount, portfolioCount, albumCount }: HomeHeroProp
                     关于木杉
                   </Link>
                 </div>
+
+                <HomeThemeDots />
               </div>
             </div>
 
