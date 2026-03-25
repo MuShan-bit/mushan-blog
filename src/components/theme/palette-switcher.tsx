@@ -54,7 +54,7 @@ export function PaletteSwitcher() {
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
         className={cn(
-          "glass-panel soft-ring inline-flex h-11 items-center gap-2 rounded-full px-4 text-sm text-foreground/80",
+          "glass-panel soft-ring inline-flex h-10 items-center gap-1.5 rounded-full px-3 text-sm text-foreground/80 sm:h-11 sm:gap-2 sm:px-4",
           "hover:-translate-y-0.5 hover:text-foreground",
         )}
       >
@@ -63,13 +63,13 @@ export function PaletteSwitcher() {
       </button>
 
       {open ? (
-        <div className="absolute right-0 top-[calc(100%+0.75rem)] z-50 w-[20rem] rounded-[1.5rem] border border-border bg-surface-strong p-3 shadow-[0_24px_90px_rgba(16,34,28,0.16)] backdrop-blur-2xl">
-          <div className="mb-2 px-2 py-1">
+        <div className="absolute right-0 top-[calc(100%+0.65rem)] z-50 w-[min(16.5rem,calc(100vw-1rem))] rounded-[1.2rem] border border-border bg-surface-strong p-2.5 shadow-[0_24px_90px_rgba(16,34,28,0.16)] backdrop-blur-2xl sm:top-[calc(100%+0.75rem)] sm:w-[20rem] sm:rounded-[1.5rem] sm:p-3">
+          <div className="mb-1.5 px-1.5 py-1 sm:mb-2 sm:px-2">
             <p className="text-sm font-medium text-foreground">配色主题</p>
-            <p className="mt-1 text-xs leading-6 text-muted">明暗模式之外，再给页面换一层气质。</p>
+            <p className="mt-1 hidden text-xs leading-6 text-muted sm:block">明暗模式之外，再给页面换一层气质。</p>
           </div>
 
-          <div className="grid gap-2">
+          <div className="grid gap-1.5 sm:gap-2">
             {colorPalettes.map((palette) => {
               const isActive = palette.id === activePalette;
 
@@ -82,7 +82,7 @@ export function PaletteSwitcher() {
                     setOpen(false);
                   }}
                   className={cn(
-                    "flex items-start gap-3 rounded-[1.1rem] border px-3 py-3 text-left",
+                    "flex items-start gap-2.5 rounded-[0.95rem] border px-2.5 py-2.5 text-left sm:gap-3 sm:rounded-[1.1rem] sm:px-3 sm:py-3",
                     isActive
                       ? "border-accent/30 bg-accent-soft"
                       : "border-border bg-white/35 hover:border-accent/20 hover:bg-white/50 dark:bg-white/5 dark:hover:bg-white/8",
@@ -92,7 +92,7 @@ export function PaletteSwitcher() {
                     {palette.swatches.map((swatch) => (
                       <span
                         key={swatch}
-                        className="h-4 w-4 rounded-full border border-white/50 shadow-sm"
+                        className="h-3.5 w-3.5 rounded-full border border-white/50 shadow-sm sm:h-4 sm:w-4"
                         style={{ backgroundColor: swatch }}
                       />
                     ))}
@@ -102,7 +102,7 @@ export function PaletteSwitcher() {
                       <span className="text-sm font-medium text-foreground">{palette.name}</span>
                       {isActive ? <Check className="h-4 w-4 text-accent-strong" /> : null}
                     </div>
-                    <p className="mt-1 text-xs leading-6 text-muted">{palette.description}</p>
+                    <p className="mt-1 hidden text-xs leading-6 text-muted sm:block">{palette.description}</p>
                   </div>
                 </button>
               );

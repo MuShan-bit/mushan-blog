@@ -5,7 +5,7 @@ import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 export function AppearanceSwitcher() {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1.5 sm:gap-2">
       <PaletteSwitcher />
       <ThemeToggle />
     </div>
