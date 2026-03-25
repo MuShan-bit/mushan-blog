@@ -5,6 +5,7 @@ import { BookOpenText, Camera, House, Layers3, Menu, Rss, UserRound, Users, X } 
 import type { LucideIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { cn } from "@/lib/cn";
 import { siteConfig } from "@/lib/site";
 
@@ -37,6 +38,7 @@ const mobileMenuItems: MobileMenuItem[] = [
 export function SiteMobileNav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const portalRoot = typeof document === "undefined" ? null : document.body;
 
   useEffect(() => {
     if (!open) {
@@ -76,64 +78,67 @@ export function SiteMobileNav() {
         <Menu className="h-5 w-5" />
       </button>
 
-      {open ? (
-        <div
-          className="mobile-menu-backdrop lg:hidden"
-          onClick={() => setOpen(false)}
-          role="dialog"
-          aria-modal="true"
-          aria-label="站点侧边菜单"
-        >
-          <aside className="mobile-menu-panel" onClick={(event) => event.stopPropagation()}>
-            <div className="flex items-start justify-between gap-4">
-              <div className="space-y-3">
-                <p className="section-kicker text-[0.68rem] font-semibold">Site Menu</p>
-                <div>
-                  <p className="font-display text-2xl font-semibold tracking-[-0.05em] text-foreground">
-                    {siteConfig.title}
-                  </p>
-                  <p className="mt-2 text-sm leading-7 text-muted">
-                    现在在 <span className="font-medium text-accent-strong">{currentItem.label}</span>，可以从这里快速切到其它栏目。
-                  </p>
+      {open && portalRoot
+        ? createPortal(
+            <div
+              className="mobile-menu-backdrop lg:hidden"
+              onClick={() => setOpen(false)}
+              role="dialog"
+              aria-modal="true"
+              aria-label="站点侧边菜单"
+            >
+              <aside className="mobile-menu-panel" onClick={(event) => event.stopPropagation()}>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="space-y-3">
+                    <p className="section-kicker text-[0.68rem] font-semibold">Site Menu</p>
+                    <div>
+                      <p className="font-display text-2xl font-semibold tracking-[-0.05em] text-foreground">
+                        {siteConfig.title}
+                      </p>
+                      <p className="mt-2 text-sm leading-7 text-muted">
+                        现在在 <span className="font-medium text-accent-strong">{currentItem.label}</span>，可以从这里快速切到其它栏目。
+                      </p>
+                    </div>
+                  </div>
+
+                  <button type="button" onClick={() => setOpen(false)} className="mobile-menu-close" aria-label="关闭菜单">
+                    <X className="h-4.5 w-4.5" />
+                  </button>
                 </div>
-              </div>
 
-              <button type="button" onClick={() => setOpen(false)} className="mobile-menu-close" aria-label="关闭菜单">
-                <X className="h-4.5 w-4.5" />
-              </button>
-            </div>
+                <div className="mt-6 grid gap-2">
+                  {mobileMenuItems.map((item) => {
+                    const isActive = item.exact ? pathname === item.href : isActivePath(pathname, item.href);
+                    const Icon = item.icon;
 
-            <div className="mt-6 grid gap-2">
-              {mobileMenuItems.map((item) => {
-                const isActive = item.exact ? pathname === item.href : isActivePath(pathname, item.href);
-                const Icon = item.icon;
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        aria-current={isActive ? "page" : undefined}
+                        onClick={() => setOpen(false)}
+                        className={cn("mobile-menu-link", isActive && "mobile-menu-link--active")}
+                      >
+                        <span className="mobile-menu-link__icon">
+                          <Icon className="h-4 w-4" />
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block text-sm font-medium text-foreground">{item.label}</span>
+                          <span className="mt-1 block text-xs leading-6 text-muted">{item.description}</span>
+                        </span>
+                      </Link>
+                    );
+                  })}
+                </div>
 
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    aria-current={isActive ? "page" : undefined}
-                    onClick={() => setOpen(false)}
-                    className={cn("mobile-menu-link", isActive && "mobile-menu-link--active")}
-                  >
-                    <span className="mobile-menu-link__icon">
-                      <Icon className="h-4 w-4" />
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-medium text-foreground">{item.label}</span>
-                      <span className="mt-1 block text-xs leading-6 text-muted">{item.description}</span>
-                    </span>
-                  </Link>
-                );
-              })}
-            </div>
-
-            <div className="mobile-menu-note">
-              <p className="text-sm text-foreground">滚动时顶栏会自动隐藏；上滑或回到顶部时会重新出现。</p>
-            </div>
-          </aside>
-        </div>
-      ) : null}
+                <div className="mobile-menu-note">
+                  <p className="text-sm text-foreground">滚动时顶栏会自动隐藏；上滑或回到顶部时会重新出现。</p>
+                </div>
+              </aside>
+            </div>,
+            portalRoot,
+          )
+        : null}
     </>
   );
 }
