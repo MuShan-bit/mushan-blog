@@ -2457,8 +2457,7 @@ body[data-gallery-lightbox="open"] .site-footer {
 }
 
 .music-player-dock:hover .music-player-dock__meta,
-.music-player-dock:focus-within .music-player-dock__meta,
-.music-player-dock[data-playing="true"] .music-player-dock__meta {
+.music-player-dock:focus-within .music-player-dock__meta {
   max-width: min(16rem, calc(100vw - 7rem));
   opacity: 1;
   transform: translateX(0);
