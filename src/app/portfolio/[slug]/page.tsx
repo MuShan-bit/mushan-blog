@@ -84,6 +84,7 @@ export default async function PortfolioDetailPage({ params }: PortfolioDetailPag
                 className="object-cover"
                 sizes="(min-width: 1280px) 70vw, 100vw"
               />
+              <HeroWaveDivider />
             </div>
             <div className="article-hero__body space-y-6 p-7 sm:p-10">
               <div className="flex flex-wrap items-center gap-3 text-sm text-muted">
@@ -111,7 +112,6 @@ export default async function PortfolioDetailPage({ params }: PortfolioDetailPag
                 ))}
               </div>
             </div>
-            <HeroWaveDivider />
           </header>
 
           <section className="glass-panel rounded-[2.2rem] p-7 md:hidden sm:p-10">
