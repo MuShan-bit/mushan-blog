@@ -1,8 +1,9 @@
 "use client";
 
-import type { ReactNode } from "react";
 import { ArrowUp, Check, Menu, PanelRightClose, PanelRightOpen, Share2, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
 import { cn } from "@/lib/cn";
 
 type ArticleReaderShellProps = {
@@ -17,6 +18,11 @@ export function ArticleReaderShell({ children, sidebar, shareTitle }: ArticleRea
   const [shareState, setShareState] = useState<"idle" | "done">("idle");
   const menuRef = useRef<HTMLDivElement>(null);
   const shareTimerRef = useRef<number | null>(null);
+  const portalRoot = useSyncExternalStore(
+    () => () => {},
+    () => document.body,
+    () => null,
+  );
 
   useEffect(() => {
     return () => {
@@ -99,6 +105,49 @@ export function ArticleReaderShell({ children, sidebar, shareTitle }: ArticleRea
     }, 2000);
   };
 
+  const readerFabMenu = (
+    <div ref={menuRef} className="reader-fab-stack" data-open={menuOpen}>
+      <div className="reader-fab-actions">
+        <button
+          type="button"
+          onClick={sharePage}
+          className={cn("reader-fab", shareState === "done" && "reader-fab--active")}
+          aria-label={shareState === "done" ? "链接已分享" : "分享当前页面"}
+          title={shareState === "done" ? "链接已分享" : "分享当前页面"}
+        >
+          {shareState === "done" ? <Check className="h-5 w-5" /> : <Share2 className="h-5 w-5" />}
+        </button>
+        <button type="button" onClick={scrollToTop} className="reader-fab" aria-label="回到顶部" title="回到顶部">
+          <ArrowUp className="h-5 w-5" />
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setWideReading((current) => !current);
+            setMenuOpen(false);
+          }}
+          className={cn("reader-fab hidden md:inline-flex", wideReading && "reader-fab--active")}
+          aria-label={wideReading ? "退出宽屏阅读" : "开启宽屏阅读"}
+          aria-pressed={wideReading}
+          title={wideReading ? "退出宽屏阅读" : "开启宽屏阅读"}
+        >
+          {wideReading ? <PanelRightOpen className="h-5 w-5" /> : <PanelRightClose className="h-5 w-5" />}
+        </button>
+      </div>
+
+      <button
+        type="button"
+        onClick={() => setMenuOpen((current) => !current)}
+        className={cn("reader-fab reader-fab--menu", menuOpen && "reader-fab--active")}
+        aria-label={menuOpen ? "关闭阅读快捷菜单" : "打开阅读快捷菜单"}
+        aria-expanded={menuOpen}
+        title={menuOpen ? "关闭阅读快捷菜单" : "打开阅读快捷菜单"}
+      >
+        {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+      </button>
+    </div>
+  );
+
   return (
     <div className="relative">
       <article className={cn("article-reader grid gap-6", wideReading ? "xl:grid-cols-1" : "xl:grid-cols-[minmax(0,1fr)_20rem]")}>
@@ -113,53 +162,7 @@ export function ArticleReaderShell({ children, sidebar, shareTitle }: ArticleRea
           {sidebar}
         </aside>
       </article>
-
-      <div ref={menuRef} className="reader-fab-stack" data-open={menuOpen}>
-        <div className="reader-fab-actions">
-          <button
-            type="button"
-            onClick={sharePage}
-            className={cn("reader-fab", shareState === "done" && "reader-fab--active")}
-            aria-label={shareState === "done" ? "链接已分享" : "分享当前页面"}
-            title={shareState === "done" ? "链接已分享" : "分享当前页面"}
-          >
-            {shareState === "done" ? <Check className="h-5 w-5" /> : <Share2 className="h-5 w-5" />}
-          </button>
-          <button
-            type="button"
-            onClick={scrollToTop}
-            className="reader-fab"
-            aria-label="回到顶部"
-            title="回到顶部"
-          >
-            <ArrowUp className="h-5 w-5" />
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setWideReading((current) => !current);
-              setMenuOpen(false);
-            }}
-            className={cn("reader-fab hidden md:inline-flex", wideReading && "reader-fab--active")}
-            aria-label={wideReading ? "退出宽屏阅读" : "开启宽屏阅读"}
-            aria-pressed={wideReading}
-            title={wideReading ? "退出宽屏阅读" : "开启宽屏阅读"}
-          >
-            {wideReading ? <PanelRightOpen className="h-5 w-5" /> : <PanelRightClose className="h-5 w-5" />}
-          </button>
-        </div>
-
-        <button
-          type="button"
-          onClick={() => setMenuOpen((current) => !current)}
-          className={cn("reader-fab reader-fab--menu", menuOpen && "reader-fab--active")}
-          aria-label={menuOpen ? "关闭阅读快捷菜单" : "打开阅读快捷菜单"}
-          aria-expanded={menuOpen}
-          title={menuOpen ? "关闭阅读快捷菜单" : "打开阅读快捷菜单"}
-        >
-          {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
-      </div>
+      {portalRoot ? createPortal(readerFabMenu, portalRoot) : null}
     </div>
   );
 }
