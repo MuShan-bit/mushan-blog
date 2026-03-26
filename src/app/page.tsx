@@ -7,6 +7,7 @@ import { PortfolioCard } from "@/components/content/portfolio-card";
 import { PostCard } from "@/components/content/post-card";
 import { HomeHero } from "@/components/home/home-hero";
 import { HomeScrollReveal } from "@/components/home/home-scroll-reveal";
+import { TelepathyContactButton } from "@/components/home/telepathy-contact-button";
 import { JsonLd } from "@/components/seo/json-ld";
 import { profile } from "@/data/profile";
 import { friends } from "@/data/friends";
@@ -298,6 +299,7 @@ export default async function Home() {
                 </span>
                 <ArrowRight className="h-4 w-4" />
               </a>
+              <TelepathyContactButton />
             </div>
           </div>
         </aside>

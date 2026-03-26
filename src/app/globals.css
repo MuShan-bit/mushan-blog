@@ -2629,6 +2629,136 @@ body[data-gallery-lightbox="open"] .site-footer {
   display: none;
 }
 
+.telepathy-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 140;
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.telepathy-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at center, rgba(111, 176, 255, 0.14) 0%, rgba(21, 28, 44, 0.52) 20%, rgba(8, 11, 20, 0.84) 58%, rgba(3, 5, 12, 0.94) 100%);
+  animation: telepathy-overlay-in 300ms ease forwards;
+}
+
+.telepathy-overlay[data-phase="exiting"] .telepathy-overlay__backdrop {
+  animation: telepathy-overlay-out 420ms ease forwards;
+}
+
+.telepathy-overlay__stage {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.telepathy-overlay__pool,
+.telepathy-overlay__core,
+.telepathy-overlay__ripple {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+}
+
+.telepathy-overlay__pool {
+  height: 18rem;
+  width: 18rem;
+  background: radial-gradient(circle, rgba(164, 208, 255, 0.26) 0%, rgba(79, 133, 219, 0.14) 34%, transparent 74%);
+  filter: blur(16px);
+  opacity: 0;
+  animation: telepathy-pool-expand 3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.telepathy-overlay__core {
+  height: 1rem;
+  width: 1rem;
+  background: radial-gradient(circle, rgba(244, 250, 255, 0.98) 0%, rgba(196, 226, 255, 0.9) 38%, rgba(110, 165, 240, 0.28) 70%, transparent 100%);
+  box-shadow:
+    0 0 0 0 rgba(197, 226, 255, 0.58),
+    0 0 30px rgba(188, 220, 255, 0.78);
+  animation: telepathy-core-bloom 3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.telepathy-overlay__ripple {
+  height: 18rem;
+  width: 18rem;
+  border: 1.5px solid rgba(202, 225, 255, 0.52);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 40px rgba(138, 179, 255, 0.12);
+  opacity: 0;
+}
+
+.telepathy-overlay__ripple::before {
+  position: absolute;
+  inset: 7%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: inherit;
+  content: "";
+}
+
+.telepathy-overlay__ripple--one {
+  animation: telepathy-ripple 3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.telepathy-overlay__ripple--two {
+  animation: telepathy-ripple 3s cubic-bezier(0.16, 1, 0.3, 1) 420ms forwards;
+}
+
+.telepathy-overlay__ripple--three {
+  animation: telepathy-ripple 3s cubic-bezier(0.16, 1, 0.3, 1) 860ms forwards;
+}
+
+.telepathy-overlay__message {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + min(18vh, 8.5rem));
+  width: min(30rem, calc(100vw - 2.5rem));
+  padding: 1rem 1.15rem 1.05rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.4rem;
+  background: rgba(11, 15, 26, 0.62);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 22px 60px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(22px);
+  opacity: 0;
+  text-align: center;
+  transform: translate(-50%, 1rem) scale(0.96);
+  transition:
+    opacity 300ms ease,
+    transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.telepathy-overlay__message--visible {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}
+
+.telepathy-overlay__message--leaving {
+  opacity: 0;
+  transform: translate(-50%, 0.65rem) scale(0.98);
+}
+
+.telepathy-overlay__eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(192, 222, 255, 0.72);
+}
+
+.telepathy-overlay__text {
+  margin-top: 0.45rem;
+  font-size: 0.98rem;
+  line-height: 1.75;
+  color: rgba(245, 249, 255, 0.96);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -2641,8 +2771,30 @@ body[data-gallery-lightbox="open"] .site-footer {
   }
 
   .music-player-dock__glow,
-  .music-player-dock__bars span {
+  .music-player-dock__bars span,
+  .telepathy-overlay__pool,
+  .telepathy-overlay__core,
+  .telepathy-overlay__ripple,
+  .telepathy-overlay__backdrop {
     animation: none;
+  }
+
+  .telepathy-overlay__backdrop {
+    opacity: 1;
+  }
+
+  .telepathy-overlay__pool {
+    opacity: 0.34;
+    transform: translate(-50%, -50%) scale(1.8);
+  }
+
+  .telepathy-overlay__core {
+    opacity: 0.7;
+  }
+
+  .telepathy-overlay__ripple {
+    opacity: 0.14;
+    transform: translate(-50%, -50%) scale(3.6);
   }
 
   *,
@@ -2685,6 +2837,76 @@ body[data-gallery-lightbox="open"] .site-footer {
 
   50% {
     transform: scaleY(1);
+  }
+}
+
+@keyframes telepathy-overlay-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes telepathy-overlay-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes telepathy-pool-expand {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.08);
+  }
+  14% {
+    opacity: 0.82;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(7.8);
+  }
+}
+
+@keyframes telepathy-core-bloom {
+  0% {
+    opacity: 0.96;
+    transform: translate(-50%, -50%) scale(0.3);
+    box-shadow:
+      0 0 0 0 rgba(197, 226, 255, 0.58),
+      0 0 30px rgba(188, 220, 255, 0.78);
+  }
+  22% {
+    opacity: 0.92;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.12);
+    box-shadow:
+      0 0 0 7rem rgba(197, 226, 255, 0),
+      0 0 80px rgba(188, 220, 255, 0);
+  }
+}
+
+@keyframes telepathy-ripple {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.05);
+  }
+  12% {
+    opacity: 0.82;
+  }
+  65% {
+    opacity: 0.18;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(10.5);
   }
 }
 
