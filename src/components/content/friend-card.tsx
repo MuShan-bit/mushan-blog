@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink, Rss } from "lucide-react";
 import { InteractiveCard } from "@/components/content/interactive-card";
@@ -9,7 +8,18 @@ export function FriendCard({ friend }: { friend: FriendLink }) {
     <InteractiveCard className="glass-panel group rounded-[1.6rem] p-5">
       <div className="flex items-start gap-4">
         <div className="relative h-16 w-16 overflow-hidden rounded-2xl border border-border bg-white/45 dark:bg-white/5">
-          <Image src={friend.avatar} alt={friend.name} fill className="object-cover" sizes="64px" />
+          {/* `img` keeps remote/local SVG avatars working without extra domain allowlists. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={friend.avatar}
+            alt={friend.name}
+            width={64}
+            height={64}
+            loading="lazy"
+            decoding="async"
+            referrerPolicy="no-referrer"
+            className="h-full w-full object-cover"
+          />
         </div>
         <div className="min-w-0 flex-1 space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-3">
