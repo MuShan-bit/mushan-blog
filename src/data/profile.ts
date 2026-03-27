@@ -40,7 +40,7 @@ export const profile: ProfileConfig = {
   ],
   github: "https://github.com/mushan",
   motto: "把理性结构写稳，再给它一点呼吸感。",
-  portraitAsset: "/portrait/mushan-silhouette.svg",
+  portraitAsset: "/portrait/mushan-avatar.jpg",
   aboutKeywords: [
     "木杉",
     "MUSHAN",

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { SiteAvatar } from "@/components/layout/site-avatar";
 import { SiteMobileNav } from "@/components/layout/site-mobile-nav";
 import { SiteNavTabs } from "@/components/layout/site-nav-tabs";
 import { AppearanceSwitcher } from "@/components/theme/appearance-switcher";
@@ -89,9 +90,7 @@ export function SiteHeader() {
       <div className="mx-auto max-w-7xl">
         <div className="flex items-center justify-between gap-4 rounded-[2rem] border border-border/90 bg-surface-strong px-4 py-3 shadow-[0_18px_60px_rgba(17,34,28,0.1)] sm:px-6">
           <Link href="/" className="group hidden min-w-0 items-center gap-3 lg:flex">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-accent-soft text-sm font-semibold text-accent-strong">
-              木杉
-            </div>
+            <SiteAvatar className="h-11 w-11 shrink-0" sizes="44px" priority />
             <div className="min-w-0">
               <p className="font-display truncate text-lg font-semibold tracking-[-0.03em] text-foreground">
                 木杉的风与代码
@@ -102,11 +101,14 @@ export function SiteHeader() {
 
           <div className="flex min-w-0 items-center gap-3 lg:hidden">
             <SiteMobileNav />
-            <Link href="/" className="min-w-0">
-              <p className="truncate font-display text-base font-semibold tracking-[-0.04em] text-foreground sm:text-lg">
-                木杉的风与代码
-              </p>
-              <p className="truncate text-xs text-muted">风、代码、影像与作品</p>
+            <Link href="/" className="flex min-w-0 items-center gap-3">
+              <SiteAvatar className="h-10 w-10 shrink-0" sizes="40px" priority />
+              <div className="min-w-0">
+                <p className="truncate font-display text-base font-semibold tracking-[-0.04em] text-foreground sm:text-lg">
+                  木杉的风与代码
+                </p>
+                <p className="truncate text-xs text-muted">风、代码、影像与作品</p>
+              </div>
             </Link>
           </div>
 
