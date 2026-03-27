@@ -28,7 +28,12 @@ type MobileMenuItem = {
 const mobileMenuItems: MobileMenuItem[] = [
   { href: "/", label: "首页", icon: House, description: "回到内容入口与站点总览。", exact: true },
   { href: "/blog", label: "文章", icon: BookOpenText, description: "技术、设计、摄影与长期记录。" },
-  { href: "/portfolio", label: "作品集", icon: Layers3, description: "项目背景、过程、成果与技术栈。" },
+  {
+    href: "/portfolio",
+    label: "作品集",
+    icon: Layers3,
+    description: "项目背景、过程、成果与技术栈。",
+  },
   { href: "/gallery", label: "相册", icon: Camera, description: "按主题展开的影像与摄影记录。" },
   { href: "/friends", label: "友链", icon: Users, description: "喜欢的独立站点与朋友博客。" },
   { href: "/about", label: "关于木杉", icon: UserRound, description: "技能、兴趣与个人叙事页面。" },
@@ -63,8 +68,9 @@ export function SiteMobileNav() {
   }, [open]);
 
   const currentItem =
-    mobileMenuItems.find((item) => (item.exact ? pathname === item.href : isActivePath(pathname, item.href))) ??
-    mobileMenuItems[0];
+    mobileMenuItems.find((item) =>
+      item.exact ? pathname === item.href : isActivePath(pathname, item.href),
+    ) ?? mobileMenuItems[0];
 
   return (
     <>
@@ -92,23 +98,32 @@ export function SiteMobileNav() {
                   <div className="space-y-3">
                     <p className="section-kicker text-[0.68rem] font-semibold">Site Menu</p>
                     <div>
-                      <p className="font-display text-2xl font-semibold tracking-[-0.05em] text-foreground">
+                      <p className="font-display text-foreground text-2xl font-semibold tracking-[-0.05em]">
                         {siteConfig.title}
                       </p>
-                      <p className="mt-2 text-sm leading-7 text-muted">
-                        现在在 <span className="font-medium text-accent-strong">{currentItem.label}</span>，可以从这里快速切到其它栏目。
+                      <p className="text-muted mt-2 text-sm leading-7">
+                        现在在{" "}
+                        <span className="text-accent-strong font-medium">{currentItem.label}</span>
+                        ，可以从这里快速切到其它栏目。
                       </p>
                     </div>
                   </div>
 
-                  <button type="button" onClick={() => setOpen(false)} className="mobile-menu-close" aria-label="关闭菜单">
+                  <button
+                    type="button"
+                    onClick={() => setOpen(false)}
+                    className="mobile-menu-close"
+                    aria-label="关闭菜单"
+                  >
                     <X className="h-4.5 w-4.5" />
                   </button>
                 </div>
 
                 <div className="mt-6 grid gap-2">
                   {mobileMenuItems.map((item) => {
-                    const isActive = item.exact ? pathname === item.href : isActivePath(pathname, item.href);
+                    const isActive = item.exact
+                      ? pathname === item.href
+                      : isActivePath(pathname, item.href);
                     const Icon = item.icon;
 
                     return (
@@ -123,8 +138,12 @@ export function SiteMobileNav() {
                           <Icon className="h-4 w-4" />
                         </span>
                         <span className="min-w-0 flex-1">
-                          <span className="block text-sm font-medium text-foreground">{item.label}</span>
-                          <span className="mt-1 block text-xs leading-6 text-muted">{item.description}</span>
+                          <span className="text-foreground block text-sm font-medium">
+                            {item.label}
+                          </span>
+                          <span className="text-muted mt-1 block text-xs leading-6">
+                            {item.description}
+                          </span>
                         </span>
                       </Link>
                     );

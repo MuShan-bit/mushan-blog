@@ -6,16 +6,16 @@ export function SiteFooter() {
 
   return (
     <footer className="site-footer relative z-10 px-5 pb-8 sm:px-8 lg:px-10">
-      <div className="mx-auto max-w-7xl border-t border-border/80 pt-6">
+      <div className="border-border/80 mx-auto max-w-7xl border-t pt-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div className="space-y-2">
-            <p className="text-sm text-foreground">
+            <p className="text-foreground text-sm">
               © {year} {siteConfig.author.name}
             </p>
-            <p className="max-w-2xl text-sm leading-7 text-muted">{siteConfig.description}</p>
+            <p className="text-muted max-w-2xl text-sm leading-7">{siteConfig.description}</p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">
+          <div className="text-muted flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
             <Link href="/about" className="hover:text-foreground">
               关于木杉
             </Link>

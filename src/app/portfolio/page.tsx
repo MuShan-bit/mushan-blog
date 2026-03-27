@@ -32,7 +32,7 @@ export default async function PortfolioPage() {
         actions={
           <Link
             href="/about"
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-white/45 px-5 py-3 text-sm text-foreground hover:border-accent/20 hover:text-accent-strong dark:bg-white/5"
+            className="border-border text-foreground hover:border-accent/20 hover:text-accent-strong inline-flex items-center gap-2 rounded-full border bg-white/45 px-5 py-3 text-sm dark:bg-white/5"
           >
             了解我的能力地图
             <ArrowRight className="h-4 w-4" />

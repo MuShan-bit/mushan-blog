@@ -33,10 +33,10 @@ export function PostCard({ post, className }: PostCardProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-white/10" />
       </div>
       <div className="flex flex-1 flex-col gap-5 p-6">
-        <div className="flex flex-wrap items-center gap-2 text-sm text-muted">
+        <div className="text-muted flex flex-wrap items-center gap-2 text-sm">
           <Link
             href={`/categories/${slugify(post.category)}`}
-            className="inline-flex items-center rounded-full bg-accent-soft px-3 py-1 text-accent-strong hover:bg-accent-soft/80"
+            className="bg-accent-soft text-accent-strong hover:bg-accent-soft/80 inline-flex items-center rounded-full px-3 py-1"
           >
             {post.category}
           </Link>
@@ -49,12 +49,12 @@ export function PostCard({ post, className }: PostCardProps) {
 
         <div className="space-y-3">
           <Link href={postPath} className="group/title inline-flex items-center gap-2">
-            <h2 className="font-display text-2xl font-semibold tracking-[-0.04em] text-foreground">
+            <h2 className="font-display text-foreground text-2xl font-semibold tracking-[-0.04em]">
               {post.title}
             </h2>
-            <ArrowUpRight className="h-4 w-4 text-muted transition group-hover/title:-translate-y-0.5 group-hover/title:translate-x-0.5 group-hover/title:text-accent-strong" />
+            <ArrowUpRight className="text-muted group-hover/title:text-accent-strong h-4 w-4 transition group-hover/title:translate-x-0.5 group-hover/title:-translate-y-0.5" />
           </Link>
-          <p className="text-sm leading-7 text-muted">{post.summary}</p>
+          <p className="text-muted text-sm leading-7">{post.summary}</p>
         </div>
 
         <div className="mt-auto flex flex-wrap items-center justify-between gap-3">
@@ -63,7 +63,7 @@ export function PostCard({ post, className }: PostCardProps) {
               <Link
                 key={tag}
                 href={`/tags/${slugify(tag)}`}
-                className="inline-flex items-center gap-1 rounded-full border border-border bg-white/35 px-3 py-1 text-xs text-muted hover:border-accent/20 hover:text-accent-strong dark:bg-white/5"
+                className="border-border text-muted hover:border-accent/20 hover:text-accent-strong inline-flex items-center gap-1 rounded-full border bg-white/35 px-3 py-1 text-xs dark:bg-white/5"
               >
                 <Layers3 className="h-3.5 w-3.5" />
                 {tag}

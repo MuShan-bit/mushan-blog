@@ -51,7 +51,12 @@ const components = {
     }
 
     return (
-      <a href={href} target={isExternalLink ? "_blank" : undefined} rel={isExternalLink ? "noreferrer" : undefined} {...props}>
+      <a
+        href={href}
+        target={isExternalLink ? "_blank" : undefined}
+        rel={isExternalLink ? "noreferrer" : undefined}
+        {...props}
+      >
         {children}
       </a>
     );
@@ -87,7 +92,10 @@ export async function MdxContent({ source }: { source: string }) {
         remarkPlugins: [remarkGfm],
         rehypePlugins: [
           rehypeSlug,
-          [rehypeAutolinkHeadings, { behavior: "wrap", properties: { className: ["anchor-link"] } }],
+          [
+            rehypeAutolinkHeadings,
+            { behavior: "wrap", properties: { className: ["anchor-link"] } },
+          ],
         ],
       },
     },

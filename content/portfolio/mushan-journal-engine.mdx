@@ -26,7 +26,7 @@ status: active
 
 我想要的不是传统意义上的“博客模板”，而是一个更完整的个人表达载体。它既要能认真承载文章，又需要有作品集、相册和关于页这样的展示空间。
 
-这篇案例文档也顺手承担了一个额外任务：把站点里的 Markdown 与 MDX 能力尽量展示完整。你会在这里看到 **强调**、*斜体*、***强调斜体***、~~删除线~~、`inline code`、<mark>重点高亮</mark>、<abbr title="Static Site Generation">SSG</abbr>、<kbd>Cmd</kbd> + <kbd>K</kbd>、脚注[^engine-note]、引用式链接 [Next.js 文档][next-docs] 和自动链接 `https://nextjs.org/docs`。
+这篇案例文档也顺手承担了一个额外任务：把站点里的 Markdown 与 MDX 能力尽量展示完整。你会在这里看到 **强调**、_斜体_、**_强调斜体_**、~~删除线~~、`inline code`、<mark>重点高亮</mark>、<abbr title="Static Site Generation">SSG</abbr>、<kbd>Cmd</kbd> + <kbd>K</kbd>、脚注[^engine-note]、引用式链接 [Next.js 文档][next-docs] 和自动链接 `https://nextjs.org/docs`。
 
 ## 设计目标
 
@@ -77,14 +77,14 @@ flowchart LR
 
 ### 模块清单表
 
-| 模块 | 作用 | 当前状态 | 优先级 |
-| :-- | :-- | :--: | --: |
-| `content/posts` | 文章内容源 | 已完成 | 1 |
-| `content/portfolio` | 案例文档与项目说明 | 已完成 | 1 |
-| `content/gallery` / 数据文件 | 相册与图片信息 | 进行中 | 2 |
-| `src/lib/seo.ts` | metadata、JSON-LD、RSS、sitemap | 已完成 | 1 |
-| `src/app/api/view` | 阅读数统计接口 | 已完成 | 2 |
-| “关于木杉” 3D 形象 | 个人展示与视差叙事 | 持续迭代 | 3 |
+| 模块                         | 作用                            | 当前状态 | 优先级 |
+| :--------------------------- | :------------------------------ | :------: | -----: |
+| `content/posts`              | 文章内容源                      |  已完成  |      1 |
+| `content/portfolio`          | 案例文档与项目说明              |  已完成  |      1 |
+| `content/gallery` / 数据文件 | 相册与图片信息                  |  进行中  |      2 |
+| `src/lib/seo.ts`             | metadata、JSON-LD、RSS、sitemap |  已完成  |      1 |
+| `src/app/api/view`           | 阅读数统计接口                  |  已完成  |      2 |
+| “关于木杉” 3D 形象           | 个人展示与视差叙事              | 持续迭代 |      3 |
 
 ### 任务清单
 

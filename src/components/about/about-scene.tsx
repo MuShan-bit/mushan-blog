@@ -55,7 +55,9 @@ function createPortraitTokens(words: string[], density: number) {
         continue;
       }
 
-      const z = head ? Math.cos(x * 2.2) * 0.24 + Math.sin(y * 2.1) * 0.12 : Math.sin(x * 3.1) * 0.16;
+      const z = head
+        ? Math.cos(x * 2.2) * 0.24 + Math.sin(y * 2.1) * 0.12
+        : Math.sin(x * 3.1) * 0.16;
       const word = words[index % words.length];
       const width = Math.max(0.35, Math.min(0.9, word.length * 0.12));
       const height = 0.14 + (head ? 0.02 : 0);
@@ -152,8 +154,16 @@ function PortraitField({
     const targetRotationY = 0.42 + state.pointer.x * 0.2 + scrollProgress * 0.22;
     const targetRotationX = -0.08 + state.pointer.y * 0.12;
 
-    groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetRotationY, 0.06);
-    groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, targetRotationX, 0.06);
+    groupRef.current.rotation.y = THREE.MathUtils.lerp(
+      groupRef.current.rotation.y,
+      targetRotationY,
+      0.06,
+    );
+    groupRef.current.rotation.x = THREE.MathUtils.lerp(
+      groupRef.current.rotation.x,
+      targetRotationX,
+      0.06,
+    );
     groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, 0.06);
     groupRef.current.position.z = THREE.MathUtils.lerp(
       groupRef.current.position.z,
@@ -199,7 +209,7 @@ function FallbackWords({ keywords }: { keywords: string[] }) {
     <div className="glass-panel flex h-full min-h-[24rem] flex-col justify-between rounded-[2rem] p-6">
       <div className="space-y-4">
         <p className="section-kicker text-sm font-semibold">Text Portrait</p>
-        <p className="font-display text-3xl font-semibold tracking-[-0.04em] text-foreground">
+        <p className="font-display text-foreground text-3xl font-semibold tracking-[-0.04em]">
           用文字勾勒出一个仍在生长中的自己。
         </p>
       </div>
@@ -207,7 +217,7 @@ function FallbackWords({ keywords }: { keywords: string[] }) {
         {keywords.map((keyword) => (
           <span
             key={keyword}
-            className="rounded-full border border-border bg-accent-soft px-4 py-2 text-sm text-accent-strong"
+            className="border-border bg-accent-soft text-accent-strong rounded-full border px-4 py-2 text-sm"
           >
             {keyword}
           </span>
@@ -250,7 +260,7 @@ export function AboutScene({ keywords }: AboutSceneProps) {
         <pointLight intensity={0.6} position={[-3, -2, 1]} color="#8ec5ff" />
         <PortraitField color={color} motionEnabled density={density} keywords={keywords} />
       </Canvas>
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between p-5 text-xs text-muted">
+      <div className="text-muted pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between p-5 text-xs">
         <span>MuShan</span>
         <span>点点星光，汇聚名为成长的影子</span>
       </div>

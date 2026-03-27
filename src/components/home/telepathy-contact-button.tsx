@@ -91,10 +91,13 @@ export function TelepathyContactButton() {
       window.setTimeout(() => {
         setPhase("exiting");
       }, duration + messageDurationMs),
-      window.setTimeout(() => {
-        setPhase("idle");
-        timeoutIdsRef.current = [];
-      }, duration + messageDurationMs + (reduceMotion ? 0 : exitDurationMs)),
+      window.setTimeout(
+        () => {
+          setPhase("idle");
+          timeoutIdsRef.current = [];
+        },
+        duration + messageDurationMs + (reduceMotion ? 0 : exitDurationMs),
+      ),
     ];
   }
 
@@ -106,7 +109,7 @@ export function TelepathyContactButton() {
       <button
         type="button"
         onClick={startSequence}
-        className="inline-flex w-full items-center justify-between rounded-[1.1rem] border border-border bg-white/45 px-4 py-3 text-sm text-foreground transition hover:border-accent/20 hover:text-accent-strong dark:bg-white/5"
+        className="border-border text-foreground hover:border-accent/20 hover:text-accent-strong inline-flex w-full items-center justify-between rounded-[1.1rem] border bg-white/45 px-4 py-3 text-sm transition dark:bg-white/5"
         aria-haspopup="dialog"
         aria-expanded={isActive}
       >
@@ -119,7 +122,13 @@ export function TelepathyContactButton() {
 
       {portalRoot && isActive
         ? createPortal(
-            <div className="telepathy-overlay" data-phase={phase} role="dialog" aria-modal="true" aria-label="意念联系模拟">
+            <div
+              className="telepathy-overlay"
+              data-phase={phase}
+              role="dialog"
+              aria-modal="true"
+              aria-label="意念联系模拟"
+            >
               <div className="telepathy-overlay__backdrop" />
               <div key={runId} className="telepathy-overlay__stage">
                 <span className="telepathy-overlay__pool" />
@@ -152,10 +161,7 @@ function clearTimers(timerIds: number[]) {
   timerIds.forEach((id) => window.clearTimeout(id));
 }
 
-function endSequence(
-  timerIds: number[],
-  setPhase: Dispatch<SetStateAction<TelepathyPhase>>,
-) {
+function endSequence(timerIds: number[], setPhase: Dispatch<SetStateAction<TelepathyPhase>>) {
   clearTimers(timerIds);
   setPhase("idle");
 }

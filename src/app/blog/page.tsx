@@ -44,7 +44,7 @@ export default async function BlogPage() {
 
         <aside className="space-y-5">
           <div className="glass-panel rounded-[1.8rem] p-6">
-            <div className="flex items-center gap-3 text-accent-strong">
+            <div className="text-accent-strong flex items-center gap-3">
               <Layers3 className="h-5 w-5" />
               <h2 className="font-medium">分类</h2>
             </div>
@@ -53,7 +53,7 @@ export default async function BlogPage() {
                 <Link
                   key={category.slug}
                   href={`/categories/${category.slug}`}
-                  className="rounded-full border border-border bg-white/35 px-4 py-2 text-sm text-muted hover:border-accent/20 hover:text-accent-strong dark:bg-white/5"
+                  className="border-border text-muted hover:border-accent/20 hover:text-accent-strong rounded-full border bg-white/35 px-4 py-2 text-sm dark:bg-white/5"
                 >
                   {category.label} · {category.count}
                 </Link>
@@ -62,7 +62,7 @@ export default async function BlogPage() {
           </div>
 
           <div className="glass-panel rounded-[1.8rem] p-6">
-            <div className="flex items-center gap-3 text-accent-strong">
+            <div className="text-accent-strong flex items-center gap-3">
               <Hash className="h-5 w-5" />
               <h2 className="font-medium">标签</h2>
             </div>
@@ -71,7 +71,7 @@ export default async function BlogPage() {
                 <Link
                   key={tag.slug}
                   href={`/tags/${tag.slug}`}
-                  className="rounded-full border border-border bg-white/35 px-4 py-2 text-sm text-muted hover:border-accent/20 hover:text-accent-strong dark:bg-white/5"
+                  className="border-border text-muted hover:border-accent/20 hover:text-accent-strong rounded-full border bg-white/35 px-4 py-2 text-sm dark:bg-white/5"
                 >
                   {tag.label} · {tag.count}
                 </Link>

@@ -18,7 +18,9 @@ const statusMap: Record<PortfolioEntry["status"], string> = {
 
 export function PortfolioCard({ entry, className }: PortfolioCardProps) {
   return (
-    <InteractiveCard className={cn("glass-panel group overflow-hidden rounded-[1.75rem]", className)}>
+    <InteractiveCard
+      className={cn("glass-panel group overflow-hidden rounded-[1.75rem]", className)}
+    >
       <div className="relative aspect-[16/10] overflow-hidden">
         <Image
           src={entry.cover}
@@ -30,28 +32,33 @@ export function PortfolioCard({ entry, className }: PortfolioCardProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-white/10" />
       </div>
       <div className="space-y-4 p-6">
-        <div className="flex flex-wrap items-center gap-2 text-sm text-muted">
-          <span className="rounded-full bg-accent-soft px-3 py-1 text-accent-strong">{entry.role}</span>
+        <div className="text-muted flex flex-wrap items-center gap-2 text-sm">
+          <span className="bg-accent-soft text-accent-strong rounded-full px-3 py-1">
+            {entry.role}
+          </span>
           <span>{entry.period}</span>
-          <span className="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1">
+          <span className="border-border inline-flex items-center gap-1 rounded-full border px-3 py-1">
             <Sparkles className="h-3.5 w-3.5" />
             {statusMap[entry.status]}
           </span>
         </div>
         <div className="space-y-3">
-          <Link href={`/portfolio/${entry.slug}`} className="group/title inline-flex items-center gap-2">
-            <h2 className="font-display text-2xl font-semibold tracking-[-0.04em] text-foreground">
+          <Link
+            href={`/portfolio/${entry.slug}`}
+            className="group/title inline-flex items-center gap-2"
+          >
+            <h2 className="font-display text-foreground text-2xl font-semibold tracking-[-0.04em]">
               {entry.title}
             </h2>
-            <ArrowUpRight className="h-4 w-4 text-muted transition group-hover/title:-translate-y-0.5 group-hover/title:translate-x-0.5 group-hover/title:text-accent-strong" />
+            <ArrowUpRight className="text-muted group-hover/title:text-accent-strong h-4 w-4 transition group-hover/title:translate-x-0.5 group-hover/title:-translate-y-0.5" />
           </Link>
-          <p className="text-sm leading-7 text-muted">{entry.summary}</p>
+          <p className="text-muted text-sm leading-7">{entry.summary}</p>
         </div>
         <div className="flex flex-wrap gap-2">
           {entry.stack.map((item) => (
             <span
               key={item}
-              className="rounded-full border border-border bg-white/35 px-3 py-1 text-xs text-muted dark:bg-white/5"
+              className="border-border text-muted rounded-full border bg-white/35 px-3 py-1 text-xs dark:bg-white/5"
             >
               {item}
             </span>

@@ -8,9 +8,5 @@ import {
 } from "@/lib/color-themes";
 
 export function useColorPalette() {
-  return useSyncExternalStore(
-    subscribePalette,
-    getPaletteClientSnapshot,
-    getPaletteServerSnapshot,
-  );
+  return useSyncExternalStore(subscribePalette, getPaletteClientSnapshot, getPaletteServerSnapshot);
 }

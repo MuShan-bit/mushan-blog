@@ -42,21 +42,26 @@ export default function AboutPage() {
 
         <div className="grid gap-6">
           <div className="glass-panel rounded-[2rem] p-7">
-            <h2 className="font-display text-3xl font-semibold tracking-[-0.05em] text-foreground">
+            <h2 className="font-display text-foreground text-3xl font-semibold tracking-[-0.05em]">
               {profile.headline}
             </h2>
-            <p className="mt-4 text-base leading-8 text-muted">{profile.intro}</p>
-            <p className="mt-5 rounded-[1.4rem] border border-border bg-white/35 px-4 py-3 text-sm text-accent-strong dark:bg-white/5">
+            <p className="text-muted mt-4 text-base leading-8">{profile.intro}</p>
+            <p className="border-border text-accent-strong mt-5 rounded-[1.4rem] border bg-white/35 px-4 py-3 text-sm dark:bg-white/5">
               {profile.motto}
             </p>
           </div>
 
           <div className="glass-panel rounded-[2rem] p-7">
             <div className="flex items-center justify-between gap-3">
-              <h2 className="font-display text-2xl font-semibold tracking-[-0.04em] text-foreground">
+              <h2 className="font-display text-foreground text-2xl font-semibold tracking-[-0.04em]">
                 联系方式
               </h2>
-              <Link href={profile.github} target="_blank" rel="noreferrer" className="text-sm text-accent-strong">
+              <Link
+                href={profile.github}
+                target="_blank"
+                rel="noreferrer"
+                className="text-accent-strong text-sm"
+              >
                 GitHub
               </Link>
             </div>
@@ -70,7 +75,7 @@ export default function AboutPage() {
                     href={contact.href}
                     target={contact.href.startsWith("http") ? "_blank" : undefined}
                     rel={contact.href.startsWith("http") ? "noreferrer" : undefined}
-                    className="flex items-center justify-between rounded-[1.2rem] border border-border bg-white/35 px-4 py-3 text-sm hover:border-accent/20 hover:text-accent-strong dark:bg-white/5"
+                    className="border-border hover:border-accent/20 hover:text-accent-strong flex items-center justify-between rounded-[1.2rem] border bg-white/35 px-4 py-3 text-sm dark:bg-white/5"
                   >
                     <span className="inline-flex items-center gap-3">
                       <Icon className="h-4 w-4" />
@@ -87,12 +92,14 @@ export default function AboutPage() {
 
       <section className="grid gap-6 lg:grid-cols-2">
         <div className="glass-panel rounded-[2rem] p-7">
-          <h2 className="font-display text-3xl font-semibold tracking-[-0.05em] text-foreground">技能</h2>
+          <h2 className="font-display text-foreground text-3xl font-semibold tracking-[-0.05em]">
+            技能
+          </h2>
           <div className="mt-5 flex flex-wrap gap-3">
             {profile.skills.map((skill) => (
               <span
                 key={skill}
-                className="rounded-full border border-border bg-accent-soft px-4 py-2 text-sm text-accent-strong"
+                className="border-border bg-accent-soft text-accent-strong rounded-full border px-4 py-2 text-sm"
               >
                 {skill}
               </span>
@@ -101,12 +108,14 @@ export default function AboutPage() {
         </div>
 
         <div className="glass-panel rounded-[2rem] p-7">
-          <h2 className="font-display text-3xl font-semibold tracking-[-0.05em] text-foreground">爱好</h2>
+          <h2 className="font-display text-foreground text-3xl font-semibold tracking-[-0.05em]">
+            爱好
+          </h2>
           <div className="mt-5 flex flex-wrap gap-3">
             {profile.hobbies.map((hobby) => (
               <span
                 key={hobby}
-                className="rounded-full border border-border bg-white/35 px-4 py-2 text-sm text-muted dark:bg-white/5"
+                className="border-border text-muted rounded-full border bg-white/35 px-4 py-2 text-sm dark:bg-white/5"
               >
                 {hobby}
               </span>
@@ -116,17 +125,19 @@ export default function AboutPage() {
       </section>
 
       <section className="glass-panel rounded-[2rem] p-7">
-        <h2 className="font-display text-3xl font-semibold tracking-[-0.05em] text-foreground">我的路径</h2>
+        <h2 className="font-display text-foreground text-3xl font-semibold tracking-[-0.05em]">
+          我的路径
+        </h2>
         <div className="mt-6 grid gap-4 lg:grid-cols-3">
           {profile.journey.map((item) => (
             <div
               key={item.title}
-              className="rounded-[1.6rem] border border-border bg-white/35 p-5 dark:bg-white/5"
+              className="border-border rounded-[1.6rem] border bg-white/35 p-5 dark:bg-white/5"
             >
-              <p className="font-display text-2xl font-semibold tracking-[-0.04em] text-foreground">
+              <p className="font-display text-foreground text-2xl font-semibold tracking-[-0.04em]">
                 {item.title}
               </p>
-              <p className="mt-3 text-sm leading-7 text-muted">{item.description}</p>
+              <p className="text-muted mt-3 text-sm leading-7">{item.description}</p>
             </div>
           ))}
         </div>

@@ -117,7 +117,13 @@ export function ArticleReaderShell({ children, sidebar, shareTitle }: ArticleRea
         >
           {shareState === "done" ? <Check className="h-5 w-5" /> : <Share2 className="h-5 w-5" />}
         </button>
-        <button type="button" onClick={scrollToTop} className="reader-fab" aria-label="回到顶部" title="回到顶部">
+        <button
+          type="button"
+          onClick={scrollToTop}
+          className="reader-fab"
+          aria-label="回到顶部"
+          title="回到顶部"
+        >
           <ArrowUp className="h-5 w-5" />
         </button>
         <button
@@ -131,7 +137,11 @@ export function ArticleReaderShell({ children, sidebar, shareTitle }: ArticleRea
           aria-pressed={wideReading}
           title={wideReading ? "退出宽屏阅读" : "开启宽屏阅读"}
         >
-          {wideReading ? <PanelRightOpen className="h-5 w-5" /> : <PanelRightClose className="h-5 w-5" />}
+          {wideReading ? (
+            <PanelRightOpen className="h-5 w-5" />
+          ) : (
+            <PanelRightClose className="h-5 w-5" />
+          )}
         </button>
       </div>
 
@@ -150,8 +160,20 @@ export function ArticleReaderShell({ children, sidebar, shareTitle }: ArticleRea
 
   return (
     <div className="relative">
-      <article className={cn("article-reader grid gap-6", wideReading ? "xl:grid-cols-1" : "xl:grid-cols-[minmax(0,1fr)_20rem]")}>
-        <div className={cn("min-w-0 space-y-6", wideReading && "xl:mx-auto xl:w-full xl:max-w-[78rem]")}>{children}</div>
+      <article
+        className={cn(
+          "article-reader grid gap-6",
+          wideReading ? "xl:grid-cols-1" : "xl:grid-cols-[minmax(0,1fr)_20rem]",
+        )}
+      >
+        <div
+          className={cn(
+            "min-w-0 space-y-6",
+            wideReading && "xl:mx-auto xl:w-full xl:max-w-[78rem]",
+          )}
+        >
+          {children}
+        </div>
         <aside
           className={cn(
             "hidden space-y-5 md:block",

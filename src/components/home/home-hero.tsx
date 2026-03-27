@@ -21,12 +21,18 @@ export function HomeHero({ postCount, portfolioCount, albumCount }: HomeHeroProp
                 <div className="home-hero__backtype">𝓜𝓾𝓢𝓱𝓪𝓷</div>
                 <div className="relative z-10 space-y-4">
                   <p className="section-kicker text-sm font-semibold">Mushan Personal Blog</p>
-                  <p className="text-sm font-medium tracking-[0.02em] text-accent-strong">{profile.headline}</p>
-                  <h1 className="font-display max-w-5xl text-5xl font-semibold tracking-[-0.065em] text-foreground sm:text-6xl xl:text-7xl 2xl:text-[5.4rem]">
+                  <p className="text-accent-strong text-sm font-medium tracking-[0.02em]">
+                    {profile.headline}
+                  </p>
+                  <h1 className="font-display text-foreground max-w-5xl text-5xl font-semibold tracking-[-0.065em] sm:text-6xl xl:text-7xl 2xl:text-[5.4rem]">
                     {siteConfig.title}
                   </h1>
-                  <p className="max-w-2xl text-base leading-8 text-muted sm:text-lg">{siteConfig.description}</p>
-                  <p className="max-w-3xl text-sm leading-8 text-muted sm:text-base">{profile.intro}</p>
+                  <p className="text-muted max-w-2xl text-base leading-8 sm:text-lg">
+                    {siteConfig.description}
+                  </p>
+                  <p className="text-muted max-w-3xl text-sm leading-8 sm:text-base">
+                    {profile.intro}
+                  </p>
                 </div>
               </div>
 
@@ -35,7 +41,7 @@ export function HomeHero({ postCount, portfolioCount, albumCount }: HomeHeroProp
                   {profile.skills.slice(0, 6).map((skill) => (
                     <span
                       key={skill}
-                      className="rounded-full border border-border/80 bg-white/50 px-3.5 py-2 text-xs font-medium text-foreground/78 shadow-[inset_0_1px_0_rgba(255,255,255,0.26)] dark:bg-white/8"
+                      className="border-border/80 text-foreground/78 rounded-full border bg-white/50 px-3.5 py-2 text-xs font-medium shadow-[inset_0_1px_0_rgba(255,255,255,0.26)] dark:bg-white/8"
                     >
                       {skill}
                     </span>
@@ -45,14 +51,14 @@ export function HomeHero({ postCount, portfolioCount, albumCount }: HomeHeroProp
                 <div className="flex flex-wrap gap-3">
                   <Link
                     href="/blog"
-                    className="liquid-button inline-flex items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-medium text-white hover:-translate-y-0.5 hover:bg-accent-strong"
+                    className="liquid-button bg-accent hover:bg-accent-strong inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-medium text-white hover:-translate-y-0.5"
                   >
                     进入文章
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                   <Link
                     href="/about"
-                    className="inline-flex items-center gap-2 rounded-full border border-border bg-white/50 px-5 py-3 text-sm font-medium text-foreground hover:-translate-y-0.5 hover:border-accent/24 hover:text-accent-strong dark:bg-white/8"
+                    className="border-border text-foreground hover:border-accent/24 hover:text-accent-strong inline-flex items-center gap-2 rounded-full border bg-white/50 px-5 py-3 text-sm font-medium hover:-translate-y-0.5 dark:bg-white/8"
                   >
                     关于木杉
                   </Link>
@@ -65,18 +71,24 @@ export function HomeHero({ postCount, portfolioCount, albumCount }: HomeHeroProp
         </div>
 
         <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
-          <div className="hidden gap-4 xl:grid xl:grid-cols-3 xl:flex-1">
+          <div className="hidden gap-4 xl:grid xl:flex-1 xl:grid-cols-3">
             <div className="home-hero__metric">
-              <p className="text-sm text-muted">已收录文章</p>
-              <p className="mt-3 font-display text-4xl font-semibold tracking-[-0.05em] text-foreground">{postCount}</p>
+              <p className="text-muted text-sm">已收录文章</p>
+              <p className="font-display text-foreground mt-3 text-4xl font-semibold tracking-[-0.05em]">
+                {postCount}
+              </p>
             </div>
             <div className="home-hero__metric">
-              <p className="text-sm text-muted">作品案例</p>
-              <p className="mt-3 font-display text-4xl font-semibold tracking-[-0.05em] text-foreground">{portfolioCount}</p>
+              <p className="text-muted text-sm">作品案例</p>
+              <p className="font-display text-foreground mt-3 text-4xl font-semibold tracking-[-0.05em]">
+                {portfolioCount}
+              </p>
             </div>
             <div className="home-hero__metric">
-              <p className="text-sm text-muted">相册主题</p>
-              <p className="mt-3 font-display text-4xl font-semibold tracking-[-0.05em] text-foreground">{albumCount}</p>
+              <p className="text-muted text-sm">相册主题</p>
+              <p className="font-display text-foreground mt-3 text-4xl font-semibold tracking-[-0.05em]">
+                {albumCount}
+              </p>
             </div>
           </div>
 
@@ -85,10 +97,10 @@ export function HomeHero({ postCount, portfolioCount, albumCount }: HomeHeroProp
               <ArrowDown className="h-4 w-4" />
             </span>
             <span>
-              <span className="block text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-accent-strong">
+              <span className="text-accent-strong block text-[0.7rem] font-semibold tracking-[0.28em] uppercase">
                 Scroll Reveal
               </span>
-              <span className="mt-1 block text-sm text-foreground">下拉展开内容</span>
+              <span className="text-foreground mt-1 block text-sm">下拉展开内容</span>
             </span>
           </a>
         </div>

@@ -88,14 +88,16 @@ export function SiteHeader() {
       )}
     >
       <div className="mx-auto max-w-7xl">
-        <div className="flex items-center justify-between gap-4 rounded-[2rem] border border-border/90 bg-surface-strong px-4 py-3 shadow-[0_18px_60px_rgba(17,34,28,0.1)] sm:px-6">
+        <div className="border-border/90 bg-surface-strong flex items-center justify-between gap-4 rounded-[2rem] border px-4 py-3 shadow-[0_18px_60px_rgba(17,34,28,0.1)] sm:px-6">
           <Link href="/" className="group hidden min-w-0 items-center gap-3 lg:flex">
             <SiteAvatar className="h-11 w-11 shrink-0" sizes="44px" priority />
             <div className="min-w-0">
-              <p className="font-display truncate text-lg font-semibold tracking-[-0.03em] text-foreground">
+              <p className="font-display text-foreground truncate text-lg font-semibold tracking-[-0.03em]">
                 木杉的风与代码
               </p>
-              <p className="truncate text-sm text-muted">记录代码、设计、影像与作品，也把生活的纹理留在页面里。</p>
+              <p className="text-muted truncate text-sm">
+                记录代码、设计、影像与作品，也把生活的纹理留在页面里。
+              </p>
             </div>
           </Link>
 
@@ -104,10 +106,10 @@ export function SiteHeader() {
             <Link href="/" className="flex min-w-0 items-center gap-3">
               <SiteAvatar className="h-10 w-10 shrink-0" sizes="40px" priority />
               <div className="min-w-0">
-                <p className="truncate font-display text-base font-semibold tracking-[-0.04em] text-foreground sm:text-lg">
+                <p className="font-display text-foreground truncate text-base font-semibold tracking-[-0.04em] sm:text-lg">
                   木杉的风与代码
                 </p>
-                <p className="truncate text-xs text-muted">风、代码、影像与作品</p>
+                <p className="text-muted truncate text-xs">风、代码、影像与作品</p>
               </div>
             </Link>
           </div>

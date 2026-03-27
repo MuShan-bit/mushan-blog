@@ -20,7 +20,9 @@ const closeAnimationMs = 220;
 export function CodeBlockFrame({ code, label, highlighted, lineCount }: CodeBlockFrameProps) {
   const timerRef = useRef<number | null>(null);
   const [reduceMotion, setReduceMotion] = useState(false);
-  const [previewState, setPreviewState] = useState<"closed" | "entering" | "open" | "exiting">("closed");
+  const [previewState, setPreviewState] = useState<"closed" | "entering" | "open" | "exiting">(
+    "closed",
+  );
   const previewVisible = previewState !== "closed";
   const portalRoot = typeof document === "undefined" ? null : document.body;
 
@@ -141,7 +143,10 @@ export function CodeBlockFrame({ code, label, highlighted, lineCount }: CodeBloc
               aria-modal="true"
               aria-label={`${label} 代码放大预览`}
             >
-              <div className="code-block-preview__panel" onClick={(event) => event.stopPropagation()}>
+              <div
+                className="code-block-preview__panel"
+                onClick={(event) => event.stopPropagation()}
+              >
                 <CodeBlockFigure
                   code={code}
                   label={label}
@@ -177,7 +182,13 @@ function CodeBlockFigure({
   const isConstrained = !expanded && lineCount > maxPreviewLines;
 
   return (
-    <figure className={cn("code-block not-prose", isConstrained && "code-block--constrained", expanded && "code-block--immersive")}>
+    <figure
+      className={cn(
+        "code-block not-prose",
+        isConstrained && "code-block--constrained",
+        expanded && "code-block--immersive",
+      )}
+    >
       <CodeBlockHeader code={code} label={label} expanded={expanded} onToggle={onToggle} />
       <div className="code-block__body" dangerouslySetInnerHTML={{ __html: highlighted }} />
     </figure>

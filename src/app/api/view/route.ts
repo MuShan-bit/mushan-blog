@@ -6,7 +6,10 @@ export const runtime = "nodejs";
 type ViewAdmin = {
   from(table: "page_views"): {
     select(columns: "views"): {
-      eq(column: "path", value: string): {
+      eq(
+        column: "path",
+        value: string,
+      ): {
         maybeSingle(): Promise<{
           data: { views: number } | null;
           error: Error | null;
@@ -14,10 +17,7 @@ type ViewAdmin = {
       };
     };
   };
-  rpc(
-    fn: "increment_page_views",
-    params: { page_path: string },
-  ): Promise<{ error: Error | null }>;
+  rpc(fn: "increment_page_views", params: { page_path: string }): Promise<{ error: Error | null }>;
 };
 
 export async function GET(request: NextRequest) {
@@ -31,7 +31,10 @@ export async function GET(request: NextRequest) {
   const supabase = getSupabaseAdmin();
 
   if (!supabase) {
-    return NextResponse.json({ count: 0, degraded: true }, { headers: { "Cache-Control": "no-store" } });
+    return NextResponse.json(
+      { count: 0, degraded: true },
+      { headers: { "Cache-Control": "no-store" } },
+    );
   }
 
   const admin = supabase as unknown as ViewAdmin;

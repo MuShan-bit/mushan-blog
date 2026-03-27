@@ -3,9 +3,7 @@
 import { Check, Palette } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
-import {
-  colorPalettes,
-} from "@/lib/color-themes";
+import { colorPalettes } from "@/lib/color-themes";
 import { applyPalette } from "@/components/theme/color-theme-provider";
 import { useColorPalette } from "@/components/theme/use-color-palette";
 
@@ -54,8 +52,8 @@ export function PaletteSwitcher() {
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
         className={cn(
-          "glass-panel soft-ring inline-flex h-10 items-center gap-1.5 rounded-full px-3 text-sm text-foreground/80 sm:h-11 sm:gap-2 sm:px-4",
-          "hover:-translate-y-0.5 hover:text-foreground",
+          "glass-panel soft-ring text-foreground/80 inline-flex h-10 items-center gap-1.5 rounded-full px-3 text-sm sm:h-11 sm:gap-2 sm:px-4",
+          "hover:text-foreground hover:-translate-y-0.5",
         )}
       >
         <Palette className="h-4 w-4" />
@@ -63,10 +61,12 @@ export function PaletteSwitcher() {
       </button>
 
       {open ? (
-        <div className="absolute right-0 top-[calc(100%+0.65rem)] z-50 w-[min(16.5rem,calc(100vw-1rem))] rounded-[1.2rem] border border-border bg-surface-strong p-2.5 shadow-[0_24px_90px_rgba(16,34,28,0.16)] backdrop-blur-2xl sm:top-[calc(100%+0.75rem)] sm:w-[20rem] sm:rounded-[1.5rem] sm:p-3">
+        <div className="border-border bg-surface-strong absolute top-[calc(100%+0.65rem)] right-0 z-50 w-[min(16.5rem,calc(100vw-1rem))] rounded-[1.2rem] border p-2.5 shadow-[0_24px_90px_rgba(16,34,28,0.16)] backdrop-blur-2xl sm:top-[calc(100%+0.75rem)] sm:w-[20rem] sm:rounded-[1.5rem] sm:p-3">
           <div className="mb-1.5 px-1.5 py-1 sm:mb-2 sm:px-2">
-            <p className="text-sm font-medium text-foreground">配色主题</p>
-            <p className="mt-1 hidden text-xs leading-6 text-muted sm:block">明暗模式之外，再给页面换一层气质。</p>
+            <p className="text-foreground text-sm font-medium">配色主题</p>
+            <p className="text-muted mt-1 hidden text-xs leading-6 sm:block">
+              明暗模式之外，再给页面换一层气质。
+            </p>
           </div>
 
           <div className="grid gap-1.5 sm:gap-2">
@@ -85,7 +85,7 @@ export function PaletteSwitcher() {
                     "flex items-start gap-2.5 rounded-[0.95rem] border px-2.5 py-2.5 text-left sm:gap-3 sm:rounded-[1.1rem] sm:px-3 sm:py-3",
                     isActive
                       ? "border-accent/30 bg-accent-soft"
-                      : "border-border bg-white/35 hover:border-accent/20 hover:bg-white/50 dark:bg-white/5 dark:hover:bg-white/8",
+                      : "border-border hover:border-accent/20 bg-white/35 hover:bg-white/50 dark:bg-white/5 dark:hover:bg-white/8",
                   )}
                 >
                   <div className="mt-0.5 flex items-center gap-1">
@@ -99,10 +99,12 @@ export function PaletteSwitcher() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-3">
-                      <span className="text-sm font-medium text-foreground">{palette.name}</span>
-                      {isActive ? <Check className="h-4 w-4 text-accent-strong" /> : null}
+                      <span className="text-foreground text-sm font-medium">{palette.name}</span>
+                      {isActive ? <Check className="text-accent-strong h-4 w-4" /> : null}
                     </div>
-                    <p className="mt-1 hidden text-xs leading-6 text-muted sm:block">{palette.description}</p>
+                    <p className="text-muted mt-1 hidden text-xs leading-6 sm:block">
+                      {palette.description}
+                    </p>
                   </div>
                 </button>
               );

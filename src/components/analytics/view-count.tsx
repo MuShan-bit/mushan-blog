@@ -40,7 +40,7 @@ export function ViewCount({ path, className }: ViewCountProps) {
   }, [path]);
 
   return (
-    <span className={cn("inline-flex items-center gap-1.5 text-sm text-muted", className)}>
+    <span className={cn("text-muted inline-flex items-center gap-1.5 text-sm", className)}>
       <Eye className="h-4 w-4" />
       {count === null ? "读取中" : `${formatViewCount(count)} 次阅读`}
     </span>

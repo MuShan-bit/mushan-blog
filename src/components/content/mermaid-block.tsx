@@ -36,14 +36,17 @@ export function MermaidBlock({ chart }: MermaidBlockProps) {
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const [svg, setSvg] = useState("");
   const [error, setError] = useState("");
-  const [previewState, setPreviewState] = useState<"closed" | "entering" | "open" | "exiting">("closed");
+  const [previewState, setPreviewState] = useState<"closed" | "entering" | "open" | "exiting">(
+    "closed",
+  );
   const previewVisible = previewState !== "closed";
 
   useEffect(() => {
     const observer = new MutationObserver((mutations) => {
       if (
         mutations.some(
-          (mutation) => mutation.attributeName === "class" || mutation.attributeName === "data-palette",
+          (mutation) =>
+            mutation.attributeName === "class" || mutation.attributeName === "data-palette",
         )
       ) {
         setPaletteRevision((current) => current + 1);
@@ -196,7 +199,10 @@ export function MermaidBlock({ chart }: MermaidBlockProps) {
         },
       });
 
-      const { svg: nextSvg } = await mermaid.render(`mermaid-${diagramId}-${paletteRevision}`, chart);
+      const { svg: nextSvg } = await mermaid.render(
+        `mermaid-${diagramId}-${paletteRevision}`,
+        chart,
+      );
 
       startTransition(() => {
         setSvg(sanitizeSvg(nextSvg));
@@ -218,7 +224,14 @@ export function MermaidBlock({ chart }: MermaidBlockProps) {
 
   return (
     <>
-      <MermaidFigure chart={chart} svg={svg} status={status} error={error} expanded={false} onToggle={openPreview} />
+      <MermaidFigure
+        chart={chart}
+        svg={svg}
+        status={status}
+        error={error}
+        expanded={false}
+        onToggle={openPreview}
+      />
       {portalRoot && previewVisible
         ? createPortal(
             <div
@@ -302,7 +315,9 @@ function MermaidFigure({
         </div>
       ) : (
         <div className="mermaid-block__canvas" data-status={status}>
-          {status === "loading" ? <p className="mermaid-block__loading">Mermaid 图正在生成中...</p> : null}
+          {status === "loading" ? (
+            <p className="mermaid-block__loading">Mermaid 图正在生成中...</p>
+          ) : null}
           {svg ? <div dangerouslySetInnerHTML={{ __html: svg }} /> : null}
         </div>
       )}

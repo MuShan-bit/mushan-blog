@@ -19,7 +19,10 @@ export function MusicFloatingPlayer() {
         <button
           type="button"
           onClick={() => void togglePlayback()}
-          className={cn("music-player-dock__button music-player-dock__button--primary", isPlaying && "music-player-dock__button--active")}
+          className={cn(
+            "music-player-dock__button music-player-dock__button--primary",
+            isPlaying && "music-player-dock__button--active",
+          )}
           aria-label={isPlaying ? `暂停 ${currentTrack.title}` : `播放 ${currentTrack.title}`}
           title={isPlaying ? `暂停 ${currentTrack.title}` : `播放 ${currentTrack.title}`}
         >

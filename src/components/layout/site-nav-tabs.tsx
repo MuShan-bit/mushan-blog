@@ -48,7 +48,7 @@ export function SiteNavTabs() {
               setPendingHref(item.href);
             }}
             className={cn(
-              "tab-link rounded-full px-4 py-2 text-sm text-muted",
+              "tab-link text-muted rounded-full px-4 py-2 text-sm",
               "hover:bg-accent-soft hover:text-accent-strong",
               isPending && "tab-link--pending",
               isActive && "tab-link--active bg-accent-soft text-accent-strong",

@@ -10,15 +10,13 @@ import { slugify, sortByDateDesc } from "@/lib/utils";
 const postsDirectory = path.join(process.cwd(), "content", "posts");
 const portfolioDirectory = path.join(process.cwd(), "content", "portfolio");
 
-const dateLikeString = z
-  .union([z.string(), z.date()])
-  .transform((value) => {
-    if (value instanceof Date) {
-      return value.toISOString().slice(0, 10);
-    }
+const dateLikeString = z.union([z.string(), z.date()]).transform((value) => {
+  if (value instanceof Date) {
+    return value.toISOString().slice(0, 10);
+  }
 
-    return value;
-  });
+  return value;
+});
 
 const postSchema = z.object({
   title: z.string(),

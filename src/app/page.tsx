@@ -12,7 +12,12 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { profile } from "@/data/profile";
 import { friends } from "@/data/friends";
 import { galleryAlbums } from "@/data/gallery";
-import { getAllPortfolioEntries, getFeaturedPortfolioEntries, getFeaturedPosts, getPublishedPosts } from "@/lib/content";
+import {
+  getAllPortfolioEntries,
+  getFeaturedPortfolioEntries,
+  getFeaturedPosts,
+  getPublishedPosts,
+} from "@/lib/content";
 import { createPageMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
 
@@ -24,16 +29,23 @@ export const metadata = createPageMetadata({
 });
 
 export default async function Home() {
-  const [allPosts, allPortfolioEntries, featuredPosts, featuredPortfolioEntries] = await Promise.all([
-    getPublishedPosts(),
-    getAllPortfolioEntries(),
-    getFeaturedPosts(3),
-    getFeaturedPortfolioEntries(2),
-  ]);
+  const [allPosts, allPortfolioEntries, featuredPosts, featuredPortfolioEntries] =
+    await Promise.all([
+      getPublishedPosts(),
+      getAllPortfolioEntries(),
+      getFeaturedPosts(3),
+      getFeaturedPortfolioEntries(2),
+    ]);
   const featuredAlbums = galleryAlbums.slice(0, 2);
   const featuredFriends = friends.slice(0, 3);
-  const githubUsername = profile.github.replace(/^https?:\/\/github\.com\//i, "").replace(/\/$/, "");
-  const nextSteps = ["拓展副业（咸鱼AI/开发服务，做自媒体公众号，区块链量化交易等）", "深度学习大模型/AI Agent领域", "将开源项目 TideDesk 初版开发完善"];
+  const githubUsername = profile.github
+    .replace(/^https?:\/\/github\.com\//i, "")
+    .replace(/\/$/, "");
+  const nextSteps = [
+    "拓展副业（咸鱼AI/开发服务，做自媒体公众号，区块链量化交易等）",
+    "深度学习大模型/AI Agent领域",
+    "将开源项目 TideDesk 初版开发完善",
+  ];
 
   const websiteJsonLd = {
     "@context": "https://schema.org",
@@ -61,11 +73,14 @@ export default async function Home() {
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="section-kicker text-sm font-semibold">Latest Posts</p>
-            <h2 className="font-display mt-2 text-3xl font-semibold tracking-[-0.05em] text-foreground">
+            <h2 className="font-display text-foreground mt-2 text-3xl font-semibold tracking-[-0.05em]">
               先从最近写的东西开始
             </h2>
           </div>
-          <Link href="/blog" className="inline-flex items-center gap-2 text-sm text-accent-strong hover:text-accent">
+          <Link
+            href="/blog"
+            className="text-accent-strong hover:text-accent inline-flex items-center gap-2 text-sm"
+          >
             查看全部文章
             <ArrowRight className="h-4 w-4" />
           </Link>
@@ -82,13 +97,13 @@ export default async function Home() {
           <div className="flex items-center justify-between gap-4">
             <div>
               <p className="section-kicker text-sm font-semibold">Portfolio</p>
-              <h2 className="font-display mt-2 text-3xl font-semibold tracking-[-0.05em] text-foreground">
+              <h2 className="font-display text-foreground mt-2 text-3xl font-semibold tracking-[-0.05em]">
                 最近在做的项目与案例
               </h2>
             </div>
             <Link
               href="/portfolio"
-              className="inline-flex items-center gap-2 text-sm text-accent-strong hover:text-accent"
+              className="text-accent-strong hover:text-accent inline-flex items-center gap-2 text-sm"
             >
               进入作品集
               <ArrowRight className="h-4 w-4" />
@@ -101,57 +116,57 @@ export default async function Home() {
           </div>
         </div>
         <aside className="glass-panel rounded-[2rem] p-6">
-          <div className="flex items-center gap-3 text-accent-strong">
+          <div className="text-accent-strong flex items-center gap-3">
             <Activity className="h-5 w-5" />
             <div>
-              <p className="text-sm font-medium text-foreground">创作者状态面板</p>
-              <p className="mt-1 text-xs text-muted">最近在打磨什么，也顺手留一点工程痕迹。</p>
+              <p className="text-foreground text-sm font-medium">创作者状态面板</p>
+              <p className="text-muted mt-1 text-xs">最近在打磨什么，也顺手留一点工程痕迹。</p>
             </div>
           </div>
 
           <div className="mt-5 grid gap-3">
-            <div className="rounded-[1.35rem] border border-border bg-white/35 p-4 dark:bg-white/5">
-              <div className="flex items-center gap-2 text-sm text-accent-strong">
+            <div className="border-border rounded-[1.35rem] border bg-white/35 p-4 dark:bg-white/5">
+              <div className="text-accent-strong flex items-center gap-2 text-sm">
                 <Target className="h-4 w-4" />
                 当前聚焦
               </div>
-              <p className="mt-2 text-sm leading-7 text-muted">
+              <p className="text-muted mt-2 text-sm leading-7">
                 最近正在公务员备考，闲暇时间利用AI打磨静态博客和个人开源项目
               </p>
             </div>
 
-            <div className="rounded-[1.35rem] border border-border bg-white/35 p-4 dark:bg-white/5">
-              <div className="flex items-center gap-2 text-sm text-accent-strong">
+            <div className="border-border rounded-[1.35rem] border bg-white/35 p-4 dark:bg-white/5">
+              <div className="text-accent-strong flex items-center gap-2 text-sm">
                 <Flag className="h-4 w-4" />
                 下一步计划
               </div>
-              <ul className="mt-2 grid gap-2 text-sm leading-7 text-muted">
+              <ul className="text-muted mt-2 grid gap-2 text-sm leading-7">
                 {nextSteps.map((step) => (
                   <li key={step} className="flex gap-2">
-                    <span className="mt-[0.72rem] h-1.5 w-1.5 rounded-full bg-accent/70" />
+                    <span className="bg-accent/70 mt-[0.72rem] h-1.5 w-1.5 rounded-full" />
                     <span>{step}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="rounded-[1.45rem] border border-border bg-white/45 p-4 dark:bg-white/6">
+            <div className="border-border rounded-[1.45rem] border bg-white/45 p-4 dark:bg-white/6">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-sm font-medium text-foreground">GitHub 贡献热力图</p>
-                  <p className="mt-1 text-xs text-muted">@{githubUsername}</p>
+                  <p className="text-foreground text-sm font-medium">GitHub 贡献热力图</p>
+                  <p className="text-muted mt-1 text-xs">@{githubUsername}</p>
                 </div>
                 <a
                   href={profile.github}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs text-accent-strong hover:text-accent"
+                  className="text-accent-strong hover:text-accent inline-flex items-center gap-1.5 text-xs"
                 >
                   查看 GitHub
                   <ArrowRight className="h-3.5 w-3.5" />
                 </a>
               </div>
-              <div className="mt-4 overflow-hidden rounded-[1.1rem] border border-border/80 bg-white p-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.24)]">
+              <div className="border-border/80 mt-4 overflow-hidden rounded-[1.1rem] border bg-white p-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.24)]">
                 <Image
                   src={`/api/github-heatmap?user=${githubUsername}`}
                   alt={`${githubUsername} 的 GitHub 贡献热力图`}
@@ -170,13 +185,13 @@ export default async function Home() {
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="section-kicker text-sm font-semibold">Gallery</p>
-            <h2 className="font-display mt-2 text-3xl font-semibold tracking-[-0.05em] text-foreground">
+            <h2 className="font-display text-foreground mt-2 text-3xl font-semibold tracking-[-0.05em]">
               把光线、风和街角留下来
             </h2>
           </div>
           <Link
             href="/gallery"
-            className="inline-flex items-center gap-2 text-sm text-accent-strong hover:text-accent"
+            className="text-accent-strong hover:text-accent inline-flex items-center gap-2 text-sm"
           >
             浏览全部相册
             <ArrowRight className="h-4 w-4" />
@@ -194,11 +209,14 @@ export default async function Home() {
           <div className="flex items-center justify-between gap-4">
             <div>
               <p className="section-kicker text-sm font-semibold">Friends</p>
-              <h2 className="font-display mt-2 text-3xl font-semibold tracking-[-0.05em] text-foreground">
+              <h2 className="font-display text-foreground mt-2 text-3xl font-semibold tracking-[-0.05em]">
                 也想把喜欢的个人站点放进来
               </h2>
             </div>
-            <Link href="/friends" className="inline-flex items-center gap-2 text-sm text-accent-strong hover:text-accent">
+            <Link
+              href="/friends"
+              className="text-accent-strong hover:text-accent inline-flex items-center gap-2 text-sm"
+            >
               打开友链页
               <ArrowRight className="h-4 w-4" />
             </Link>
@@ -212,25 +230,26 @@ export default async function Home() {
 
         <aside className="glass-panel rounded-[2rem] p-6">
           <div className="space-y-5">
-            <div className="flex items-center gap-3 text-accent-strong">
+            <div className="text-accent-strong flex items-center gap-3">
               <Handshake className="h-5 w-5" />
               <div>
-                <p className="text-sm font-medium text-foreground">加入友链</p>
-                <p className="mt-1 text-xs text-muted">如果你的小站也在认真生长，欢迎来交换。</p>
+                <p className="text-foreground text-sm font-medium">加入友链</p>
+                <p className="text-muted mt-1 text-xs">如果你的小站也在认真生长，欢迎来交换。</p>
               </div>
             </div>
 
-            <div className="rounded-[1.4rem] border border-border bg-white/35 p-4 dark:bg-white/5">
-              <p className="text-sm font-medium text-accent-strong">交换方式</p>
-              <p className="mt-3 grid gap-3 text-sm leading-7 text-muted">
-                先把本站加入你的友链页。把站点名、链接、简介、头像和 `RSS`（可选）发给我。通过邮箱或 GitHub 联系，我会尽快回看并补上。
+            <div className="border-border rounded-[1.4rem] border bg-white/35 p-4 dark:bg-white/5">
+              <p className="text-accent-strong text-sm font-medium">交换方式</p>
+              <p className="text-muted mt-3 grid gap-3 text-sm leading-7">
+                先把本站加入你的友链页。把站点名、链接、简介、头像和 `RSS`（可选）发给我。通过邮箱或
+                GitHub 联系，我会尽快回看并补上。
               </p>
             </div>
 
             <div className="grid gap-3">
               <a
                 href={`mailto:${siteConfig.author.email}?subject=${encodeURIComponent("友链交换 / 木杉的风与代码")}`}
-                className="inline-flex items-center justify-between rounded-[1.1rem] border border-border bg-white/45 px-4 py-3 text-sm text-foreground hover:border-accent/20 hover:text-accent-strong dark:bg-white/5"
+                className="border-border text-foreground hover:border-accent/20 hover:text-accent-strong inline-flex items-center justify-between rounded-[1.1rem] border bg-white/45 px-4 py-3 text-sm dark:bg-white/5"
               >
                 <span className="inline-flex items-center gap-2">
                   <Mail className="h-4 w-4" />
@@ -242,7 +261,7 @@ export default async function Home() {
                 href={profile.github}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center justify-between rounded-[1.1rem] border border-border bg-white/45 px-4 py-3 text-sm text-foreground hover:border-accent/20 hover:text-accent-strong dark:bg-white/5"
+                className="border-border text-foreground hover:border-accent/20 hover:text-accent-strong inline-flex items-center justify-between rounded-[1.1rem] border bg-white/45 px-4 py-3 text-sm dark:bg-white/5"
               >
                 <span className="inline-flex items-center gap-2">
                   <Github className="h-4 w-4" />

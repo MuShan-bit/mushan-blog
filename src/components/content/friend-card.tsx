@@ -7,7 +7,7 @@ export function FriendCard({ friend }: { friend: FriendLink }) {
   return (
     <InteractiveCard className="glass-panel group rounded-[1.6rem] p-5">
       <div className="flex items-start gap-4">
-        <div className="relative h-16 w-16 overflow-hidden rounded-2xl border border-border bg-white/45 dark:bg-white/5">
+        <div className="border-border relative h-16 w-16 overflow-hidden rounded-2xl border bg-white/45 dark:bg-white/5">
           {/* `img` keeps remote/local SVG avatars working without extra domain allowlists. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -24,10 +24,10 @@ export function FriendCard({ friend }: { friend: FriendLink }) {
         <div className="min-w-0 flex-1 space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 className="font-display text-xl font-semibold tracking-[-0.04em] text-foreground">
+              <h2 className="font-display text-foreground text-xl font-semibold tracking-[-0.04em]">
                 {friend.name}
               </h2>
-              <p className="mt-1 text-sm leading-7 text-muted">{friend.description}</p>
+              <p className="text-muted mt-1 text-sm leading-7">{friend.description}</p>
             </div>
             <div className="flex items-center gap-2">
               {friend.rss ? (
@@ -35,7 +35,7 @@ export function FriendCard({ friend }: { friend: FriendLink }) {
                   href={friend.rss}
                   target="_blank"
                   rel="noreferrer"
-                  className="rounded-full border border-border p-2 text-muted hover:border-accent/20 hover:text-accent-strong"
+                  className="border-border text-muted hover:border-accent/20 hover:text-accent-strong rounded-full border p-2"
                 >
                   <Rss className="h-4 w-4" />
                 </Link>
@@ -44,7 +44,7 @@ export function FriendCard({ friend }: { friend: FriendLink }) {
                 href={friend.url}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-full border border-border p-2 text-muted hover:border-accent/20 hover:text-accent-strong"
+                className="border-border text-muted hover:border-accent/20 hover:text-accent-strong rounded-full border p-2"
               >
                 <ExternalLink className="h-4 w-4" />
               </Link>
@@ -54,7 +54,7 @@ export function FriendCard({ friend }: { friend: FriendLink }) {
             {friend.tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full border border-border bg-white/35 px-3 py-1 text-xs text-muted dark:bg-white/5"
+                className="border-border text-muted rounded-full border bg-white/35 px-3 py-1 text-xs dark:bg-white/5"
               >
                 {tag}
               </span>

@@ -46,7 +46,7 @@ const languageAliases: Record<string, string> = {
 
 function normalizeLanguage(language?: string) {
   const normalizedLanguage = language?.toLowerCase();
-  return normalizedLanguage ? languageAliases[normalizedLanguage] ?? normalizedLanguage : "text";
+  return normalizedLanguage ? (languageAliases[normalizedLanguage] ?? normalizedLanguage) : "text";
 }
 
 async function renderHighlightedCode(code: string, language?: string) {
@@ -73,9 +73,13 @@ async function renderHighlightedCode(code: string, language?: string) {
 
 export async function CodeBlock({ code, language }: CodeBlockProps) {
   const normalizedLanguage = language?.toLowerCase();
-  const label = normalizedLanguage ? languageLabels[normalizedLanguage] ?? normalizedLanguage.toUpperCase() : "Code";
+  const label = normalizedLanguage
+    ? (languageLabels[normalizedLanguage] ?? normalizedLanguage.toUpperCase())
+    : "Code";
   const highlighted = await renderHighlightedCode(code, normalizedLanguage);
   const lineCount = code.split("\n").length;
 
-  return <CodeBlockFrame code={code} label={label} highlighted={highlighted} lineCount={lineCount} />;
+  return (
+    <CodeBlockFrame code={code} label={label} highlighted={highlighted} lineCount={lineCount} />
+  );
 }

@@ -51,7 +51,7 @@ export default async function PortfolioDetailPage({ params }: PortfolioDetailPag
         shareTitle={entry.title}
         sidebar={
           <div className="glass-panel rounded-[1.8rem] p-6">
-            <h2 className="font-medium text-accent-strong">项目链接</h2>
+            <h2 className="text-accent-strong font-medium">项目链接</h2>
             <div className="mt-5 grid gap-3">
               {entry.links.map((link) => (
                 <Link
@@ -59,11 +59,11 @@ export default async function PortfolioDetailPage({ params }: PortfolioDetailPag
                   href={link.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center justify-between rounded-[1.2rem] border border-border bg-white/35 px-4 py-3 text-sm text-foreground hover:border-accent/20 hover:text-accent-strong dark:bg-white/5"
+                  className="border-border text-foreground hover:border-accent/20 hover:text-accent-strong flex items-center justify-between rounded-[1.2rem] border bg-white/35 px-4 py-3 text-sm dark:bg-white/5"
                 >
                   <span>
                     {link.label}
-                    <span className="ml-2 text-xs text-muted">{link.type}</span>
+                    <span className="text-muted ml-2 text-xs">{link.type}</span>
                   </span>
                   <ExternalLink className="h-4 w-4" />
                 </Link>
@@ -86,25 +86,33 @@ export default async function PortfolioDetailPage({ params }: PortfolioDetailPag
               <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-white/10" />
             </div>
             <div className="space-y-6 p-7 sm:p-10">
-              <div className="flex flex-wrap items-center gap-3 text-sm text-muted">
-                <span className="rounded-full bg-accent-soft px-4 py-2 text-accent-strong">{entry.role}</span>
+              <div className="text-muted flex flex-wrap items-center gap-3 text-sm">
+                <span className="bg-accent-soft text-accent-strong rounded-full px-4 py-2">
+                  {entry.role}
+                </span>
                 <span>{entry.period}</span>
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-border px-4 py-2">
+                <span className="border-border inline-flex items-center gap-1.5 rounded-full border px-4 py-2">
                   <Sparkles className="h-4 w-4" />
-                  {entry.status === "active" ? "进行中" : entry.status === "planned" ? "筹备中" : "已归档"}
+                  {entry.status === "active"
+                    ? "进行中"
+                    : entry.status === "planned"
+                      ? "筹备中"
+                      : "已归档"}
                 </span>
               </div>
               <div className="space-y-4">
-                <h1 className="font-display text-4xl font-semibold tracking-[-0.05em] text-foreground sm:text-5xl">
+                <h1 className="font-display text-foreground text-4xl font-semibold tracking-[-0.05em] sm:text-5xl">
                   {entry.title}
                 </h1>
-                <p className="max-w-3xl text-base leading-8 text-muted sm:text-lg">{entry.summary}</p>
+                <p className="text-muted max-w-3xl text-base leading-8 sm:text-lg">
+                  {entry.summary}
+                </p>
               </div>
               <div className="flex flex-wrap gap-2">
                 {entry.stack.map((stackItem) => (
                   <span
                     key={stackItem}
-                    className="rounded-full border border-border bg-white/35 px-4 py-2 text-sm text-muted dark:bg-white/5"
+                    className="border-border text-muted rounded-full border bg-white/35 px-4 py-2 text-sm dark:bg-white/5"
                   >
                     {stackItem}
                   </span>
@@ -113,10 +121,10 @@ export default async function PortfolioDetailPage({ params }: PortfolioDetailPag
             </div>
           </header>
 
-          <section className="glass-panel rounded-[2.2rem] p-7 md:hidden sm:p-10">
+          <section className="glass-panel rounded-[2.2rem] p-7 sm:p-10 md:hidden">
             <div className="flex items-center justify-between gap-3">
-              <h2 className="font-medium text-accent-strong">项目链接</h2>
-              <span className="text-xs text-muted">手机端内联展示</span>
+              <h2 className="text-accent-strong font-medium">项目链接</h2>
+              <span className="text-muted text-xs">手机端内联展示</span>
             </div>
             <div className="mt-5 grid gap-3">
               {entry.links.map((link) => (
@@ -125,11 +133,11 @@ export default async function PortfolioDetailPage({ params }: PortfolioDetailPag
                   href={link.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center justify-between rounded-[1.2rem] border border-border bg-white/35 px-4 py-3 text-sm text-foreground hover:border-accent/20 hover:text-accent-strong dark:bg-white/5"
+                  className="border-border text-foreground hover:border-accent/20 hover:text-accent-strong flex items-center justify-between rounded-[1.2rem] border bg-white/35 px-4 py-3 text-sm dark:bg-white/5"
                 >
                   <span>
                     {link.label}
-                    <span className="ml-2 text-xs text-muted">{link.type}</span>
+                    <span className="text-muted ml-2 text-xs">{link.type}</span>
                   </span>
                   <ExternalLink className="h-4 w-4" />
                 </Link>

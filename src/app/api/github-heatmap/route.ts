@@ -47,7 +47,9 @@ function buildFallbackSvg(username: string) {
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const requestedUsername = searchParams.get("user")?.trim() ?? "";
-  const username = githubUsernamePattern.test(requestedUsername) ? requestedUsername : getDefaultGithubUsername();
+  const username = githubUsernamePattern.test(requestedUsername)
+    ? requestedUsername
+    : getDefaultGithubUsername();
   const upstreamUrl = `https://ghchart.rshah.org/${encodeURIComponent(username)}`;
 
   try {

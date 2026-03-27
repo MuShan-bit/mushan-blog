@@ -112,13 +112,18 @@ export default function RootLayout({
         </noscript>
       </head>
       <body className="min-h-full overflow-x-hidden">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <ColorThemeProvider>
             <MusicPlayerProvider>
               <div className="relative isolate flex min-h-screen flex-col">
                 <SiteBackground />
                 <SiteHeader />
-                <main className="relative z-10 flex-1 px-5 pb-20 pt-8 sm:px-8 lg:px-10">
+                <main className="relative z-10 flex-1 px-5 pt-8 pb-20 sm:px-8 lg:px-10">
                   <div className="mx-auto flex w-full max-w-7xl flex-col gap-12">{children}</div>
                 </main>
                 <SiteFooter />

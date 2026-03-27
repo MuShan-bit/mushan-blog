@@ -12,7 +12,7 @@ export function SiteAvatar({ className, sizes = "44px", priority = false }: Site
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-2xl border border-border/80 bg-white/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)] dark:bg-white/10",
+        "border-border/80 relative overflow-hidden rounded-2xl border bg-white/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)] dark:bg-white/10",
         className,
       )}
     >

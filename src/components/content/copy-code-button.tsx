@@ -41,7 +41,7 @@ export function CopyCodeButton({
         setCopied(true);
       }}
       className={cn(
-        "inline-flex items-center gap-2 rounded-full border border-border bg-white/50 px-3 py-1.5 text-xs font-medium text-muted",
+        "border-border text-muted inline-flex items-center gap-2 rounded-full border bg-white/50 px-3 py-1.5 text-xs font-medium",
         "hover:border-accent/20 hover:text-accent-strong dark:bg-white/5",
       )}
       aria-label={copied ? copiedAriaLabel : idleAriaLabel}

@@ -47,12 +47,12 @@ export default async function GalleryDetailPage({ params }: GalleryDetailPagePro
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-3xl space-y-4">
             <p className="section-kicker text-sm font-semibold">{album.theme}</p>
-            <h1 className="font-display text-4xl font-semibold tracking-[-0.05em] text-foreground sm:text-5xl">
+            <h1 className="font-display text-foreground text-4xl font-semibold tracking-[-0.05em] sm:text-5xl">
               {album.title}
             </h1>
-            <p className="text-base leading-8 text-muted sm:text-lg">{album.description}</p>
+            <p className="text-muted text-base leading-8 sm:text-lg">{album.description}</p>
           </div>
-          <Link href="/gallery" className="text-sm text-accent-strong hover:text-accent">
+          <Link href="/gallery" className="text-accent-strong hover:text-accent text-sm">
             返回相册首页
           </Link>
         </div>

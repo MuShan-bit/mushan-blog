@@ -5,13 +5,7 @@ export const profile: ProfileConfig = {
   headline: "独立开发者 ✿ 探索者",
   intro:
     "我喜欢把代码写成有温度的界面，也喜欢把生活里的风景、节奏和细小情绪慢慢存进页面。这个站点会记录我的技术实践、产品观察、摄影片段和正在生长中的作品。",
-  skills: [
-    "Next.js",
-    "React",
-    "TypeScript",
-    "Node.js",
-    "Tailwind CSS",
-  ],
+  skills: ["Next.js", "React", "TypeScript", "Node.js", "Tailwind CSS"],
   hobbies: ["配音", "听音乐", "编程", "策略性游戏"],
   contacts: [
     {

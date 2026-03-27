@@ -78,9 +78,7 @@ export function createPersonJsonLd(profile: ProfileConfig) {
   };
 }
 
-export function createBreadcrumbJsonLd(
-  items: Array<{ name: string; path: string }>,
-) {
+export function createBreadcrumbJsonLd(items: Array<{ name: string; path: string }>) {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",

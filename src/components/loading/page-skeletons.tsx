@@ -231,11 +231,20 @@ export function CollectionPageSkeleton({
     <>
       <PageIntroSkeleton badge={badge} actions={cardType === "portfolio"} />
 
-      <section className={cn("grid gap-5", withSidebar ? "lg:grid-cols-[minmax(0,1fr)_22rem]" : "lg:grid-cols-2")}>
+      <section
+        className={cn(
+          "grid gap-5",
+          withSidebar ? "lg:grid-cols-[minmax(0,1fr)_22rem]" : "lg:grid-cols-2",
+        )}
+      >
         <div
           className={cn(
             "grid gap-5",
-            withSidebar ? "lg:grid-cols-2" : cardType === "friend" ? "grid-cols-1 lg:col-span-2" : "lg:grid-cols-2",
+            withSidebar
+              ? "lg:grid-cols-2"
+              : cardType === "friend"
+                ? "grid-cols-1 lg:col-span-2"
+                : "lg:grid-cols-2",
           )}
         >
           {Array.from({ length: cards }, (_, index) => renderCard(index))}
@@ -274,7 +283,12 @@ export function ReaderPageSkeleton({
   return (
     <>
       <div className="relative">
-        <article className={cn("article-reader grid gap-6", hasSidebar ? "xl:grid-cols-[minmax(0,1fr)_20rem]" : "xl:grid-cols-1")}>
+        <article
+          className={cn(
+            "article-reader grid gap-6",
+            hasSidebar ? "xl:grid-cols-[minmax(0,1fr)_20rem]" : "xl:grid-cols-1",
+          )}
+        >
           <div className="min-w-0 space-y-6">
             <section className="glass-panel overflow-hidden rounded-[2.2rem]">
               <SkeletonBlock className="aspect-[16/8] w-full" />
@@ -455,7 +469,10 @@ export function AboutPageSkeleton() {
         <SkeletonBlock className="h-10 w-36 rounded-[1rem]" />
         <div className="mt-6 grid gap-4 lg:grid-cols-3">
           {[0, 1, 2].map((item) => (
-            <div key={item} className="rounded-[1.6rem] border border-border bg-white/35 p-5 dark:bg-white/5">
+            <div
+              key={item}
+              className="border-border rounded-[1.6rem] border bg-white/35 p-5 dark:bg-white/5"
+            >
               <SkeletonBlock className="h-8 w-24 rounded-[1rem]" />
               <div className="mt-3 space-y-3">
                 <SkeletonBlock className="h-4 w-full rounded-full" />
