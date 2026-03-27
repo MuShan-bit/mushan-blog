@@ -7,11 +7,11 @@ export const siteConfig = {
     { href: "/blog", label: "文章" },
     { href: "/portfolio", label: "作品集" },
     { href: "/gallery", label: "相册" },
-    { href: "/friends", label: "友联" },
+    { href: "/friends", label: "友链" },
     { href: "/about", label: "关于木杉" },
   ],
   author: {
     name: "木杉",
-    email: "hello@mushan.dev",
+    email: "mushanfu0@gmail.com",
   },
 };

@@ -5,10 +5,10 @@ import { friends } from "@/data/friends";
 import { createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
-  title: "友联",
+  title: "友链",
   description: "木杉收藏与推荐的个人站点、博客与摄影页面。",
   path: "/friends",
-  keywords: ["友联", "友情链接", "独立博客", "个人站"],
+  keywords: ["友链", "友情链接", "独立博客", "个人站"],
 });
 
 export default function FriendsPage() {
@@ -17,14 +17,14 @@ export default function FriendsPage() {
       <JsonLd
         data={createBreadcrumbJsonLd([
           { name: "首页", path: "/" },
-          { name: "友联", path: "/friends" },
+          { name: "友链", path: "/friends" },
         ])}
       />
 
       <PageIntro
         eyebrow="Friends"
-        title="喜欢的个人站点，也该有一个安静位置"
-        description="先以手动维护的精选列表开始，把那些同样认真经营内容、设计或摄影的朋友站点收纳进来。"
+        title="开往下一站的列车，从这里开始"
+        description="愿你在旅途中，邂逅不同的风景，聆听各异的故事。我在等风起，也在等你归来。"
       />
 
       <section className="grid gap-4">

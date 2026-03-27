@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Activity, ArrowRight, Clock3, Flag, Github, Handshake, Mail, Target, Wrench } from "lucide-react";
+import { Activity, ArrowRight, Flag, Github, Handshake, Mail, Target } from "lucide-react";
 import { AlbumCard } from "@/components/content/album-card";
 import { FriendCard } from "@/components/content/friend-card";
 import { PortfolioCard } from "@/components/content/portfolio-card";
@@ -33,9 +33,7 @@ export default async function Home() {
   const featuredAlbums = galleryAlbums.slice(0, 2);
   const featuredFriends = friends.slice(0, 3);
   const githubUsername = profile.github.replace(/^https?:\/\/github\.com\//i, "").replace(/\/$/, "");
-  const creatorKeywords = ["Next.js", "TypeScript", "MDX", "Supabase", "React Three Fiber", "SEO"];
-  const nextSteps = ["补更多真实项目案例", "替换 About 页真实素材", "继续收紧移动端与阅读体验细节"];
-  const linkTopics = ["独立博客", "设计", "开发", "摄影", "写作", "RSS"];
+  const nextSteps = ["拓展副业（咸鱼AI/开发服务，做自媒体公众号，区块链量化交易等）", "深度学习大模型/AI Agent领域", "将开源项目 TideDesk 初版开发完善"];
 
   const websiteJsonLd = {
     "@context": "https://schema.org",
@@ -118,34 +116,7 @@ export default async function Home() {
                 当前聚焦
               </div>
               <p className="mt-2 text-sm leading-7 text-muted">
-                把博客内容体验继续打磨稳，同时慢慢补齐真实作品案例、关于页叙事和相册内容。
-              </p>
-            </div>
-
-            <div className="rounded-[1.35rem] border border-border bg-white/35 p-4 dark:bg-white/5">
-              <div className="flex items-center gap-2 text-sm text-accent-strong">
-                <Wrench className="h-4 w-4" />
-                技术侧关键词
-              </div>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {creatorKeywords.map((keyword) => (
-                  <span
-                    key={keyword}
-                    className="rounded-full border border-border/80 bg-white/60 px-3 py-1.5 text-xs text-foreground/80 dark:bg-white/6"
-                  >
-                    {keyword}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="rounded-[1.35rem] border border-border bg-white/35 p-4 dark:bg-white/5">
-              <div className="flex items-center gap-2 text-sm text-accent-strong">
-                <Clock3 className="h-4 w-4" />
-                近期状态
-              </div>
-              <p className="mt-2 text-sm leading-7 text-muted">
-                首页结构已经稳定，主题切换、阅读体验和移动端细节还在持续收紧，内容也在慢慢补充进来。
+                最近正在公务员备考，闲暇时间利用AI打磨静态博客和个人开源项目
               </p>
             </div>
 
@@ -251,29 +222,9 @@ export default async function Home() {
 
             <div className="rounded-[1.4rem] border border-border bg-white/35 p-4 dark:bg-white/5">
               <p className="text-sm font-medium text-accent-strong">交换方式</p>
-              <ol className="mt-3 grid gap-3 text-sm leading-7 text-muted">
-                <li>先把本站加入你的友链页，或准备好交换意向。</li>
-                <li>把站点名、链接、简介、头像和 `RSS`（可选）发给我。</li>
-                <li>通过邮箱或 GitHub 联系，我会尽快回看并补上。</li>
-              </ol>
-            </div>
-
-            <div className="rounded-[1.4rem] border border-border bg-white/35 p-4 dark:bg-white/5">
-              <p className="text-sm font-medium text-accent-strong">小型推荐语</p>
-              <p className="mt-2 text-sm leading-7 text-muted">
-                我更偏爱有作者气味、长期更新的独立小站。技术、设计、摄影、写作都欢迎，比起“信息堆叠”，我更喜欢能看见个人表达的页面。
+              <p className="mt-3 grid gap-3 text-sm leading-7 text-muted">
+                先把本站加入你的友链页。把站点名、链接、简介、头像和 `RSS`（可选）发给我。通过邮箱或 GitHub 联系，我会尽快回看并补上。
               </p>
-            </div>
-
-            <div className="flex flex-wrap gap-2">
-              {linkTopics.map((topic) => (
-                <span
-                  key={topic}
-                  className="rounded-full border border-border/80 bg-white/55 px-3 py-1.5 text-xs text-foreground/82 dark:bg-white/6"
-                >
-                  {topic}
-                </span>
-              ))}
             </div>
 
             <div className="grid gap-3">

@@ -251,8 +251,8 @@ export function AboutScene({ keywords }: AboutSceneProps) {
         <PortraitField color={color} motionEnabled density={density} keywords={keywords} />
       </Canvas>
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between p-5 text-xs text-muted">
-        <span>3D.js 文本形象滚动视差</span>
-        <span>scroll + pointer parallax</span>
+        <span>MuShan</span>
+        <span>点点星光，汇聚名为成长的影子</span>
       </div>
     </div>
   );

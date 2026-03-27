@@ -30,7 +30,7 @@ const mobileMenuItems: MobileMenuItem[] = [
   { href: "/blog", label: "文章", icon: BookOpenText, description: "技术、设计、摄影与长期记录。" },
   { href: "/portfolio", label: "作品集", icon: Layers3, description: "项目背景、过程、成果与技术栈。" },
   { href: "/gallery", label: "相册", icon: Camera, description: "按主题展开的影像与摄影记录。" },
-  { href: "/friends", label: "友联", icon: Users, description: "喜欢的独立站点与朋友博客。" },
+  { href: "/friends", label: "友链", icon: Users, description: "喜欢的独立站点与朋友博客。" },
   { href: "/about", label: "关于木杉", icon: UserRound, description: "技能、兴趣与个人叙事页面。" },
   { href: "/rss.xml", label: "RSS", icon: Rss, description: "订阅最新文章更新。", exact: true },
 ];
@@ -129,10 +129,6 @@ export function SiteMobileNav() {
                       </Link>
                     );
                   })}
-                </div>
-
-                <div className="mobile-menu-note">
-                  <p className="text-sm text-foreground">滚动时顶栏会自动隐藏；上滑或回到顶部时会重新出现。</p>
                 </div>
               </aside>
             </div>,

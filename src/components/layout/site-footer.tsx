@@ -13,9 +13,6 @@ export function SiteFooter() {
               © {year} {siteConfig.author.name}
             </p>
             <p className="max-w-2xl text-sm leading-7 text-muted">{siteConfig.description}</p>
-            <p className="text-xs leading-6 text-muted">
-              静态生成于 Next.js，内容本地维护，保留 RSS 订阅与阅读体验优化。
-            </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">

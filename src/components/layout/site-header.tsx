@@ -95,7 +95,7 @@ export function SiteHeader() {
               <p className="font-display truncate text-lg font-semibold tracking-[-0.03em] text-foreground">
                 木杉的风与代码
               </p>
-              <p className="truncate text-sm text-muted">内容优先，设计留白，偶尔有一些流动感。</p>
+              <p className="truncate text-sm text-muted">记录代码、设计、影像与作品，也把生活的纹理留在页面里。</p>
             </div>
           </Link>
 

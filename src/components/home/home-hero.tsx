@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowDown, ArrowRight, Github, Sparkles } from "lucide-react";
+import { ArrowDown, ArrowRight } from "lucide-react";
 import { HomeThemeDots } from "@/components/home/home-theme-dots";
 import { profile } from "@/data/profile";
 import { siteConfig } from "@/lib/site";
@@ -10,13 +10,6 @@ type HomeHeroProps = {
   albumCount: number;
 };
 
-const homeModules = [
-  { href: "/blog", label: "文章" },
-  { href: "/portfolio", label: "作品集" },
-  { href: "/gallery", label: "相册" },
-  { href: "/friends", label: "友联" },
-];
-
 export function HomeHero({ postCount, portfolioCount, albumCount }: HomeHeroProps) {
   return (
     <section className="home-hero">
@@ -25,7 +18,7 @@ export function HomeHero({ postCount, portfolioCount, albumCount }: HomeHeroProp
           <div className="grid w-full gap-10 xl:grid-cols-[minmax(0,1.18fr)_minmax(19rem,0.82fr)] xl:gap-12">
             <div className="flex min-h-[22rem] flex-col justify-center xl:pt-6">
               <div className="home-hero__headline-wrap">
-                <div className="home-hero__backtype">Mushan</div>
+                <div className="home-hero__backtype">𝓜𝓾𝓢𝓱𝓪𝓷</div>
                 <div className="relative z-10 space-y-4">
                   <p className="section-kicker text-sm font-semibold">Mushan Personal Blog</p>
                   <p className="text-sm font-medium tracking-[0.02em] text-accent-strong">{profile.headline}</p>
@@ -66,47 +59,6 @@ export function HomeHero({ postCount, portfolioCount, albumCount }: HomeHeroProp
                 </div>
 
                 <HomeThemeDots />
-              </div>
-            </div>
-
-            <div className="home-hero__rail hidden xl:grid">
-              <div className="home-hero__panel">
-                <div className="flex items-center gap-3 text-accent-strong">
-                  <Sparkles className="h-5 w-5" />
-                  <p className="text-sm font-medium">个人叙事 / 当前气味</p>
-                </div>
-                <p className="mt-5 font-display text-3xl font-semibold tracking-[-0.05em] text-foreground">
-                  {profile.motto}
-                </p>
-                <p className="mt-4 text-sm leading-7 text-muted">{profile.headline}</p>
-                <Link
-                  href={profile.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-6 inline-flex items-center gap-2 text-sm text-accent-strong hover:text-accent"
-                >
-                  <Github className="h-4 w-4" />
-                  GitHub / mushan
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-
-              <div className="home-hero__panel home-hero__panel--muted">
-                <p className="text-sm font-medium text-accent-strong">内容优先的入口结构</p>
-                <p className="mt-3 text-sm leading-7 text-muted">
-                  首屏先建立“木杉”的识别和气质，向下滚动后再把文章、作品、相册和友联依次铺开，不让信息堆叠打断情绪。
-                </p>
-                <div className="mt-5 flex flex-wrap gap-2.5">
-                  {homeModules.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className="rounded-full border border-border/80 bg-white/44 px-3 py-1.5 text-xs font-medium text-foreground/78 hover:border-accent/24 hover:text-accent-strong dark:bg-white/8"
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
               </div>
             </div>
           </div>

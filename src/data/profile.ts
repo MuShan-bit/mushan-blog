@@ -2,7 +2,7 @@ import type { ProfileConfig } from "@/lib/types";
 
 export const profile: ProfileConfig = {
   name: "木杉",
-  headline: "独立开发者 / 设计驱动的前端工程师",
+  headline: "独立开发者 ✿ 探索者",
   intro:
     "我喜欢把代码写成有温度的界面，也喜欢把生活里的风景、节奏和细小情绪慢慢存进页面。这个站点会记录我的技术实践、产品观察、摄影片段和正在生长中的作品。",
   skills: [
@@ -11,24 +11,19 @@ export const profile: ProfileConfig = {
     "TypeScript",
     "Node.js",
     "Tailwind CSS",
-    "Motion Design",
-    "SEO",
-    "MDX 内容系统",
-    "Supabase",
-    "Three.js",
   ],
-  hobbies: ["街角摄影", "步行采样", "咖啡店写作", "UI 观察", "慢节奏旅行"],
+  hobbies: ["配音", "听音乐", "编程", "策略性游戏"],
   contacts: [
     {
       label: "邮箱",
-      value: "hello@mushan.dev",
-      href: "mailto:hello@mushan.dev",
+      value: "mushanfu0@gmail.com",
+      href: "mailto:mushanfu0@gmail.com",
       type: "email",
     },
     {
       label: "GitHub",
-      value: "github.com/mushan",
-      href: "https://github.com/mushan",
+      value: "github.com/mushan-bit",
+      href: "https://github.com/mushan-bit",
       type: "github",
     },
     {
@@ -38,7 +33,7 @@ export const profile: ProfileConfig = {
       type: "location",
     },
   ],
-  github: "https://github.com/mushan",
+  github: "https://github.com/mushan-bit",
   motto: "把理性结构写稳，再给它一点呼吸感。",
   portraitAsset: "/portrait/mushan-avatar.jpg",
   aboutKeywords: [
