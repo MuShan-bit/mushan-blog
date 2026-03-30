@@ -19,6 +19,25 @@ export type Post = {
   };
 };
 
+export type SeriesDefinition = {
+  title: string;
+  slug: string;
+  summary: string;
+  description: string;
+  cover: string;
+  featured?: boolean;
+  seoTitle?: string;
+  seoDescription?: string;
+  postSlugs: string[];
+};
+
+export type SeriesEntry = Omit<SeriesDefinition, "postSlugs"> & {
+  posts: Post[];
+  totalPosts: number;
+  totalReadingMinutes: number;
+  updatedAt: string;
+};
+
 export type TermSummary = {
   label: string;
   slug: string;

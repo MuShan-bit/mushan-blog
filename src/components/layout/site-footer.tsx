@@ -16,6 +16,9 @@ export function SiteFooter() {
           </div>
 
           <div className="text-muted flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+            <Link href="/series" className="hover:text-foreground">
+              专题
+            </Link>
             <Link href="/about" className="hover:text-foreground">
               关于木杉
             </Link>

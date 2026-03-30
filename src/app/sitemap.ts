@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import {
   getAllPortfolioEntries,
+  getAllSeries,
   getCategorySummaries,
   getPublishedPosts,
   getTagSummaries,
@@ -9,17 +10,20 @@ import { siteConfig } from "@/lib/site";
 import { galleryAlbums } from "@/data/gallery";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [posts, portfolioEntries, categories, tags] = await Promise.all([
+  const [posts, portfolioEntries, categories, tags, seriesEntries] = await Promise.all([
     getPublishedPosts(),
     getAllPortfolioEntries(),
     getCategorySummaries(),
     getTagSummaries(),
+    getAllSeries(),
   ]);
 
-  const staticPages = ["", "/blog", "/portfolio", "/gallery", "/friends", "/about"].map((path) => ({
-    url: `${siteConfig.siteUrl}${path}`,
-    lastModified: new Date(),
-  }));
+  const staticPages = ["", "/blog", "/series", "/portfolio", "/gallery", "/friends", "/about"].map(
+    (path) => ({
+      url: `${siteConfig.siteUrl}${path}`,
+      lastModified: new Date(),
+    }),
+  );
 
   return [
     ...staticPages,
@@ -42,6 +46,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...tags.map((tag) => ({
       url: `${siteConfig.siteUrl}/tags/${tag.slug}`,
       lastModified: new Date(),
+    })),
+    ...seriesEntries.map((series) => ({
+      url: `${siteConfig.siteUrl}/series/${series.slug}`,
+      lastModified: new Date(series.updatedAt),
     })),
   ];
 }

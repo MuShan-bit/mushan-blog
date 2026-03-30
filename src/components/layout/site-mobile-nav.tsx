@@ -28,6 +28,7 @@ type MobileMenuItem = {
 const mobileMenuItems: MobileMenuItem[] = [
   { href: "/", label: "首页", icon: House, description: "回到内容入口与站点总览。", exact: true },
   { href: "/blog", label: "文章", icon: BookOpenText, description: "技术、设计、摄影与长期记录。" },
+  { href: "/series", label: "专题", icon: Layers3, description: "按顺序组织起来的系列阅读内容。" },
   {
     href: "/portfolio",
     label: "作品集",

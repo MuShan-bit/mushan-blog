@@ -2,7 +2,12 @@ import Link from "next/link";
 import { Hash, Layers3 } from "lucide-react";
 import { PageIntro } from "@/components/content/page-intro";
 import { PostCard } from "@/components/content/post-card";
-import { getCategorySummaries, getPublishedPosts, getTagSummaries } from "@/lib/content";
+import {
+  getAllSeries,
+  getCategorySummaries,
+  getPublishedPosts,
+  getTagSummaries,
+} from "@/lib/content";
 import { createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/json-ld";
 
@@ -14,10 +19,11 @@ export const metadata = createPageMetadata({
 });
 
 export default async function BlogPage() {
-  const [posts, categories, tags] = await Promise.all([
+  const [posts, categories, tags, seriesEntries] = await Promise.all([
     getPublishedPosts(),
     getCategorySummaries(),
     getTagSummaries(),
+    getAllSeries(),
   ]);
 
   const breadcrumb = createBreadcrumbJsonLd([
@@ -78,6 +84,30 @@ export default async function BlogPage() {
               ))}
             </div>
           </div>
+
+          {seriesEntries.length ? (
+            <div className="glass-panel rounded-[1.8rem] p-6">
+              <div className="text-accent-strong flex items-center gap-3">
+                <Layers3 className="h-5 w-5" />
+                <h2 className="font-medium">专题</h2>
+              </div>
+              <div className="mt-5 grid gap-3">
+                {seriesEntries.map((series) => (
+                  <Link
+                    key={series.slug}
+                    href={`/series/${series.slug}`}
+                    className="border-border text-muted hover:border-accent/20 hover:text-accent-strong rounded-[1.2rem] border bg-white/35 p-4 text-sm dark:bg-white/5"
+                  >
+                    <p className="text-foreground font-medium">{series.title}</p>
+                    <p className="mt-2 leading-7">{series.summary}</p>
+                    <p className="mt-3 text-xs">
+                      {series.totalPosts} 篇 · 约 {series.totalReadingMinutes} 分钟
+                    </p>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ) : null}
         </aside>
       </section>
     </>

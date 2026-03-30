@@ -1,13 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CalendarDays, Clock3, Hash, Layers3 } from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarDays, Clock3, Hash, Layers3 } from "lucide-react";
 import { notFound } from "next/navigation";
 import { ViewCount } from "@/components/analytics/view-count";
 import { ArticleReaderShell } from "@/components/content/article-reader-shell";
 import { MdxContent } from "@/components/content/mdx-components";
 import { PostCard } from "@/components/content/post-card";
 import { JsonLd } from "@/components/seo/json-ld";
-import { getPostBySlug, getPublishedPosts } from "@/lib/content";
+import { getPostBySlug, getPublishedPosts, getSeriesNavigationForPost } from "@/lib/content";
 import { createArticleJsonLd, createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo";
 import { formatDate, slugify } from "@/lib/utils";
 
@@ -48,6 +48,8 @@ export default async function PostPage({ params }: PostPageProps) {
     notFound();
   }
 
+  const seriesNavigation = await getSeriesNavigationForPost(post.slug);
+
   const relatedPosts = (await getPublishedPosts())
     .filter((entry) => entry.slug !== post.slug)
     .filter(
@@ -71,6 +73,52 @@ export default async function PostPage({ params }: PostPageProps) {
         shareTitle={post.title}
         sidebar={
           <>
+            {seriesNavigation ? (
+              <div className="glass-panel rounded-[1.8rem] p-6">
+                <div className="text-accent-strong flex items-center gap-3">
+                  <Layers3 className="h-5 w-5" />
+                  <h2 className="font-medium">当前专题</h2>
+                </div>
+
+                <div className="mt-5 space-y-4">
+                  <div>
+                    <Link
+                      href={`/series/${seriesNavigation.series.slug}`}
+                      className="text-foreground hover:text-accent-strong font-medium"
+                    >
+                      {seriesNavigation.series.title}
+                    </Link>
+                    <p className="text-muted mt-2 text-sm leading-7">
+                      这是该专题的第 {seriesNavigation.index + 1} 篇，共{" "}
+                      {seriesNavigation.series.totalPosts} 篇。
+                    </p>
+                  </div>
+
+                  <div className="grid gap-2">
+                    {seriesNavigation.series.posts.map((entry, index) => {
+                      const isCurrent = entry.slug === post.slug;
+
+                      return (
+                        <Link
+                          key={entry.slug}
+                          href={`/blog/${entry.slug}`}
+                          aria-current={isCurrent ? "page" : undefined}
+                          className={`rounded-[1.2rem] border p-3 text-sm transition ${
+                            isCurrent
+                              ? "border-accent/30 bg-accent-soft text-accent-strong"
+                              : "border-border text-muted hover:border-accent/20 hover:text-accent-strong bg-white/35 dark:bg-white/5"
+                          }`}
+                        >
+                          <span className="block text-xs opacity-75">第 {index + 1} 篇</span>
+                          <span className="mt-1 block leading-6">{entry.title}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            ) : null}
+
             <div className="glass-panel rounded-[1.8rem] p-6">
               <div className="text-accent-strong flex items-center gap-3">
                 <Layers3 className="h-5 w-5" />
@@ -139,6 +187,14 @@ export default async function PostPage({ params }: PostPageProps) {
           </div>
           <div className="space-y-6 p-7 sm:p-10">
             <div className="text-muted flex flex-wrap items-center gap-3 text-sm">
+              {seriesNavigation ? (
+                <Link
+                  href={`/series/${seriesNavigation.series.slug}`}
+                  className="bg-accent-soft text-accent-strong rounded-full px-4 py-2"
+                >
+                  {seriesNavigation.series.title} · 第 {seriesNavigation.index + 1} 篇
+                </Link>
+              ) : null}
               <Link
                 href={`/categories/${slugify(post.category)}`}
                 className="bg-accent-soft text-accent-strong rounded-full px-4 py-2"
@@ -181,6 +237,71 @@ export default async function PostPage({ params }: PostPageProps) {
           <MdxContent source={post.content} />
         </section>
       </ArticleReaderShell>
+
+      {seriesNavigation ? (
+        <section className="site-grid">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="section-kicker text-sm font-semibold">Series Navigation</p>
+              <h2 className="font-display text-foreground mt-2 text-3xl font-semibold tracking-[-0.05em]">
+                顺着专题继续读下去
+              </h2>
+            </div>
+            <Link
+              href={`/series/${seriesNavigation.series.slug}`}
+              className="text-accent-strong hover:text-accent text-sm"
+            >
+              查看专题全貌
+            </Link>
+          </div>
+
+          <div className="grid gap-5 lg:grid-cols-2">
+            {seriesNavigation.previousPost ? (
+              <Link
+                href={`/blog/${seriesNavigation.previousPost.slug}`}
+                className="glass-panel hover:border-accent/20 rounded-[1.8rem] border border-transparent p-6 transition"
+              >
+                <p className="text-muted inline-flex items-center gap-2 text-sm">
+                  <ArrowLeft className="h-4 w-4" />
+                  上一篇
+                </p>
+                <h3 className="font-display text-foreground mt-4 text-2xl font-semibold tracking-[-0.04em]">
+                  {seriesNavigation.previousPost.title}
+                </h3>
+                <p className="text-muted mt-3 text-sm leading-7">
+                  {seriesNavigation.previousPost.summary}
+                </p>
+              </Link>
+            ) : (
+              <div className="glass-panel rounded-[1.8rem] p-6">
+                <p className="text-muted text-sm">这是这个专题的第一篇，已经到起点了。</p>
+              </div>
+            )}
+
+            {seriesNavigation.nextPost ? (
+              <Link
+                href={`/blog/${seriesNavigation.nextPost.slug}`}
+                className="glass-panel hover:border-accent/20 rounded-[1.8rem] border border-transparent p-6 transition"
+              >
+                <p className="text-muted inline-flex items-center gap-2 text-sm">
+                  下一篇
+                  <ArrowRight className="h-4 w-4" />
+                </p>
+                <h3 className="font-display text-foreground mt-4 text-2xl font-semibold tracking-[-0.04em]">
+                  {seriesNavigation.nextPost.title}
+                </h3>
+                <p className="text-muted mt-3 text-sm leading-7">
+                  {seriesNavigation.nextPost.summary}
+                </p>
+              </Link>
+            ) : (
+              <div className="glass-panel rounded-[1.8rem] p-6">
+                <p className="text-muted text-sm">这是这个专题的最后一篇，已经读到终点了。</p>
+              </div>
+            )}
+          </div>
+        </section>
+      ) : null}
 
       {relatedPosts.length ? (
         <section className="site-grid">

@@ -5,6 +5,7 @@ import { AlbumCard } from "@/components/content/album-card";
 import { FriendCard } from "@/components/content/friend-card";
 import { PortfolioCard } from "@/components/content/portfolio-card";
 import { PostCard } from "@/components/content/post-card";
+import { SeriesCard } from "@/components/content/series-card";
 import { HomeHero } from "@/components/home/home-hero";
 import { HomeScrollReveal } from "@/components/home/home-scroll-reveal";
 import { TelepathyContactButton } from "@/components/home/telepathy-contact-button";
@@ -16,6 +17,7 @@ import {
   getAllPortfolioEntries,
   getFeaturedPortfolioEntries,
   getFeaturedPosts,
+  getFeaturedSeries,
   getPublishedPosts,
 } from "@/lib/content";
 import { createPageMetadata } from "@/lib/seo";
@@ -29,12 +31,13 @@ export const metadata = createPageMetadata({
 });
 
 export default async function Home() {
-  const [allPosts, allPortfolioEntries, featuredPosts, featuredPortfolioEntries] =
+  const [allPosts, allPortfolioEntries, featuredPosts, featuredPortfolioEntries, featuredSeries] =
     await Promise.all([
       getPublishedPosts(),
       getAllPortfolioEntries(),
       getFeaturedPosts(3),
       getFeaturedPortfolioEntries(2),
+      getFeaturedSeries(2),
     ]);
   const featuredAlbums = galleryAlbums.slice(0, 2);
   const featuredFriends = friends.slice(0, 3);
@@ -91,6 +94,31 @@ export default async function Home() {
           ))}
         </div>
       </HomeScrollReveal>
+
+      {featuredSeries.length ? (
+        <HomeScrollReveal className="site-grid" delay={55}>
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="section-kicker text-sm font-semibold">Series</p>
+              <h2 className="font-display text-foreground mt-2 text-3xl font-semibold tracking-[-0.05em]">
+                适合一口气读下去的专题
+              </h2>
+            </div>
+            <Link
+              href="/series"
+              className="text-accent-strong hover:text-accent inline-flex items-center gap-2 text-sm"
+            >
+              浏览全部专题
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <div className="grid gap-5 lg:grid-cols-2">
+            {featuredSeries.map((series) => (
+              <SeriesCard key={series.slug} series={series} />
+            ))}
+          </div>
+        </HomeScrollReveal>
+      ) : null}
 
       <HomeScrollReveal className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]" delay={80}>
         <div className="site-grid">

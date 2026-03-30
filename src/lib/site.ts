@@ -5,6 +5,7 @@ export const siteConfig = {
   siteUrl: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://mushan.blog").replace(/\/$/, ""),
   nav: [
     { href: "/blog", label: "文章" },
+    { href: "/series", label: "专题" },
     { href: "/portfolio", label: "作品集" },
     { href: "/gallery", label: "相册" },
     { href: "/friends", label: "友链" },

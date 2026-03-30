@@ -16,9 +16,11 @@ export function slugify(value: string) {
   return value
     .trim()
     .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^\p{Letter}\p{Number}-]+/gu, "")
-    .replace(/-{2,}/g, "-");
+    .normalize("NFKC")
+    .replace(/[\s/]+/g, "-")
+    .replace(/[^\p{L}\p{N}-]+/gu, "")
+    .replace(/-{2,}/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
 export function formatViewCount(value: number) {

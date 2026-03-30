@@ -4,7 +4,8 @@ import path from "node:path";
 import matter from "gray-matter";
 import readingTime from "reading-time";
 import { z } from "zod";
-import type { PortfolioEntry, Post, TermSummary } from "@/lib/types";
+import { seriesDefinitions } from "@/data/series";
+import type { PortfolioEntry, Post, SeriesEntry, TermSummary } from "@/lib/types";
 import { slugify, sortByDateDesc } from "@/lib/utils";
 
 const postsDirectory = path.join(process.cwd(), "content", "posts");
@@ -163,4 +164,95 @@ export const getPostsByCategorySlug = cache(async (slug: string) => {
 export const getPostsByTagSlug = cache(async (slug: string) => {
   const posts = await getPublishedPosts();
   return posts.filter((post) => post.tags.some((tag) => slugify(tag) === slug));
+});
+
+export const getAllSeries = cache(async (): Promise<SeriesEntry[]> => {
+  const posts = await getPublishedPosts();
+  const postsBySlug = new Map(posts.map((post) => [post.slug, post]));
+
+  const entries = seriesDefinitions.reduce<SeriesEntry[]>((collection, series) => {
+    if (series.postSlugs.length === 0) {
+      return collection;
+    }
+
+    const orderedPosts = series.postSlugs.map((postSlug) => {
+      const post = postsBySlug.get(postSlug);
+
+      if (!post) {
+        throw new Error(`Series "${series.slug}" references unknown post slug "${postSlug}".`);
+      }
+
+      return post;
+    });
+
+    const updatedAt = orderedPosts.reduce((latest, post) => {
+      const candidate = post.updatedAt ?? post.publishedAt;
+
+      return new Date(candidate).getTime() > new Date(latest).getTime() ? candidate : latest;
+    }, orderedPosts[0].updatedAt ?? orderedPosts[0].publishedAt);
+
+    collection.push({
+      title: series.title,
+      slug: series.slug,
+      summary: series.summary,
+      description: series.description,
+      cover: series.cover,
+      featured: series.featured,
+      seoTitle: series.seoTitle,
+      seoDescription: series.seoDescription,
+      posts: orderedPosts,
+      totalPosts: orderedPosts.length,
+      totalReadingMinutes: orderedPosts.reduce(
+        (total, post) => total + post.readingTime.minutes,
+        0,
+      ),
+      updatedAt,
+    });
+
+    return collection;
+  }, []);
+
+  return entries.sort((a, b) => {
+    if (a.featured !== b.featured) {
+      return a.featured ? -1 : 1;
+    }
+
+    return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+  });
+});
+
+export const getFeaturedSeries = cache(async (limit = 2) => {
+  const series = await getAllSeries();
+  return series.filter((entry) => entry.featured).slice(0, limit);
+});
+
+export const getSeriesBySlug = cache(async (slug: string) => {
+  const series = await getAllSeries();
+  return series.find((entry) => entry.slug === slug) ?? null;
+});
+
+export const getSeriesForPost = cache(async (postSlug: string) => {
+  const series = await getAllSeries();
+  return series.find((entry) => entry.posts.some((post) => post.slug === postSlug)) ?? null;
+});
+
+export const getSeriesNavigationForPost = cache(async (postSlug: string) => {
+  const series = await getSeriesForPost(postSlug);
+
+  if (!series) {
+    return null;
+  }
+
+  const index = series.posts.findIndex((post) => post.slug === postSlug);
+
+  if (index < 0) {
+    return null;
+  }
+
+  return {
+    series,
+    index,
+    previousPost: index > 0 ? series.posts[index - 1] : null,
+    nextPost: index < series.posts.length - 1 ? series.posts[index + 1] : null,
+  };
 });
