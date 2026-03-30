@@ -210,7 +210,7 @@ export default async function Home() {
             <div>
               <p className="section-kicker text-sm font-semibold">Friends</p>
               <h2 className="font-display text-foreground mt-2 text-3xl font-semibold tracking-[-0.05em]">
-                也想把喜欢的个人站点放进来
+                开往下一站的列车，从这里开始
               </h2>
             </div>
             <Link
