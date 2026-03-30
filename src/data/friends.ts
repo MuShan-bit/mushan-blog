@@ -5,7 +5,7 @@ export const friends: FriendLink[] = [
   {
     name: "Orion Chen's Blog",
     url: "https://www.orionchen.me",
-    avatar: "/art/friend-link/orion-chen.jpg",
+    avatar: resolveOssAssetUrl("friend-link/orion-chen.jpg"),
     description: "终端风博客，记录技术、生活、思考",
     tags: ["前端", "面经", "思考", "网络", "AI"],
     featured: true,
@@ -22,14 +22,14 @@ export const friends: FriendLink[] = [
   {
     name: "Obsidianlyg's Blog",
     url: "https://www.obsidianlyg.top/",
-    avatar: "/art/friend-link/obsidianlyg.png",
+    avatar: resolveOssAssetUrl("friend-link/obsidianlyg.png"),
     description: "技术分享和AI实践",
     tags: ["技术分享", "AI", "后端开发", "工具分享"],
   },
   {
     name: "Haog's Blog",
     url: "https://2768085634.github.io/",
-    avatar: "/art/friend-link/haog.png",
+    avatar: resolveOssAssetUrl("friend-link/haog.png"),
     description: "二次元风格的技术分享博客",
     tags: ["算法", "后端开发", "Python", "爬虫"],
     featured: true,
