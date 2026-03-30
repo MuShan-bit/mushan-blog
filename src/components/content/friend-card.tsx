@@ -17,7 +17,7 @@ export function FriendCard({ friend }: { friend: FriendLink }) {
             height={64}
             loading="lazy"
             decoding="async"
-            referrerPolicy="no-referrer"
+            referrerPolicy="strict-origin-when-cross-origin"
             className="h-full w-full object-cover"
           />
         </div>
