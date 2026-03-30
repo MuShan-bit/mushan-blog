@@ -32,12 +32,14 @@ Set these variables in Vercel:
 
 ```env
 NEXT_PUBLIC_SITE_URL=https://your-domain-or-project.vercel.app
+NEXT_PUBLIC_OSS_BASE_URL=https://image-blog-mushan.oss-cn-beijing.aliyuncs.com
 SUPABASE_URL=https://your-project-ref.supabase.co
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_or_secret_key
 ```
 
 If you later bind a custom domain, update `NEXT_PUBLIC_SITE_URL` to that final domain.
+If your OSS domain changes later, only update `NEXT_PUBLIC_OSS_BASE_URL`.
 
 ### 4. Deployment behavior
 

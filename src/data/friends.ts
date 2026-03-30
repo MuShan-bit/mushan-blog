@@ -1,4 +1,5 @@
 import type { FriendLink } from "@/lib/types";
+import { resolveOssAssetUrl } from "@/lib/assets";
 
 export const friends: FriendLink[] = [
   {
@@ -12,7 +13,7 @@ export const friends: FriendLink[] = [
   {
     name: "txuw🌺星空笔记",
     url: "https://blog.txuw.top/",
-    avatar: "/art/friend-link/txuw.svg",
+    avatar: resolveOssAssetUrl("friend-link/txuw.svg"),
     description: "记录独立开发、运维实战，服务器组网",
     tags: ["独立", "设计模式", "服务器", "游戏"],
     rss: "https://blog.txuw.top/rss.xml",
