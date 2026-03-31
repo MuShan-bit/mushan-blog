@@ -1,0 +1,27 @@
+services:
+  web:
+    container_name: mushan-blog
+    image: mushan-blog:local
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runner
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+        NEXT_PUBLIC_OSS_BASE_URL: ${NEXT_PUBLIC_OSS_BASE_URL:-https://image-blog-mushan.oss-cn-beijing.aliyuncs.com}
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-}
+    env_file:
+      - .env.local
+    environment:
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      PORT: 3000
+      NEXT_TELEMETRY_DISABLED: 1
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+      NEXT_PUBLIC_OSS_BASE_URL: ${NEXT_PUBLIC_OSS_BASE_URL:-https://image-blog-mushan.oss-cn-beijing.aliyuncs.com}
+      NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-}
+      SUPABASE_URL: ${SUPABASE_URL:-}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY:-}
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
