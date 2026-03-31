@@ -13,7 +13,7 @@ export const colorPalettes: ColorPalette[] = [
   {
     id: "verdant",
     name: "森雾绿",
-    description: "清新、柔和，适合长时间阅读，也是当前这套站点的主气质。",
+    description: "清新、柔和，适合长时间阅读。",
     swatches: ["#2b8c6b", "#7bdfb2", "#74c6ff"],
   },
   {
