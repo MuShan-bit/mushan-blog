@@ -2529,6 +2529,21 @@ body[data-gallery-lightbox="open"] .site-footer {
   pointer-events: auto;
 }
 
+.music-player-dock__frame {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0.01;
+  pointer-events: none;
+}
+
+.music-player-dock__frame iframe {
+  display: block;
+}
+
 .music-player-dock__meta {
   position: absolute;
   left: 0;

@@ -4,7 +4,6 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useRef,
   useState,
@@ -14,52 +13,26 @@ import {
 export type MusicTrack = {
   title: string;
   artist: string;
-  src: string;
+  playerSrc: string;
 };
 
 type MusicPlayerContextValue = {
   currentTrack: MusicTrack;
+  iframeKey: number;
+  iframeSrc: string | null;
   isLoading: boolean;
   isPlaying: boolean;
+  hasMultipleTracks: boolean;
   togglePlayback: () => Promise<void>;
   playRandomTrack: () => Promise<void>;
+  handleFrameLoad: () => void;
 };
 
 const playlist: MusicTrack[] = [
   {
-    title: "森林自习室",
-    artist: "森水垚, 沐灵仙",
-    src: "/music/forest-study-room.mp3",
-  },
-  {
-    title: "海的回响",
-    artist: "森水垚, 沐灵仙, 尚衡",
-    src: "/music/sea-echoes.mp3",
-  },
-  {
-    title: "萤火虫与小猫",
-    artist: "沐灵仙",
-    src: "/music/fireflies-and-kitten.mp3",
-  },
-  {
-    title: "七年情书",
-    artist: "沐灵仙, 森水垚",
-    src: "/music/seven-year-love-letter.mp3",
-  },
-  {
-    title: "闯入仙境",
-    artist: "沐灵仙, 森水垚",
-    src: "/music/wander-into-wonderland.mp3",
-  },
-  {
-    title: "午后阳光",
-    artist: "睡前音乐盒",
-    src: "/music/afternoon-sunshine-ocean-piano.mp3",
-  },
-  {
-    title: "The Long Wait",
-    artist: "Relaxian",
-    src: "/music/long-wait-rain-sounds.mp3",
+    title: "专注歌单",
+    artist: "网易云音乐外链播放器",
+    playerSrc: "https://music.163.com/outchain/player?type=0&id=17854205629&auto=1&height=32",
   },
 ];
 
@@ -79,133 +52,74 @@ function pickRandomIndex(length: number, currentIndex: number) {
   return nextIndex;
 }
 
+function buildPlayerSrc(track: MusicTrack, nonce: number) {
+  const url = new URL(track.playerSrc);
+  url.searchParams.set("_ts", String(nonce));
+  return url.toString();
+}
+
 export function MusicPlayerProvider({ children }: { children: ReactNode }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [iframeKey, setIframeKey] = useState(0);
+  const [iframeSrc, setIframeSrc] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   const currentIndexRef = useRef(0);
-  const playRandomRef = useRef<() => Promise<void>>(() => Promise.resolve());
+  const frameNonceRef = useRef(0);
 
-  const playTrack = useCallback(async (nextIndex: number) => {
-    const audio = audioRef.current;
-
-    if (!audio) {
-      return;
-    }
-
+  const mountTrack = useCallback((nextIndex: number) => {
     currentIndexRef.current = nextIndex;
     setCurrentIndex(nextIndex);
+    frameNonceRef.current += 1;
+    setIframeKey(frameNonceRef.current);
     setIsLoading(true);
-    audio.pause();
-    audio.src = playlist[nextIndex].src;
-    audio.currentTime = 0;
-    audio.load();
-
-    try {
-      await audio.play();
-    } catch (error) {
-      console.warn("Unable to play the selected track.", error);
-      setIsLoading(false);
-      setIsPlaying(false);
-    }
+    setIsPlaying(false);
+    setIframeSrc(buildPlayerSrc(playlist[nextIndex], frameNonceRef.current));
   }, []);
 
   const playRandomTrack = useCallback(async () => {
     const nextIndex = pickRandomIndex(playlist.length, currentIndexRef.current);
-    await playTrack(nextIndex);
-  }, [playTrack]);
+    mountTrack(nextIndex);
+  }, [mountTrack]);
 
   const togglePlayback = useCallback(async () => {
-    const audio = audioRef.current;
-
-    if (!audio) {
+    if (iframeSrc) {
+      setIframeSrc(null);
+      setIsLoading(false);
+      setIsPlaying(false);
       return;
     }
 
-    if (isPlaying) {
-      audio.pause();
-      return;
-    }
+    mountTrack(currentIndexRef.current);
+  }, [iframeSrc, mountTrack]);
 
-    setIsLoading(true);
-
-    try {
-      await audio.play();
-    } catch (error) {
-      console.warn("Unable to resume playback.", error);
-      setIsLoading(false);
-      setIsPlaying(false);
-    }
-  }, [isPlaying]);
-
-  useEffect(() => {
-    playRandomRef.current = playRandomTrack;
-  }, [playRandomTrack]);
-
-  useEffect(() => {
-    const audio = new Audio(playlist[0].src);
-    audio.preload = "metadata";
-    audio.loop = false;
-    audio.volume = 0.58;
-    audioRef.current = audio;
-
-    const handlePlay = () => {
-      setIsPlaying(true);
-      setIsLoading(false);
-    };
-
-    const handlePause = () => {
-      setIsPlaying(false);
-      setIsLoading(false);
-    };
-
-    const handleCanPlay = () => {
-      setIsLoading(false);
-    };
-
-    const handleWaiting = () => {
-      setIsLoading(true);
-    };
-
-    const handleError = () => {
-      setIsLoading(false);
-      setIsPlaying(false);
-    };
-
-    const handleEnded = () => {
-      void playRandomRef.current();
-    };
-
-    audio.addEventListener("play", handlePlay);
-    audio.addEventListener("pause", handlePause);
-    audio.addEventListener("canplay", handleCanPlay);
-    audio.addEventListener("waiting", handleWaiting);
-    audio.addEventListener("error", handleError);
-    audio.addEventListener("ended", handleEnded);
-
-    return () => {
-      audio.pause();
-      audio.removeEventListener("play", handlePlay);
-      audio.removeEventListener("pause", handlePause);
-      audio.removeEventListener("canplay", handleCanPlay);
-      audio.removeEventListener("waiting", handleWaiting);
-      audio.removeEventListener("error", handleError);
-      audio.removeEventListener("ended", handleEnded);
-      audio.src = "";
-      audioRef.current = null;
-    };
+  const handleFrameLoad = useCallback(() => {
+    setIsLoading(false);
+    setIsPlaying(true);
   }, []);
 
   const value = useMemo<MusicPlayerContextValue>(
     () => ({
       currentTrack: playlist[currentIndex],
+      iframeKey,
+      iframeSrc,
       isLoading,
       isPlaying,
+      hasMultipleTracks: playlist.length > 1,
       togglePlayback,
       playRandomTrack,
+      handleFrameLoad,
     }),
-    [currentIndex, isLoading, isPlaying, playRandomTrack, togglePlayback],
+    [
+      currentIndex,
+      handleFrameLoad,
+      iframeKey,
+      iframeSrc,
+      isLoading,
+      isPlaying,
+      playRandomTrack,
+      togglePlayback,
+    ],
   );
 
   return <MusicPlayerContext.Provider value={value}>{children}</MusicPlayerContext.Provider>;
