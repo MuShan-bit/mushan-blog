@@ -1,0 +1,48 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: mushan-blog
+resources:
+  - ../../base
+patches:
+  - target:
+      kind: Ingress
+      name: mushan-blog
+    patch: |-
+      $patch: delete
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: mushan-blog
+  - target:
+      kind: Deployment
+      name: mushan-blog
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+      - op: replace
+        path: /spec/template/spec/containers/0/image
+        value: mushan-blog:local
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: IfNotPresent
+  - target:
+      kind: ConfigMap
+      name: mushan-blog-config
+    patch: |-
+      - op: replace
+        path: /data/NEXT_PUBLIC_SITE_URL
+        value: http://127.0.0.1:3000
+      - op: replace
+        path: /data/NEXT_PUBLIC_SUPABASE_URL
+        value: ""
+      - op: replace
+        path: /data/SUPABASE_URL
+        value: ""
+  - target:
+      kind: Secret
+      name: mushan-blog-secrets
+    patch: |-
+      - op: replace
+        path: /stringData/SUPABASE_SERVICE_ROLE_KEY
+        value: ""

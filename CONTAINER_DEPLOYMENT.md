@@ -6,7 +6,8 @@ This project includes:
 
 - `Dockerfile`: production image for Next.js standalone output
 - `docker-compose.yaml`: local or single-host deployment
-- `k8s/`: Kubernetes manifests
+- `k8s/base`: base Kubernetes manifests
+- `k8s/overlays/local`: local Kubernetes overlay
 
 ## Build the image
 
@@ -48,15 +49,60 @@ docker push your-registry.example.com/mushan-blog:latest
 
 2. Update these files:
 
-- `k8s/deployment.yaml`: replace image address
-- `k8s/configmap.yaml`: replace domain and public env vars
-- `k8s/secret.yaml`: replace `SUPABASE_SERVICE_ROLE_KEY`
-- `k8s/ingress.yaml`: replace host and TLS secret name
+- `k8s/base/deployment.yaml`: replace image address
+- `k8s/base/configmap.yaml`: replace domain and public env vars
+- `k8s/base/secret.yaml`: replace `SUPABASE_SERVICE_ROLE_KEY`
+- `k8s/base/ingress.yaml`: replace host and TLS secret name
 
 3. Apply manifests:
 
 ```bash
 kubectl apply -k k8s
+```
+
+## Local Kubernetes quick start
+
+If you are using a local cluster such as OrbStack and do not have an ingress controller installed, use the local overlay:
+
+```bash
+docker build -t mushan-blog:local .
+kubectl apply -k k8s/overlays/local
+kubectl -n mushan-blog rollout status deployment/mushan-blog
+kubectl -n mushan-blog get pods,svc
+kubectl -n mushan-blog port-forward svc/mushan-blog 3000:80
+```
+
+Then open:
+
+- `http://127.0.0.1:3000`
+- `http://127.0.0.1:3000/api/health`
+
+The local overlay does three things for easier local validation:
+
+- removes the `Ingress` resource because the current local cluster may not have any `IngressClass`
+- switches the image to `mushan-blog:local`
+- clears Supabase runtime secrets so the site can start in degraded mode without a real Supabase backend
+
+## Validate the Kubernetes deployment
+
+For local validation:
+
+```bash
+kubectl -n mushan-blog rollout status deployment/mushan-blog
+kubectl -n mushan-blog get pods,svc,endpoints -o wide
+kubectl -n mushan-blog port-forward svc/mushan-blog 3000:80
+```
+
+Then in another terminal:
+
+```bash
+curl http://127.0.0.1:3000/api/health
+```
+
+If the deployment is healthy, the API should return JSON like:
+
+```json
+{ "status": "ok", "timestamp": "2026-04-08T16:12:09.234Z" }
 ```
 
 ## Important note about `NEXT_PUBLIC_*`
