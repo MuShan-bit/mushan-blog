@@ -1,8 +1,11 @@
 .git
 .gitignore
+.github
 .idea
 .next
 .vercel
+ACR_GITHUB_ACTIONS.md
+CONTAINER_DEPLOYMENT.md
 coverage
 node_modules
 npm-debug.log*

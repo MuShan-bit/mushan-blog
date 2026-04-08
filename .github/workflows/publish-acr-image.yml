@@ -1,0 +1,167 @@
+name: Build And Push Image To ACR
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: publish-acr-image-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  ALIYUN_CLI_VERSION: "3.3.4"
+
+jobs:
+  build-and-push:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Validate required GitHub variables
+        env:
+          ACR_LOGIN_SERVER: ${{ vars.ACR_LOGIN_SERVER }}
+          ACR_REGION_ID: ${{ vars.ACR_REGION_ID }}
+          ACR_INSTANCE_ID: ${{ vars.ACR_INSTANCE_ID }}
+          ACR_NAMESPACE: ${{ vars.ACR_NAMESPACE }}
+          ACR_REPOSITORY: ${{ vars.ACR_REPOSITORY }}
+          ALIYUN_OIDC_PROVIDER_ARN: ${{ vars.ALIYUN_OIDC_PROVIDER_ARN }}
+          ALIYUN_ROLE_ARN: ${{ vars.ALIYUN_ROLE_ARN }}
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+          NEXT_PUBLIC_OSS_BASE_URL: ${{ vars.NEXT_PUBLIC_OSS_BASE_URL }}
+        run: |
+          set -euo pipefail
+
+          required_vars=(
+            ACR_LOGIN_SERVER
+            ACR_REGION_ID
+            ACR_INSTANCE_ID
+            ACR_NAMESPACE
+            ACR_REPOSITORY
+            ALIYUN_OIDC_PROVIDER_ARN
+            ALIYUN_ROLE_ARN
+            NEXT_PUBLIC_SITE_URL
+            NEXT_PUBLIC_OSS_BASE_URL
+          )
+
+          missing=()
+
+          for key in "${required_vars[@]}"; do
+            if [ -z "${!key:-}" ]; then
+              missing+=("${key}")
+            fi
+          done
+
+          if [ "${#missing[@]}" -gt 0 ]; then
+            printf 'Missing required GitHub repository variables: %s\n' "${missing[*]}" >&2
+            exit 1
+          fi
+
+      - name: Configure Alibaba Cloud credentials with OIDC
+        uses: aliyun/configure-aliyun-credentials-action@1e5248c8d5d93a8781ac344a68e19a43341e79e6
+        with:
+          oidc-provider-arn: ${{ vars.ALIYUN_OIDC_PROVIDER_ARN }}
+          role-to-assume: ${{ vars.ALIYUN_ROLE_ARN }}
+          role-session-name: github-actions-acr
+          role-session-expiration: 1800
+          audience: ${{ vars.ALIYUN_OIDC_AUDIENCE || 'sts.aliyuncs.com' }}
+
+      - name: Install pinned Alibaba Cloud CLI
+        run: |
+          set -euo pipefail
+
+          version="${ALIYUN_CLI_VERSION}"
+          archive="aliyun-cli-linux-${version}-amd64.tgz"
+          base_url="https://github.com/aliyun/aliyun-cli/releases/download/v${version}"
+
+          curl -fsSLO "${base_url}/${archive}"
+          curl -fsSLO "${base_url}/SHASUMS256.txt"
+          grep " ${archive}$" SHASUMS256.txt | sha256sum --check -
+          tar -xzf "${archive}"
+          install -m 0755 aliyun /usr/local/bin/aliyun
+          rm -f aliyun "${archive}" SHASUMS256.txt
+
+          aliyun version
+
+      - name: Exchange STS credentials for a temporary ACR password
+        id: acr-auth
+        env:
+          ACR_REGION_ID: ${{ vars.ACR_REGION_ID }}
+          ACR_INSTANCE_ID: ${{ vars.ACR_INSTANCE_ID }}
+          ACR_API_ENDPOINT: ${{ vars.ACR_API_ENDPOINT }}
+        run: |
+          set -euo pipefail
+
+          api_endpoint="${ACR_API_ENDPOINT:-cr.${ACR_REGION_ID}.aliyuncs.com}"
+          token_json="$(aliyun cr GetAuthorizationToken \
+            --region "${ACR_REGION_ID}" \
+            --endpoint "${api_endpoint}" \
+            --InstanceId "${ACR_INSTANCE_ID}" \
+            --output json)"
+
+          export TOKEN_JSON="${token_json}"
+          username="$(python -c 'import json, os; data = json.loads(os.environ["TOKEN_JSON"]); print(data.get("TempUsername") or data.get("tempUsername") or "cr_temp_user")')"
+          password="$(python -c 'import json, os; data = json.loads(os.environ["TOKEN_JSON"]); print(data.get("AuthorizationToken") or data.get("authorizationToken") or "")')"
+
+          if [ -z "${username}" ] || [ -z "${password}" ]; then
+            echo "Failed to obtain a temporary ACR password." >&2
+            exit 1
+          fi
+
+          echo "::add-mask::${password}"
+          printf 'username=%s\n' "${username}" >> "${GITHUB_OUTPUT}"
+          printf 'password=%s\n' "${password}" >> "${GITHUB_OUTPUT}"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2
+
+      - name: Log in to Alibaba Cloud Container Registry
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567
+        with:
+          registry: ${{ vars.ACR_LOGIN_SERVER }}
+          username: ${{ steps.acr-auth.outputs.username }}
+          password: ${{ steps.acr-auth.outputs.password }}
+          logout: true
+
+      - name: Generate image metadata
+        id: meta
+        uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804
+        with:
+          images: ${{ vars.ACR_LOGIN_SERVER }}/${{ vars.ACR_NAMESPACE }}/${{ vars.ACR_REPOSITORY }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=ref,event=branch
+            type=sha,prefix=sha-
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          pull: true
+          provenance: false
+          sbom: false
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha,scope=acr-image
+          cache-to: type=gha,mode=max,scope=acr-image
+          build-args: |
+            NEXT_PUBLIC_SITE_URL=${{ vars.NEXT_PUBLIC_SITE_URL }}
+            NEXT_PUBLIC_OSS_BASE_URL=${{ vars.NEXT_PUBLIC_OSS_BASE_URL }}
+            NEXT_PUBLIC_SUPABASE_URL=${{ vars.NEXT_PUBLIC_SUPABASE_URL }}

@@ -8,6 +8,7 @@ This project includes:
 - `docker-compose.yaml`: local or single-host deployment
 - `k8s/base`: base Kubernetes manifests
 - `k8s/overlays/local`: local Kubernetes overlay
+- `ACR_GITHUB_ACTIONS.md`: GitHub Actions to Alibaba Cloud ACR guide
 
 ## Build the image
 
