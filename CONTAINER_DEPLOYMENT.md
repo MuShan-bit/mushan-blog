@@ -69,13 +69,12 @@ docker build -t mushan-blog:local .
 kubectl apply -k k8s/overlays/local
 kubectl -n mushan-blog rollout status deployment/mushan-blog
 kubectl -n mushan-blog get pods,svc
-kubectl -n mushan-blog port-forward svc/mushan-blog 3000:80
 ```
 
 Then open:
 
-- `http://127.0.0.1:3000`
-- `http://127.0.0.1:3000/api/health`
+- `http://127.0.0.1:30080`
+- `http://127.0.0.1:30080/api/health`
 
 The local overlay does three things for easier local validation:
 
@@ -90,13 +89,12 @@ For local validation:
 ```bash
 kubectl -n mushan-blog rollout status deployment/mushan-blog
 kubectl -n mushan-blog get pods,svc,endpoints -o wide
-kubectl -n mushan-blog port-forward svc/mushan-blog 3000:80
 ```
 
 Then in another terminal:
 
 ```bash
-curl http://127.0.0.1:3000/api/health
+curl http://127.0.0.1:30080/api/health
 ```
 
 If the deployment is healthy, the API should return JSON like:

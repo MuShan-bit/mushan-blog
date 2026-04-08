@@ -32,13 +32,23 @@ patches:
     patch: |-
       - op: replace
         path: /data/NEXT_PUBLIC_SITE_URL
-        value: http://127.0.0.1:3000
+        value: http://127.0.0.1:30080
       - op: replace
         path: /data/NEXT_PUBLIC_SUPABASE_URL
         value: ""
       - op: replace
         path: /data/SUPABASE_URL
         value: ""
+  - target:
+      kind: Service
+      name: mushan-blog
+    patch: |-
+      - op: replace
+        path: /spec/type
+        value: NodePort
+      - op: add
+        path: /spec/ports/0/nodePort
+        value: 30080
   - target:
       kind: Secret
       name: mushan-blog-secrets
