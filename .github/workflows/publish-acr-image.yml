@@ -128,8 +128,7 @@ jobs:
           token_json="$(aliyun cr GetAuthorizationToken \
             --region "${ACR_REGION_ID}" \
             --endpoint "${api_endpoint}" \
-            --InstanceId "${ACR_INSTANCE_ID}" \
-            --output json)"
+            --InstanceId "${ACR_INSTANCE_ID}")"
 
           export TOKEN_JSON="${token_json}"
           username="$(python -c 'import json, os; data = json.loads(os.environ["TOKEN_JSON"]); print(data.get("TempUsername") or data.get("tempUsername") or "cr_temp_user")')"
