@@ -21,6 +21,8 @@ env:
 jobs:
   build-and-push:
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
+    environment:
+      name: ${{ github.ref_name == 'main' && 'production' || 'development' }}
     runs-on: ubuntu-latest
     timeout-minutes: 40
 
@@ -66,7 +68,7 @@ jobs:
           done
 
           if [ "${#missing[@]}" -gt 0 ]; then
-            printf 'Missing required GitHub repository variables: %s\n' "${missing[*]}" >&2
+            printf 'Missing required GitHub variables (repository and/or environment scope): %s\n' "${missing[*]}" >&2
             exit 1
           fi
 

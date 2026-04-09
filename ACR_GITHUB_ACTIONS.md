@@ -25,6 +25,15 @@ This workflow intentionally avoids storing long-lived credentials in GitHub:
 - the workflow only has the minimum GitHub permissions it needs: `contents: read` and `id-token: write`
 - the workflow only auto-pushes on `main` and `dev`
 
+## Branch to environment mapping
+
+The workflow binds branches to GitHub Environments:
+
+- `main` -> `production`
+- `dev` -> `development`
+
+Because of this, `Environment variables` are now available to the job and can hold branch-specific frontend build values.
+
 ## Required GitHub repository variables
 
 Create these in `Settings -> Secrets and variables -> Actions -> Variables`:
@@ -46,10 +55,6 @@ Create these in `Settings -> Secrets and variables -> Actions -> Variables`:
   Example: `acs:ram::<account-id>:oidc-provider/github-actions`
 - `ALIYUN_ROLE_ARN`
   Example: `acs:ram::<account-id>:role/github-actions-acr-pusher`
-- `NEXT_PUBLIC_SITE_URL`
-- `NEXT_PUBLIC_OSS_BASE_URL`
-- `NEXT_PUBLIC_SUPABASE_URL`
-  Optional. Can be empty.
 
 Optional variables:
 
@@ -57,6 +62,26 @@ Optional variables:
   Default is `sts.aliyuncs.com`
 - `ACR_API_ENDPOINT`
   Default is `cr.<region>.aliyuncs.com`
+
+## Required GitHub environment variables
+
+Create two environments first:
+
+- `production`
+- `development`
+
+Then configure variables in `Settings -> Environments -> <environment> -> Variables`:
+
+- `NEXT_PUBLIC_SITE_URL`
+- `NEXT_PUBLIC_OSS_BASE_URL`
+- `NEXT_PUBLIC_SUPABASE_URL` (optional, can be empty)
+
+For example:
+
+- In `production`: `NEXT_PUBLIC_SITE_URL=https://your-prod-domain`
+- In `development`: `NEXT_PUBLIC_SITE_URL=https://your-dev-domain`
+
+If the same variable exists in both repository and environment scopes, the environment-scoped value is used for that environment job.
 
 ## Alibaba Cloud setup
 
