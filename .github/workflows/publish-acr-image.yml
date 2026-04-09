@@ -22,7 +22,7 @@ jobs:
   build-and-push:
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
     environment:
-      name: ${{ github.ref_name == 'main' && 'production' || 'development' }}
+      name: ${{ github.ref_name == 'main' && 'Production' || 'Preview' }}
     runs-on: ubuntu-latest
     timeout-minutes: 40
 
