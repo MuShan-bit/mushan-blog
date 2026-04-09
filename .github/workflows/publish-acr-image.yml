@@ -73,6 +73,7 @@ jobs:
           fi
 
       - name: Configure Alibaba Cloud credentials with OIDC
+        id: aliyun-credentials
         uses: aliyun/configure-aliyun-credentials-action@1e5248c8d5d93a8781ac344a68e19a43341e79e6
         with:
           oidc-provider-arn: ${{ vars.ALIYUN_OIDC_PROVIDER_ARN }}
@@ -80,6 +81,32 @@ jobs:
           role-session-name: github-actions-acr
           role-session-expiration: 1800
           audience: ${{ vars.ALIYUN_OIDC_AUDIENCE || 'sts.aliyuncs.com' }}
+
+      - name: Verify assumed RAM role identity
+        env:
+          ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ steps.aliyun-credentials.outputs.aliyun-access-key-id }}
+          ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ steps.aliyun-credentials.outputs.aliyun-access-key-secret }}
+          ALIBABA_CLOUD_SECURITY_TOKEN: ${{ steps.aliyun-credentials.outputs.aliyun-security-token }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${ALIBABA_CLOUD_ACCESS_KEY_ID:-}" ] || [ -z "${ALIBABA_CLOUD_ACCESS_KEY_SECRET:-}" ] || [ -z "${ALIBABA_CLOUD_SECURITY_TOKEN:-}" ]; then
+            echo "OIDC assume-role did not return complete temporary credentials." >&2
+            exit 1
+          fi
+
+          identity_json="$(aliyun sts GetCallerIdentity)"
+          export CALLER_JSON="${identity_json}"
+          python <<'PY'
+          import json
+          import os
+
+          payload = json.loads(os.environ["CALLER_JSON"])
+          account_id = payload.get("AccountId") or payload.get("accountId") or "unknown"
+          arn = payload.get("Arn") or payload.get("arn") or "unknown"
+          print(f"Assumed account: {account_id}")
+          print(f"Assumed principal: {arn}")
+          PY
 
       - name: Resolve target image repository
         id: image-target
@@ -118,11 +145,19 @@ jobs:
       - name: Exchange STS credentials for a temporary ACR password
         id: acr-auth
         env:
+          ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ steps.aliyun-credentials.outputs.aliyun-access-key-id }}
+          ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ steps.aliyun-credentials.outputs.aliyun-access-key-secret }}
+          ALIBABA_CLOUD_SECURITY_TOKEN: ${{ steps.aliyun-credentials.outputs.aliyun-security-token }}
           ACR_REGION_ID: ${{ vars.ACR_REGION_ID }}
           ACR_INSTANCE_ID: ${{ vars.ACR_INSTANCE_ID }}
           ACR_API_ENDPOINT: ${{ vars.ACR_API_ENDPOINT }}
         run: |
           set -euo pipefail
+
+          if [ -z "${ALIBABA_CLOUD_ACCESS_KEY_ID:-}" ] || [ -z "${ALIBABA_CLOUD_ACCESS_KEY_SECRET:-}" ] || [ -z "${ALIBABA_CLOUD_SECURITY_TOKEN:-}" ]; then
+            echo "Missing temporary STS credentials before requesting ACR token." >&2
+            exit 1
+          fi
 
           api_endpoint="${ACR_API_ENDPOINT:-cr.${ACR_REGION_ID}.aliyuncs.com}"
           token_json="$(aliyun cr GetAuthorizationToken \
