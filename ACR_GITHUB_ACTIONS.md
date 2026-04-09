@@ -12,6 +12,7 @@ It automatically:
 2. Exchanges STS credentials for a temporary ACR password.
 3. Builds the Docker image with Buildx and GHA cache.
 4. Pushes the image to Alibaba Cloud Container Registry (ACR).
+5. Publishes `main` and `dev` to different image repositories.
 
 ## Why this design is safer
 
@@ -22,7 +23,7 @@ This workflow intentionally avoids storing long-lived credentials in GitHub:
 - the ACR password is fetched just-in-time and is temporary
 - all third-party actions are pinned to immutable commit SHAs
 - the workflow only has the minimum GitHub permissions it needs: `contents: read` and `id-token: write`
-- the workflow only auto-pushes on `main`
+- the workflow only auto-pushes on `main` and `dev`
 
 ## Required GitHub repository variables
 
@@ -38,6 +39,9 @@ Create these in `Settings -> Secrets and variables -> Actions -> Variables`:
   Example: `mushan`
 - `ACR_REPOSITORY`
   Example: `mushan-blog`
+  The workflow will automatically use:
+  `mushan-blog` for `main`
+  and `mushan-blog-dev` for `dev`
 - `ALIYUN_OIDC_PROVIDER_ARN`
   Example: `acs:ram::<account-id>:oidc-provider/github-actions`
 - `ALIYUN_ROLE_ARN`
@@ -66,7 +70,7 @@ Create an OIDC provider for GitHub Actions with:
 
 ### 2. Create a RAM role for GitHub Actions
 
-Use a trust policy that only allows this repository and the `main` branch to assume the role.
+Use a trust policy that only allows this repository and the `main` / `dev` branches to assume the role.
 
 Example:
 
@@ -87,6 +91,20 @@ Example:
           "oidc:sub": "repo:<github-owner>/<github-repo>:ref:refs/heads/main"
         }
       }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Federated": ["acs:ram::<account-id>:oidc-provider/github-actions"]
+      },
+      "Condition": {
+        "StringEquals": {
+          "oidc:iss": "https://token.actions.githubusercontent.com",
+          "oidc:aud": "sts.aliyuncs.com",
+          "oidc:sub": "repo:<github-owner>/<github-repo>:ref:refs/heads/dev"
+        }
+      }
     }
   ]
 }
@@ -96,7 +114,7 @@ If you later want to publish from tags or another branch, explicitly extend the 
 
 ### 3. Attach a least-privilege RAM policy
 
-If you know the exact target repository, scope permissions to that repository ARN instead of `*`.
+If you know the exact target repositories, scope permissions to those repository ARNs instead of `*`.
 
 Example:
 
@@ -113,31 +131,47 @@ Example:
       "Effect": "Allow",
       "Action": ["cr:PushRepository", "cr:PullRepository"],
       "Resource": [
-        "acs:cr:<region-id>:<account-id>:repository/<instance-id>/<namespace>/<repository>"
+        "acs:cr:<region-id>:<account-id>:repository/<instance-id>/<namespace>/<repository>",
+        "acs:cr:<region-id>:<account-id>:repository/<instance-id>/<namespace>/<repository>-dev"
       ]
     }
   ]
 }
 ```
 
-Create the ACR namespace and repository in advance.
+Create the ACR namespace and both repositories in advance:
 
-## How the workflow tags images
+- `<ACR_REPOSITORY>`
+- `<ACR_REPOSITORY>-dev`
 
-On `main`, the workflow pushes:
+## How the workflow names and tags images
+
+On `main`, the workflow pushes to:
+
+```text
+<ACR_LOGIN_SERVER>/<ACR_NAMESPACE>/<ACR_REPOSITORY>
+```
+
+Tags:
 
 - `latest`
 - `main`
 - `sha-<commit>`
 
-Full image name:
+On `dev`, the workflow pushes to:
 
 ```text
-<ACR_LOGIN_SERVER>/<ACR_NAMESPACE>/<ACR_REPOSITORY>:<tag>
+<ACR_LOGIN_SERVER>/<ACR_NAMESPACE>/<ACR_REPOSITORY>-dev
 ```
+
+Tags:
+
+- `latest`
+- `dev`
+- `sha-<commit>`
 
 ## Notes
 
 - `NEXT_PUBLIC_*` values are baked into the image at build time. If they change, rerun the workflow to rebuild the image.
-- Manual runs with `workflow_dispatch` should use the `main` branch, otherwise the RAM trust policy example above will reject the role assumption.
+- Manual runs with `workflow_dispatch` should use the `main` or `dev` branch, otherwise the RAM trust policy example above will reject the role assumption.
 - If you must temporarily use AccessKey-based authentication, create a dedicated RAM user with only the minimum ACR permissions and store the credentials as GitHub Secrets. This is less safe than OIDC and is not the default workflow here.
