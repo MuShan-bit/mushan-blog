@@ -82,6 +82,23 @@ jobs:
           role-session-expiration: 1800
           audience: ${{ vars.ALIYUN_OIDC_AUDIENCE || 'sts.aliyuncs.com' }}
 
+      - name: Install pinned Alibaba Cloud CLI
+        run: |
+          set -euo pipefail
+
+          version="${ALIYUN_CLI_VERSION}"
+          archive="aliyun-cli-linux-${version}-amd64.tgz"
+          base_url="https://github.com/aliyun/aliyun-cli/releases/download/v${version}"
+
+          curl -fsSLO "${base_url}/${archive}"
+          curl -fsSLO "${base_url}/SHASUMS256.txt"
+          grep " ${archive}$" SHASUMS256.txt | sha256sum --check -
+          tar -xzf "${archive}"
+          install -m 0755 aliyun /usr/local/bin/aliyun
+          rm -f aliyun "${archive}" SHASUMS256.txt
+
+          aliyun version
+
       - name: Verify assumed RAM role identity
         env:
           ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ steps.aliyun-credentials.outputs.aliyun-access-key-id }}
@@ -124,23 +141,6 @@ jobs:
 
           printf 'repository=%s%s\n' "${ACR_REPOSITORY}" "${suffix}" >> "${GITHUB_OUTPUT}"
           printf 'branch=%s\n' "${REF_NAME}" >> "${GITHUB_OUTPUT}"
-
-      - name: Install pinned Alibaba Cloud CLI
-        run: |
-          set -euo pipefail
-
-          version="${ALIYUN_CLI_VERSION}"
-          archive="aliyun-cli-linux-${version}-amd64.tgz"
-          base_url="https://github.com/aliyun/aliyun-cli/releases/download/v${version}"
-
-          curl -fsSLO "${base_url}/${archive}"
-          curl -fsSLO "${base_url}/SHASUMS256.txt"
-          grep " ${archive}$" SHASUMS256.txt | sha256sum --check -
-          tar -xzf "${archive}"
-          install -m 0755 aliyun /usr/local/bin/aliyun
-          rm -f aliyun "${archive}" SHASUMS256.txt
-
-          aliyun version
 
       - name: Exchange STS credentials for a temporary ACR password
         id: acr-auth
