@@ -89,13 +89,14 @@ jobs:
           ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ steps.aliyun-credentials.outputs.aliyun-access-key-id }}
           ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ steps.aliyun-credentials.outputs.aliyun-access-key-secret }}
           ALIBABA_CLOUD_SECURITY_TOKEN: ${{ steps.aliyun-credentials.outputs.aliyun-security-token }}
+          ACR_REGION_ID: ${{ vars.ACR_REGION_ID }}
         run: |
           set -euo pipefail
           : "${ALIBABA_CLOUD_ACCESS_KEY_ID:?missing access key id}"
           : "${ALIBABA_CLOUD_ACCESS_KEY_SECRET:?missing access key secret}"
           : "${ALIBABA_CLOUD_SECURITY_TOKEN:?missing security token}"
 
-          identity_json="$(aliyun sts GetCallerIdentity)"
+          identity_json="$(aliyun sts GetCallerIdentity --region "${ACR_REGION_ID}")"
           export CALLER_JSON="${identity_json}"
           python <<'PY'
           import json
