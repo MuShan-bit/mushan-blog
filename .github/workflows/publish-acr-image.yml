@@ -20,7 +20,6 @@ env:
 
 jobs:
   build-and-push:
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
     environment:
       name: ${{ github.ref_name == 'main' && 'Production' || 'Preview' }}
     runs-on: ubuntu-latest
@@ -31,6 +30,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           fetch-depth: 1
+          # Minimize permissions, do not provide GitHub token, only pull projects.
           persist-credentials: false
 
       - name: Validate required GitHub variables
@@ -46,31 +46,15 @@ jobs:
           NEXT_PUBLIC_OSS_BASE_URL: ${{ vars.NEXT_PUBLIC_OSS_BASE_URL }}
         run: |
           set -euo pipefail
-
-          required_vars=(
-            ACR_LOGIN_SERVER
-            ACR_REGION_ID
-            ACR_INSTANCE_ID
-            ACR_NAMESPACE
-            ACR_REPOSITORY
-            ALIYUN_OIDC_PROVIDER_ARN
-            ALIYUN_ROLE_ARN
-            NEXT_PUBLIC_SITE_URL
-            NEXT_PUBLIC_OSS_BASE_URL
-          )
-
-          missing=()
-
-          for key in "${required_vars[@]}"; do
-            if [ -z "${!key:-}" ]; then
-              missing+=("${key}")
-            fi
-          done
-
-          if [ "${#missing[@]}" -gt 0 ]; then
-            printf 'Missing required GitHub variables (repository and/or environment scope): %s\n' "${missing[*]}" >&2
-            exit 1
-          fi
+          : "${ACR_LOGIN_SERVER:?ACR_LOGIN_SERVER is required}"
+          : "${ACR_REGION_ID:?ACR_REGION_ID is required}"
+          : "${ACR_INSTANCE_ID:?ACR_INSTANCE_ID is required}"
+          : "${ACR_NAMESPACE:?ACR_NAMESPACE is required}"
+          : "${ACR_REPOSITORY:?ACR_REPOSITORY is required}"
+          : "${ALIYUN_OIDC_PROVIDER_ARN:?ALIYUN_OIDC_PROVIDER_ARN is required}"
+          : "${ALIYUN_ROLE_ARN:?ALIYUN_ROLE_ARN is required}"
+          : "${NEXT_PUBLIC_SITE_URL:?NEXT_PUBLIC_SITE_URL is required}"
+          : "${NEXT_PUBLIC_OSS_BASE_URL:?NEXT_PUBLIC_OSS_BASE_URL is required}"
 
       - name: Configure Alibaba Cloud credentials with OIDC
         id: aliyun-credentials
@@ -90,10 +74,11 @@ jobs:
           archive="aliyun-cli-linux-${version}-amd64.tgz"
           base_url="https://github.com/aliyun/aliyun-cli/releases/download/v${version}"
 
-          curl -fsSLO "${base_url}/${archive}"
-          curl -fsSLO "${base_url}/SHASUMS256.txt"
-          grep " ${archive}$" SHASUMS256.txt | sha256sum --check -
+          curl --retry 3 --retry-delay 2 -fsSLO "${base_url}/${archive}"
+          curl --retry 3 --retry-delay 2 -fsSLO "${base_url}/SHASUMS256.txt"
+          grep -F "${archive}" SHASUMS256.txt | sha256sum --check -
           tar -xzf "${archive}"
+          [ -f aliyun ] || { echo "aliyun binary not found"; exit 1; }
           install -m 0755 aliyun /usr/local/bin/aliyun
           rm -f aliyun "${archive}" SHASUMS256.txt
 
@@ -106,11 +91,9 @@ jobs:
           ALIBABA_CLOUD_SECURITY_TOKEN: ${{ steps.aliyun-credentials.outputs.aliyun-security-token }}
         run: |
           set -euo pipefail
-
-          if [ -z "${ALIBABA_CLOUD_ACCESS_KEY_ID:-}" ] || [ -z "${ALIBABA_CLOUD_ACCESS_KEY_SECRET:-}" ] || [ -z "${ALIBABA_CLOUD_SECURITY_TOKEN:-}" ]; then
-            echo "OIDC assume-role did not return complete temporary credentials." >&2
-            exit 1
-          fi
+          : "${ALIBABA_CLOUD_ACCESS_KEY_ID:?missing access key id}"
+          : "${ALIBABA_CLOUD_ACCESS_KEY_SECRET:?missing access key secret}"
+          : "${ALIBABA_CLOUD_SECURITY_TOKEN:?missing security token}"
 
           identity_json="$(aliyun sts GetCallerIdentity)"
           export CALLER_JSON="${identity_json}"
