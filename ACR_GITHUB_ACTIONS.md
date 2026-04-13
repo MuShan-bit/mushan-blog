@@ -2,37 +2,33 @@
 
 ## What this workflow does
 
-This repository now includes:
+This repository includes:
 
 - `.github/workflows/publish-acr-image.yml`
 
-It automatically:
+On push to `main` or `dev`, it will:
 
-1. Uses GitHub OIDC to obtain short-lived Alibaba Cloud STS credentials.
-2. Exchanges STS credentials for a temporary ACR password.
-3. Builds the Docker image with Buildx and GHA cache.
-4. Pushes the image to Alibaba Cloud Container Registry (ACR).
-5. Publishes `main` and `dev` to different image repositories.
+1. Build the Docker image with Buildx and GHA cache.
+2. Log in to Alibaba Cloud Container Registry (ACR) using fixed credentials from GitHub Secrets.
+3. Push images to different repositories by branch:
+- `main` -> `<ACR_REPOSITORY>`
+- `dev` -> `<ACR_REPOSITORY>-dev`
 
-## Why this design is safer
+## Why this design
 
-This workflow intentionally avoids storing long-lived credentials in GitHub:
-
-- no Alibaba Cloud AccessKey secret is stored in GitHub Secrets
-- no permanent ACR username/password is stored in GitHub Secrets
-- the ACR password is fetched just-in-time and is temporary
-- all third-party actions are pinned to immutable commit SHAs
-- the workflow only has the minimum GitHub permissions it needs: `contents: read` and `id-token: write`
-- the workflow only auto-pushes on `main` and `dev`
+- Works for personal ACR editions that do not support STS token exchange.
+- Keeps sensitive login password in GitHub Secrets, not repository variables.
+- Keeps workflow permissions minimal (`contents: read`).
+- Pins all third-party actions to immutable commit SHAs.
 
 ## Branch to environment mapping
 
 The workflow binds branches to GitHub Environments:
 
-- `main` -> `production`
-- `dev` -> `development`
+- `main` -> `Production`
+- `dev` -> `Preview`
 
-Because of this, `Environment variables` are now available to the job and can hold branch-specific frontend build values.
+Because of this mapping, frontend build vars can differ between production and preview.
 
 ## Required GitHub repository variables
 
@@ -40,10 +36,6 @@ Create these in `Settings -> Secrets and variables -> Actions -> Variables`:
 
 - `ACR_LOGIN_SERVER`
   Example: `your-instance-registry.cn-beijing.cr.aliyuncs.com`
-- `ACR_REGION_ID`
-  Example: `cn-beijing`
-- `ACR_INSTANCE_ID`
-  Example: `cri-xxxxxxxx`
 - `ACR_NAMESPACE`
   Example: `mushan`
 - `ACR_REPOSITORY`
@@ -51,24 +43,13 @@ Create these in `Settings -> Secrets and variables -> Actions -> Variables`:
   The workflow will automatically use:
   `mushan-blog` for `main`
   and `mushan-blog-dev` for `dev`
-- `ALIYUN_OIDC_PROVIDER_ARN`
-  Example: `acs:ram::<account-id>:oidc-provider/github-actions`
-- `ALIYUN_ROLE_ARN`
-  Example: `acs:ram::<account-id>:role/github-actions-acr-pusher`
-
-Optional variables:
-
-- `ALIYUN_OIDC_AUDIENCE`
-  Default is `sts.aliyuncs.com`
-- `ACR_API_ENDPOINT`
-  Default is `cr.<region>.aliyuncs.com`
 
 ## Required GitHub environment variables
 
 Create two environments first:
 
-- `production`
-- `development`
+- `Production`
+- `Preview`
 
 Then configure variables in `Settings -> Environments -> <environment> -> Variables`:
 
@@ -76,93 +57,24 @@ Then configure variables in `Settings -> Environments -> <environment> -> Variab
 - `NEXT_PUBLIC_OSS_BASE_URL`
 - `NEXT_PUBLIC_SUPABASE_URL` (optional, can be empty)
 
-For example:
-
-- In `production`: `NEXT_PUBLIC_SITE_URL=https://your-prod-domain`
-- In `development`: `NEXT_PUBLIC_SITE_URL=https://your-dev-domain`
-
-If the same variable exists in both repository and environment scopes, the environment-scoped value is used for that environment job.
-
-## Alibaba Cloud setup
-
-### 1. Create an OIDC provider in RAM
-
-Create an OIDC provider for GitHub Actions with:
-
-- Issuer URL: `https://token.actions.githubusercontent.com`
-- Client ID: `sts.aliyuncs.com`
-  Or use the same custom audience value that you put into `ALIYUN_OIDC_AUDIENCE`.
-
-### 2. Create a RAM role for GitHub Actions
-
-Use a trust policy that only allows this repository and the `main` / `dev` branches to assume the role.
-
 Example:
 
-```json
-{
-  "Version": "1",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Federated": ["acs:ram::<account-id>:oidc-provider/github-actions"]
-      },
-      "Condition": {
-        "StringEquals": {
-          "oidc:iss": "https://token.actions.githubusercontent.com",
-          "oidc:aud": "sts.aliyuncs.com",
-          "oidc:sub": "repo:<github-owner>/<github-repo>:ref:refs/heads/main"
-        }
-      }
-    },
-    {
-      "Effect": "Allow",
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Federated": ["acs:ram::<account-id>:oidc-provider/github-actions"]
-      },
-      "Condition": {
-        "StringEquals": {
-          "oidc:iss": "https://token.actions.githubusercontent.com",
-          "oidc:aud": "sts.aliyuncs.com",
-          "oidc:sub": "repo:<github-owner>/<github-repo>:ref:refs/heads/dev"
-        }
-      }
-    }
-  ]
-}
-```
+- In `Production`: `NEXT_PUBLIC_SITE_URL=https://your-prod-domain`
+- In `Preview`: `NEXT_PUBLIC_SITE_URL=https://your-preview-domain`
 
-If you later want to publish from tags or another branch, explicitly extend the trust policy. Do not widen it to all repositories.
+If the same variable exists in both repository and environment scopes, the environment-scoped value is used.
 
-### 3. Attach a least-privilege RAM policy
+## Required GitHub Secrets
 
-If you know the exact target repositories, scope permissions to those repository ARNs instead of `*`.
+Create these in `Settings -> Secrets and variables -> Actions -> Secrets`:
 
-Example:
+- `ACR_USERNAME`
+- `ACR_PASSWORD`
 
-```json
-{
-  "Version": "1",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": ["cr:GetAuthorizationToken"],
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": ["cr:PushRepository", "cr:PullRepository"],
-      "Resource": [
-        "acs:cr:<region-id>:<account-id>:repository/<instance-id>/<namespace>/<repository>",
-        "acs:cr:<region-id>:<account-id>:repository/<instance-id>/<namespace>/<repository>-dev"
-      ]
-    }
-  ]
-}
-```
+Use the username/password that can run `docker login` against your `ACR_LOGIN_SERVER`.
+For security, prefer a dedicated low-privilege ACR account if your edition supports sub-accounts or tokens.
+
+## ACR prerequisites
 
 Create the ACR namespace and both repositories in advance:
 
@@ -171,7 +83,7 @@ Create the ACR namespace and both repositories in advance:
 
 ## How the workflow names and tags images
 
-On `main`, the workflow pushes to:
+On `main`, pushes to:
 
 ```text
 <ACR_LOGIN_SERVER>/<ACR_NAMESPACE>/<ACR_REPOSITORY>
@@ -183,7 +95,7 @@ Tags:
 - `main`
 - `sha-<commit>`
 
-On `dev`, the workflow pushes to:
+On `dev`, pushes to:
 
 ```text
 <ACR_LOGIN_SERVER>/<ACR_NAMESPACE>/<ACR_REPOSITORY>-dev
@@ -197,6 +109,6 @@ Tags:
 
 ## Notes
 
-- `NEXT_PUBLIC_*` values are baked into the image at build time. If they change, rerun the workflow to rebuild the image.
-- Manual runs with `workflow_dispatch` should use the `main` or `dev` branch, otherwise the RAM trust policy example above will reject the role assumption.
-- If you must temporarily use AccessKey-based authentication, create a dedicated RAM user with only the minimum ACR permissions and store the credentials as GitHub Secrets. This is less safe than OIDC and is not the default workflow here.
+- `NEXT_PUBLIC_*` values are baked at build time. If changed, rerun workflow.
+- `workflow_dispatch` should run from `main` or `dev`.
+- If login fails, first verify `ACR_USERNAME`/`ACR_PASSWORD` by running local `docker login <ACR_LOGIN_SERVER>`.

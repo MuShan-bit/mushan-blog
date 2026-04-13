@@ -9,14 +9,10 @@ on:
 
 permissions:
   contents: read
-  id-token: write
 
 concurrency:
   group: publish-acr-image-${{ github.ref }}
   cancel-in-progress: true
-
-env:
-  ALIYUN_CLI_VERSION: "3.3.4"
 
 jobs:
   build-and-push:
@@ -36,78 +32,21 @@ jobs:
       - name: Validate required GitHub variables
         env:
           ACR_LOGIN_SERVER: ${{ vars.ACR_LOGIN_SERVER }}
-          ACR_REGION_ID: ${{ vars.ACR_REGION_ID }}
-          ACR_INSTANCE_ID: ${{ vars.ACR_INSTANCE_ID }}
           ACR_NAMESPACE: ${{ vars.ACR_NAMESPACE }}
           ACR_REPOSITORY: ${{ vars.ACR_REPOSITORY }}
-          ALIYUN_OIDC_PROVIDER_ARN: ${{ vars.ALIYUN_OIDC_PROVIDER_ARN }}
-          ALIYUN_ROLE_ARN: ${{ vars.ALIYUN_ROLE_ARN }}
           NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
           NEXT_PUBLIC_OSS_BASE_URL: ${{ vars.NEXT_PUBLIC_OSS_BASE_URL }}
+          ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
+          ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
         run: |
           set -euo pipefail
           : "${ACR_LOGIN_SERVER:?ACR_LOGIN_SERVER is required}"
-          : "${ACR_REGION_ID:?ACR_REGION_ID is required}"
-          : "${ACR_INSTANCE_ID:?ACR_INSTANCE_ID is required}"
           : "${ACR_NAMESPACE:?ACR_NAMESPACE is required}"
           : "${ACR_REPOSITORY:?ACR_REPOSITORY is required}"
-          : "${ALIYUN_OIDC_PROVIDER_ARN:?ALIYUN_OIDC_PROVIDER_ARN is required}"
-          : "${ALIYUN_ROLE_ARN:?ALIYUN_ROLE_ARN is required}"
           : "${NEXT_PUBLIC_SITE_URL:?NEXT_PUBLIC_SITE_URL is required}"
           : "${NEXT_PUBLIC_OSS_BASE_URL:?NEXT_PUBLIC_OSS_BASE_URL is required}"
-
-      - name: Configure Alibaba Cloud credentials with OIDC
-        id: aliyun-credentials
-        uses: aliyun/configure-aliyun-credentials-action@1e5248c8d5d93a8781ac344a68e19a43341e79e6
-        with:
-          oidc-provider-arn: ${{ vars.ALIYUN_OIDC_PROVIDER_ARN }}
-          role-to-assume: ${{ vars.ALIYUN_ROLE_ARN }}
-          role-session-name: github-actions-acr
-          role-session-expiration: 1800
-          audience: ${{ vars.ALIYUN_OIDC_AUDIENCE || 'sts.aliyuncs.com' }}
-
-      - name: Install pinned Alibaba Cloud CLI
-        run: |
-          set -euo pipefail
-
-          version="${ALIYUN_CLI_VERSION}"
-          archive="aliyun-cli-linux-${version}-amd64.tgz"
-          base_url="https://github.com/aliyun/aliyun-cli/releases/download/v${version}"
-
-          curl --retry 3 --retry-delay 2 -fsSLO "${base_url}/${archive}"
-          curl --retry 3 --retry-delay 2 -fsSLO "${base_url}/SHASUMS256.txt"
-          grep -F "${archive}" SHASUMS256.txt | sha256sum --check -
-          tar -xzf "${archive}"
-          [ -f aliyun ] || { echo "aliyun binary not found"; exit 1; }
-          install -m 0755 aliyun /usr/local/bin/aliyun
-          rm -f aliyun "${archive}" SHASUMS256.txt
-
-          aliyun version
-
-      - name: Verify assumed RAM role identity
-        env:
-          ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ steps.aliyun-credentials.outputs.aliyun-access-key-id }}
-          ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ steps.aliyun-credentials.outputs.aliyun-access-key-secret }}
-          ALIBABA_CLOUD_SECURITY_TOKEN: ${{ steps.aliyun-credentials.outputs.aliyun-security-token }}
-          ACR_REGION_ID: ${{ vars.ACR_REGION_ID }}
-        run: |
-          set -euo pipefail
-          : "${ALIBABA_CLOUD_ACCESS_KEY_ID:?missing access key id}"
-          : "${ALIBABA_CLOUD_ACCESS_KEY_SECRET:?missing access key secret}"
-          : "${ALIBABA_CLOUD_SECURITY_TOKEN:?missing security token}"
-
-          identity_json="$(aliyun sts GetCallerIdentity --region "${ACR_REGION_ID}")"
-          export CALLER_JSON="${identity_json}"
-          python <<'PY'
-          import json
-          import os
-
-          payload = json.loads(os.environ["CALLER_JSON"])
-          account_id = payload.get("AccountId") or payload.get("accountId") or "unknown"
-          arn = payload.get("Arn") or payload.get("arn") or "unknown"
-          print(f"Assumed account: {account_id}")
-          print(f"Assumed principal: {arn}")
-          PY
+          : "${ACR_USERNAME:?ACR_USERNAME is required (GitHub Secret)}"
+          : "${ACR_PASSWORD:?ACR_PASSWORD is required (GitHub Secret)}"
 
       - name: Resolve target image repository
         id: image-target
@@ -126,80 +65,6 @@ jobs:
           printf 'repository=%s%s\n' "${ACR_REPOSITORY}" "${suffix}" >> "${GITHUB_OUTPUT}"
           printf 'branch=%s\n' "${REF_NAME}" >> "${GITHUB_OUTPUT}"
 
-      - name: Exchange STS credentials for a temporary ACR password
-        id: acr-auth
-        env:
-          ALIBABA_CLOUD_ACCESS_KEY_ID: ${{ steps.aliyun-credentials.outputs.aliyun-access-key-id }}
-          ALIBABA_CLOUD_ACCESS_KEY_SECRET: ${{ steps.aliyun-credentials.outputs.aliyun-access-key-secret }}
-          ALIBABA_CLOUD_SECURITY_TOKEN: ${{ steps.aliyun-credentials.outputs.aliyun-security-token }}
-          ACR_REGION_ID: ${{ vars.ACR_REGION_ID }}
-          ACR_INSTANCE_ID: ${{ vars.ACR_INSTANCE_ID }}
-          ACR_API_ENDPOINT: ${{ vars.ACR_API_ENDPOINT }}
-        run: |
-          set -euo pipefail
-
-          if [ -z "${ALIBABA_CLOUD_ACCESS_KEY_ID:-}" ] || [ -z "${ALIBABA_CLOUD_ACCESS_KEY_SECRET:-}" ] || [ -z "${ALIBABA_CLOUD_SECURITY_TOKEN:-}" ]; then
-            echo "Missing temporary STS credentials before requesting ACR token." >&2
-            exit 1
-          fi
-
-          api_endpoint="${ACR_API_ENDPOINT:-cr.${ACR_REGION_ID}.aliyuncs.com}"
-          token_json="$(aliyun cr GetAuthorizationToken \
-            --region "${ACR_REGION_ID}" \
-            --endpoint "${api_endpoint}" \
-            --InstanceId "${ACR_INSTANCE_ID}")"
-
-          export TOKEN_JSON="${token_json}"
-          python <<'PY'
-          import json
-          import os
-          import sys
-
-          raw = os.environ.get("TOKEN_JSON", "")
-
-          try:
-            payload = json.loads(raw)
-          except json.JSONDecodeError as exc:
-            print("Failed to parse aliyun response as JSON.", file=sys.stderr)
-            print(f"JSON decode error: {exc}", file=sys.stderr)
-            sys.exit(1)
-
-          def find_value(obj, keys):
-            targets = {key.lower() for key in keys}
-            stack = [obj]
-            while stack:
-              current = stack.pop()
-              if isinstance(current, dict):
-                for key, value in current.items():
-                  if key.lower() in targets and value not in (None, ""):
-                    return str(value)
-                  stack.append(value)
-              elif isinstance(current, list):
-                stack.extend(current)
-            return ""
-
-          username = find_value(payload, ["TempUsername", "tempUsername", "username"])
-          password = find_value(payload, ["AuthorizationToken", "authorizationToken", "password"])
-          code = find_value(payload, ["Code", "code"])
-          message = find_value(payload, ["Message", "message", "Recommend", "recommend"])
-          request_id = find_value(payload, ["RequestId", "requestId"])
-
-          if not username or not password:
-            print("Failed to obtain a temporary ACR password.", file=sys.stderr)
-            if code:
-              print(f"Code: {code}", file=sys.stderr)
-            if message:
-              print(f"Message: {message}", file=sys.stderr)
-            if request_id:
-              print(f"RequestId: {request_id}", file=sys.stderr)
-            sys.exit(1)
-
-          print(f"::add-mask::{password}")
-          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
-            output.write(f"username={username}\n")
-            output.write(f"password={password}\n")
-          PY
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2
 
@@ -207,8 +72,8 @@ jobs:
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567
         with:
           registry: ${{ vars.ACR_LOGIN_SERVER }}
-          username: ${{ steps.acr-auth.outputs.username }}
-          password: ${{ steps.acr-auth.outputs.password }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
           logout: true
 
       - name: Generate image metadata
