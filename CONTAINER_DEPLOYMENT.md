@@ -17,6 +17,9 @@ The public site variables are used during `next build`, so pass them as build ar
 ```bash
 docker build \
   --build-arg NEXT_PUBLIC_SITE_URL=https://blog.example.com \
+  --build-arg NEXT_PUBLIC_CN_SITE_URL=https://cn.blog.example.com \
+  --build-arg NEXT_PUBLIC_GLOBAL_SITE_URL=https://blog.example.com \
+  --build-arg NEXT_PUBLIC_DEPLOY_REGION=global \
   --build-arg NEXT_PUBLIC_OSS_BASE_URL=https://image-blog-mushan.oss-cn-beijing.aliyuncs.com \
   --build-arg NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co \
   -t mushan-blog:latest .
@@ -41,6 +44,9 @@ Then open:
 ```bash
 docker build \
   --build-arg NEXT_PUBLIC_SITE_URL=https://blog.example.com \
+  --build-arg NEXT_PUBLIC_CN_SITE_URL=https://cn.blog.example.com \
+  --build-arg NEXT_PUBLIC_GLOBAL_SITE_URL=https://blog.example.com \
+  --build-arg NEXT_PUBLIC_DEPLOY_REGION=global \
   --build-arg NEXT_PUBLIC_OSS_BASE_URL=https://image-blog-mushan.oss-cn-beijing.aliyuncs.com \
   --build-arg NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co \
   -t your-registry.example.com/mushan-blog:latest .
@@ -106,7 +112,7 @@ If the deployment is healthy, the API should return JSON like:
 
 ## Important note about `NEXT_PUBLIC_*`
 
-`NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_OSS_BASE_URL`, and `NEXT_PUBLIC_SUPABASE_URL` are used at build time for static content and metadata.
+`NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_CN_SITE_URL`, `NEXT_PUBLIC_GLOBAL_SITE_URL`, `NEXT_PUBLIC_DEPLOY_REGION`, `NEXT_PUBLIC_OSS_BASE_URL`, and `NEXT_PUBLIC_SUPABASE_URL` are used at build time for static content and metadata.
 
 That means:
 

@@ -26,11 +26,28 @@ export function SiteFooter() {
               RSS
             </Link>
             <a href={`mailto:${siteConfig.author.email}`} className="hover:text-foreground">
-              {siteConfig.author.email}
+              邮箱联系
             </a>
-            <Link href={siteConfig.siteUrl} className="hover:text-foreground">
-              {new URL(siteConfig.siteUrl).hostname}
-            </Link>
+            {siteConfig.showIcpRecord ? (
+              <a
+                href="https://beian.miit.gov.cn/"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="hover:text-foreground"
+              >
+                {siteConfig.icpRecordNumber}
+              </a>
+            ) : null}
+            {siteConfig.accelerateSiteUrl ? (
+              <a
+                href={siteConfig.accelerateSiteUrl}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="hover:text-foreground"
+              >
+                {siteConfig.accelerateSiteLabel}
+              </a>
+            ) : null}
           </div>
         </div>
       </div>

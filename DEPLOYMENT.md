@@ -32,6 +32,9 @@ Set these variables in Vercel:
 
 ```env
 NEXT_PUBLIC_SITE_URL=https://your-domain-or-project.vercel.app
+NEXT_PUBLIC_CN_SITE_URL=https://your-cn-domain
+NEXT_PUBLIC_GLOBAL_SITE_URL=https://your-global-domain
+NEXT_PUBLIC_DEPLOY_REGION=cn
 NEXT_PUBLIC_OSS_BASE_URL=https://image-blog-mushan.oss-cn-beijing.aliyuncs.com
 SUPABASE_URL=https://your-project-ref.supabase.co
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co

@@ -54,13 +54,22 @@ Create two environments first:
 Then configure variables in `Settings -> Environments -> <environment> -> Variables`:
 
 - `NEXT_PUBLIC_SITE_URL`
+- `NEXT_PUBLIC_CN_SITE_URL`
+- `NEXT_PUBLIC_GLOBAL_SITE_URL`
+- `NEXT_PUBLIC_DEPLOY_REGION` (`cn` or `global`)
 - `NEXT_PUBLIC_OSS_BASE_URL`
 - `NEXT_PUBLIC_SUPABASE_URL` (optional, can be empty)
 
 Example:
 
 - In `Production`: `NEXT_PUBLIC_SITE_URL=https://your-prod-domain`
+- In `Production`: `NEXT_PUBLIC_CN_SITE_URL=https://your-cn-domain`
+- In `Production`: `NEXT_PUBLIC_GLOBAL_SITE_URL=https://your-global-domain`
+- In `Production`: `NEXT_PUBLIC_DEPLOY_REGION=cn`
 - In `Preview`: `NEXT_PUBLIC_SITE_URL=https://your-preview-domain`
+- In `Preview`: `NEXT_PUBLIC_CN_SITE_URL=https://your-cn-domain`
+- In `Preview`: `NEXT_PUBLIC_GLOBAL_SITE_URL=https://your-global-domain`
+- In `Preview`: `NEXT_PUBLIC_DEPLOY_REGION=global`
 
 If the same variable exists in both repository and environment scopes, the environment-scoped value is used.
 

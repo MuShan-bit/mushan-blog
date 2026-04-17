@@ -8,6 +8,9 @@ services:
       target: runner
       args:
         NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+        NEXT_PUBLIC_CN_SITE_URL: ${NEXT_PUBLIC_CN_SITE_URL:-http://localhost:3000}
+        NEXT_PUBLIC_GLOBAL_SITE_URL: ${NEXT_PUBLIC_GLOBAL_SITE_URL:-http://localhost:3000}
+        NEXT_PUBLIC_DEPLOY_REGION: ${NEXT_PUBLIC_DEPLOY_REGION:-cn}
         NEXT_PUBLIC_OSS_BASE_URL: ${NEXT_PUBLIC_OSS_BASE_URL:-https://image-blog-mushan.oss-cn-beijing.aliyuncs.com}
         NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-}
     env_file:
@@ -18,6 +21,9 @@ services:
       PORT: 3000
       NEXT_TELEMETRY_DISABLED: 1
       NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+      NEXT_PUBLIC_CN_SITE_URL: ${NEXT_PUBLIC_CN_SITE_URL:-http://localhost:3000}
+      NEXT_PUBLIC_GLOBAL_SITE_URL: ${NEXT_PUBLIC_GLOBAL_SITE_URL:-http://localhost:3000}
+      NEXT_PUBLIC_DEPLOY_REGION: ${NEXT_PUBLIC_DEPLOY_REGION:-cn}
       NEXT_PUBLIC_OSS_BASE_URL: ${NEXT_PUBLIC_OSS_BASE_URL:-https://image-blog-mushan.oss-cn-beijing.aliyuncs.com}
       NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-}
       SUPABASE_URL: ${SUPABASE_URL:-}
