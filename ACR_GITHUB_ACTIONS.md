@@ -13,6 +13,7 @@ On push to `main` or `dev`, it will:
 3. Push images to different repositories by branch:
 - `main` -> `<ACR_REPOSITORY>`
 - `dev` -> `<ACR_REPOSITORY>-dev`
+4. Trigger Yunxiao Flow pipeline webhook after image push succeeds.
 
 ## Why this design
 
@@ -73,6 +74,25 @@ Example:
 
 If the same variable exists in both repository and environment scopes, the environment-scoped value is used.
 
+## Yunxiao webhook variables
+
+The workflow resolves webhook URLs by branch:
+
+- `main` -> `YUNXIAO_WEBHOOK_PRODUCTION`
+- `dev` -> `YUNXIAO_WEBHOOK_PREVIEW`
+
+You can store them in either:
+
+- GitHub Environment `Secrets` (recommended)
+- GitHub Environment `Variables`
+
+When both exist, the workflow prefers `Secrets`.
+
+Recommended setup:
+
+- `Production` environment: `YUNXIAO_WEBHOOK_PRODUCTION`
+- `Preview` environment: `YUNXIAO_WEBHOOK_PREVIEW`
+
 ## Required GitHub Secrets
 
 Create these in `Settings -> Secrets and variables -> Actions -> Secrets`:
@@ -121,3 +141,4 @@ Tags:
 - `NEXT_PUBLIC_*` values are baked at build time. If changed, rerun workflow.
 - `workflow_dispatch` should run from `main` or `dev`.
 - If login fails, first verify `ACR_USERNAME`/`ACR_PASSWORD` by running local `docker login <ACR_LOGIN_SERVER>`.
+- Yunxiao webhook is triggered with `POST` and JSON body `{}` after image push succeeds.

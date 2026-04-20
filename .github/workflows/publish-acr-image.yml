@@ -31,6 +31,7 @@ jobs:
 
       - name: Validate required GitHub variables
         env:
+          REF_NAME: ${{ github.ref_name }}
           ACR_LOGIN_SERVER: ${{ vars.ACR_LOGIN_SERVER }}
           ACR_NAMESPACE: ${{ vars.ACR_NAMESPACE }}
           ACR_REPOSITORY: ${{ vars.ACR_REPOSITORY }}
@@ -41,6 +42,10 @@ jobs:
           NEXT_PUBLIC_OSS_BASE_URL: ${{ vars.NEXT_PUBLIC_OSS_BASE_URL }}
           ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
           ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
+          YUNXIAO_WEBHOOK_PRODUCTION_SECRET: ${{ secrets.YUNXIAO_WEBHOOK_PRODUCTION }}
+          YUNXIAO_WEBHOOK_PREVIEW_SECRET: ${{ secrets.YUNXIAO_WEBHOOK_PREVIEW }}
+          YUNXIAO_WEBHOOK_PRODUCTION_VAR: ${{ vars.YUNXIAO_WEBHOOK_PRODUCTION }}
+          YUNXIAO_WEBHOOK_PREVIEW_VAR: ${{ vars.YUNXIAO_WEBHOOK_PREVIEW }}
         run: |
           set -euo pipefail
           : "${ACR_LOGIN_SERVER:?ACR_LOGIN_SERVER is required}"
@@ -53,6 +58,17 @@ jobs:
           : "${NEXT_PUBLIC_OSS_BASE_URL:?NEXT_PUBLIC_OSS_BASE_URL is required}"
           : "${ACR_USERNAME:?ACR_USERNAME is required (GitHub Secret)}"
           : "${ACR_PASSWORD:?ACR_PASSWORD is required (GitHub Secret)}"
+
+          webhook_production="${YUNXIAO_WEBHOOK_PRODUCTION_SECRET:-${YUNXIAO_WEBHOOK_PRODUCTION_VAR:-}}"
+          webhook_preview="${YUNXIAO_WEBHOOK_PREVIEW_SECRET:-${YUNXIAO_WEBHOOK_PREVIEW_VAR:-}}"
+
+          if [ "${REF_NAME}" = "main" ]; then
+            : "${webhook_production:?YUNXIAO_WEBHOOK_PRODUCTION is required for main branch}"
+          fi
+
+          if [ "${REF_NAME}" = "dev" ]; then
+            : "${webhook_preview:?YUNXIAO_WEBHOOK_PREVIEW is required for dev branch}"
+          fi
 
       - name: Resolve target image repository
         id: image-target
@@ -70,6 +86,34 @@ jobs:
 
           printf 'repository=%s%s\n' "${ACR_REPOSITORY}" "${suffix}" >> "${GITHUB_OUTPUT}"
           printf 'branch=%s\n' "${REF_NAME}" >> "${GITHUB_OUTPUT}"
+
+      - name: Resolve Yunxiao webhook URL
+        id: yunxiao-webhook
+        env:
+          REF_NAME: ${{ github.ref_name }}
+          YUNXIAO_WEBHOOK_PRODUCTION_SECRET: ${{ secrets.YUNXIAO_WEBHOOK_PRODUCTION }}
+          YUNXIAO_WEBHOOK_PREVIEW_SECRET: ${{ secrets.YUNXIAO_WEBHOOK_PREVIEW }}
+          YUNXIAO_WEBHOOK_PRODUCTION_VAR: ${{ vars.YUNXIAO_WEBHOOK_PRODUCTION }}
+          YUNXIAO_WEBHOOK_PREVIEW_VAR: ${{ vars.YUNXIAO_WEBHOOK_PREVIEW }}
+        run: |
+          set -euo pipefail
+
+          webhook_production="${YUNXIAO_WEBHOOK_PRODUCTION_SECRET:-${YUNXIAO_WEBHOOK_PRODUCTION_VAR:-}}"
+          webhook_preview="${YUNXIAO_WEBHOOK_PREVIEW_SECRET:-${YUNXIAO_WEBHOOK_PREVIEW_VAR:-}}"
+          webhook=""
+
+          if [ "${REF_NAME}" = "main" ]; then
+            webhook="${webhook_production}"
+          elif [ "${REF_NAME}" = "dev" ]; then
+            webhook="${webhook_preview}"
+          fi
+
+          if [ -z "${webhook}" ]; then
+            printf 'url=\n' >> "${GITHUB_OUTPUT}"
+            exit 0
+          fi
+
+          printf 'url=%s\n' "${webhook}" >> "${GITHUB_OUTPUT}"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2
@@ -115,3 +159,17 @@ jobs:
             NEXT_PUBLIC_DEPLOY_REGION=${{ vars.NEXT_PUBLIC_DEPLOY_REGION }}
             NEXT_PUBLIC_OSS_BASE_URL=${{ vars.NEXT_PUBLIC_OSS_BASE_URL }}
             NEXT_PUBLIC_SUPABASE_URL=${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+
+      - name: Trigger Yunxiao CD pipeline
+        env:
+          YUNXIAO_WEBHOOK_URL: ${{ steps.yunxiao-webhook.outputs.url }}
+        run: |
+          set -euo pipefail
+
+          : "${YUNXIAO_WEBHOOK_URL:?YUNXIAO webhook URL is empty}"
+
+          curl --fail --show-error --silent \
+            --header "Content-Type: application/json" \
+            --request POST \
+            --data "{}" \
+            "${YUNXIAO_WEBHOOK_URL}"
