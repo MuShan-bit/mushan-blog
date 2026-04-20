@@ -1,0 +1,78 @@
+name: mushan-blog-cd-ecs
+
+sources:
+  repo:
+    type: githubApp
+    name: mushan-blog
+    endpoint: "https://github.com/<your-org>/<your-repo>.git"
+    branch: main
+    branchesFilter: ^(main|dev)$
+    triggerEvents:
+      - push
+    certificate:
+      type: serviceConnection
+      serviceConnection: "<your-github-service-connection-id>"
+
+variableGroups:
+  - "<your-cd-variable-group-id>"
+
+variables:
+  - key: ACR_REPOSITORY
+    value: mushan-blog
+  - key: ECS_PROD_USER
+    value: root
+  - key: ECS_PROD_PORT
+    type: Number
+    value: 22
+  - key: ECS_PROD_CONTAINER_NAME
+    value: mushan-blog
+  - key: ECS_PROD_BIND_IP
+    value: 127.0.0.1
+  - key: ECS_PROD_HOST_PORT
+    type: Number
+    value: 3000
+  - key: ECS_PROD_CONTAINER_PORT
+    type: Number
+    value: 3000
+  - key: ECS_PROD_ENV_FILE
+    value: /root/project/mushan-blog/.env.production
+  - key: ECS_DEV_USER
+    value: root
+  - key: ECS_DEV_PORT
+    type: Number
+    value: 22
+  - key: ECS_DEV_CONTAINER_NAME
+    value: mushan-blog-dev
+  - key: ECS_DEV_BIND_IP
+    value: 127.0.0.1
+  - key: ECS_DEV_HOST_PORT
+    type: Number
+    value: 3001
+  - key: ECS_DEV_CONTAINER_PORT
+    type: Number
+    value: 3000
+  - key: ECS_DEV_ENV_FILE
+    value: /root/project/mushan-blog/.env.preview
+  - key: IMAGE_TAG_OVERRIDE
+    value: ""
+  - key: ECS_HEALTHCHECK_PATH
+    value: /api/health
+  - key: ECS_EXTRA_RUN_ARGS
+    value: ""
+
+stages:
+  deploy_stage:
+    name: CD 部署
+    jobs:
+      deploy_ecs_job:
+        name: 拉取镜像并部署到 ECS
+        runsOn:
+          group: public/ap-southeast-1
+          container: build-steps-public-registry.ap-southeast-1.cr.aliyuncs.com/build-steps/alinux3:latest
+        steps:
+          deploy_step:
+            name: 远程部署
+            step: Command
+            with:
+              run: |
+                bash ci/yunxiao/deploy-ecs.sh
