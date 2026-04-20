@@ -74,24 +74,19 @@ Example:
 
 If the same variable exists in both repository and environment scopes, the environment-scoped value is used.
 
-## Yunxiao webhook variables
+## Yunxiao webhook variable
 
-The workflow resolves webhook URLs by branch:
+Use only one key name:
 
-- `main` -> `YUNXIAO_WEBHOOK_PRODUCTION`
-- `dev` -> `YUNXIAO_WEBHOOK_PREVIEW`
+- `YUNXIAO_CD_WEBHOOK`
 
-You can store them in either:
+Configure different values in different GitHub Environments:
 
-- GitHub Environment `Secrets` (recommended)
-- GitHub Environment `Variables`
+- `Production` environment: `YUNXIAO_CD_WEBHOOK=<production webhook>`
+- `Preview` environment: `YUNXIAO_CD_WEBHOOK=<preview webhook>`
 
-When both exist, the workflow prefers `Secrets`.
-
-Recommended setup:
-
-- `Production` environment: `YUNXIAO_WEBHOOK_PRODUCTION`
-- `Preview` environment: `YUNXIAO_WEBHOOK_PREVIEW`
+You can put it in either `Secrets` or `Variables` with the same name.
+If both are present, the workflow prefers `Secrets`.
 
 ## Required GitHub Secrets
 
