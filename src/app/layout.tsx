@@ -72,6 +72,16 @@ export const metadata: Metadata = {
 };
 
 const paletteIds = colorPalettes.map((palette) => palette.id);
+const websiteJsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${siteConfig.siteUrl}#website`,
+  name: siteConfig.title,
+  alternateName: siteConfig.name,
+  url: siteConfig.siteUrl,
+  description: siteConfig.description,
+});
+
 const paletteInitScript = `
 (() => {
   const storageKey = ${JSON.stringify(paletteStorageKey)};
@@ -107,6 +117,10 @@ export default function RootLayout({
         <Script id="palette-init" strategy="beforeInteractive">
           {paletteInitScript}
         </Script>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: websiteJsonLd }}
+        />
         <noscript>
           <style>{`html[data-palette-ready="false"] body { opacity: 1 !important; }`}</style>
         </noscript>

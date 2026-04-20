@@ -50,22 +50,8 @@ export default async function Home() {
     "将开源项目 TideDesk 初版开发完善",
   ];
 
-  const websiteJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: siteConfig.title,
-    url: siteConfig.siteUrl,
-    description: siteConfig.description,
-    author: {
-      "@type": "Person",
-      name: siteConfig.author.name,
-    },
-  };
-
   return (
     <>
-      <JsonLd data={websiteJsonLd} />
-
       <HomeHero
         postCount={allPosts.length}
         portfolioCount={allPortfolioEntries.length}

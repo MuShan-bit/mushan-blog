@@ -33,10 +33,11 @@ export async function generateMetadata({ params }: PostPageProps) {
   }
 
   return createPageMetadata({
-    title: post.seoTitle ?? post.title,
+    title: post.title,
     description: post.seoDescription ?? post.summary,
     path: `/blog/${post.slug}`,
     keywords: [post.category, ...post.tags],
+    openGraphType: "article",
   });
 }
 

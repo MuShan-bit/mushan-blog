@@ -23,6 +23,10 @@ export async function generateMetadata({ params }: TagPageProps) {
     title: tag ? `#${tag.label}` : "标签",
     description: tag ? `浏览与“${tag.label}”标签相关的文章。` : "标签页",
     path: `/tags/${slug}`,
+    robots: {
+      index: false,
+      follow: true,
+    },
   });
 }
 

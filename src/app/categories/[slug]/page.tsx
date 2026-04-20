@@ -23,6 +23,10 @@ export async function generateMetadata({ params }: CategoryPageProps) {
     title: category ? `${category.label} 分类` : "分类",
     description: category ? `浏览“${category.label}”分类下的全部文章。` : "分类页",
     path: `/categories/${slug}`,
+    robots: {
+      index: false,
+      follow: true,
+    },
   });
 }
 

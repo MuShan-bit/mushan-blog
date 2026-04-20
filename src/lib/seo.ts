@@ -7,6 +7,8 @@ type MetadataInput = {
   description: string;
   path: string;
   keywords?: string[];
+  robots?: Metadata["robots"];
+  openGraphType?: "website" | "article";
 };
 
 export function absoluteUrl(path: string) {
@@ -18,8 +20,10 @@ export function createPageMetadata({
   description,
   path,
   keywords = [],
+  robots,
+  openGraphType = "website",
 }: MetadataInput): Metadata {
-  return {
+  const metadata: Metadata = {
     title,
     description,
     keywords,
@@ -32,7 +36,7 @@ export function createPageMetadata({
       url: absoluteUrl(path),
       siteName: siteConfig.title,
       locale: "zh_CN",
-      type: "website",
+      type: openGraphType,
     },
     twitter: {
       card: "summary_large_image",
@@ -40,6 +44,12 @@ export function createPageMetadata({
       description,
     },
   };
+
+  if (robots) {
+    metadata.robots = robots;
+  }
+
+  return metadata;
 }
 
 export function createArticleJsonLd(post: Post) {
