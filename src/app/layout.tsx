@@ -51,6 +51,9 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   applicationName: siteConfig.title,
+  verification: {
+    google: "4NO1DUKTOwjEoc5KdIwsuqZhUKox85q4XOypkpQ6KhQ",
+  },
   alternates: {
     types: {
       "application/rss+xml": `${siteConfig.siteUrl}/rss.xml`,
