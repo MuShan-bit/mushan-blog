@@ -45,3 +45,11 @@ next-env.d.ts
 
 # obsidian
 .obsidian
+
+# agent
+.agents
+.claude
+.iflow
+.trae
+skills
+skills-lock.json
