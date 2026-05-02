@@ -53,3 +53,8 @@ next-env.d.ts
 .trae
 skills
 skills-lock.json
+.lark-cli-home
+.lark-local-home
+.feishu-cli-home
+.feishu-wiki-home
+.tmp-lark

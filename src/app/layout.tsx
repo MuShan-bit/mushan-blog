@@ -51,9 +51,12 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   applicationName: siteConfig.title,
-  verification: {
-    google: "4NO1DUKTOwjEoc5KdIwsuqZhUKox85q4XOypkpQ6KhQ",
-  },
+  verification:
+    siteConfig.deployRegion === "global"
+      ? {
+          google: "qTvaFXLG84Uwo_11kpDGHUSFZdR5-eCz8qdKx-2xsgg",
+        }
+      : undefined,
   alternates: {
     types: {
       "application/rss+xml": `${siteConfig.siteUrl}/rss.xml`,
