@@ -7,7 +7,7 @@ import { createBreadcrumbJsonLd, createPageMetadata, createPersonJsonLd } from "
 
 export const metadata = createPageMetadata({
   title: "关于木杉",
-  description: "关于木杉的个人展示页，包含技能、爱好、联系方式、GitHub 与 3D 文本形象。",
+  description: "关于木杉的个人展示页，包含技能、爱好、联系方式、GitHub 与 2D 关键词气泡墙。",
   path: "/about",
   keywords: [...profile.skills, ...profile.hobbies],
 });
