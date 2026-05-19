@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, CalendarDays, Clock3, Hash, Layers3 } from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarDays, Clock3, Layers3 } from "lucide-react";
 import { notFound } from "next/navigation";
 import { ViewCount } from "@/components/analytics/view-count";
 import { ArticleReaderShell } from "@/components/content/article-reader-shell";
@@ -74,105 +74,51 @@ export default async function PostPage({ params }: PostPageProps) {
         shareTitle={post.title}
         tocRootId="reader-mdx-content"
         sidebar={
-          <>
-            {seriesNavigation ? (
-              <div className="glass-panel rounded-[1.8rem] p-6">
-                <div className="text-accent-strong flex items-center gap-3">
-                  <Layers3 className="h-5 w-5" />
-                  <h2 className="font-medium">当前专题</h2>
-                </div>
-
-                <div className="mt-5 space-y-4">
-                  <div>
-                    <Link
-                      href={`/series/${seriesNavigation.series.slug}`}
-                      className="text-foreground hover:text-accent-strong font-medium"
-                    >
-                      {seriesNavigation.series.title}
-                    </Link>
-                    <p className="text-muted mt-2 text-sm leading-7">
-                      这是该专题的第 {seriesNavigation.index + 1} 篇，共{" "}
-                      {seriesNavigation.series.totalPosts} 篇。
-                    </p>
-                  </div>
-
-                  <div className="grid gap-2">
-                    {seriesNavigation.series.posts.map((entry, index) => {
-                      const isCurrent = entry.slug === post.slug;
-
-                      return (
-                        <Link
-                          key={entry.slug}
-                          href={`/blog/${entry.slug}`}
-                          aria-current={isCurrent ? "page" : undefined}
-                          className={`rounded-[1.2rem] border p-3 text-sm transition ${
-                            isCurrent
-                              ? "border-accent/30 bg-accent-soft text-accent-strong"
-                              : "border-border text-muted hover:border-accent/20 hover:text-accent-strong bg-white/35 dark:bg-white/5"
-                          }`}
-                        >
-                          <span className="block text-xs opacity-75">第 {index + 1} 篇</span>
-                          <span className="mt-1 block leading-6">{entry.title}</span>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            ) : null}
-
+          seriesNavigation ? (
             <div className="glass-panel rounded-[1.8rem] p-6">
               <div className="text-accent-strong flex items-center gap-3">
                 <Layers3 className="h-5 w-5" />
-                <h2 className="font-medium">文章信息</h2>
+                <h2 className="font-medium">当前专题</h2>
               </div>
-              <dl className="mt-5 grid gap-4 text-sm">
-                <div>
-                  <dt className="text-muted">分类</dt>
-                  <dd className="text-foreground mt-1">{post.category}</dd>
-                </div>
-                <div>
-                  <dt className="text-muted">发布时间</dt>
-                  <dd className="text-foreground mt-1">{formatDate(post.publishedAt)}</dd>
-                </div>
-                {post.updatedAt ? (
-                  <div>
-                    <dt className="text-muted">更新日期</dt>
-                    <dd className="text-foreground mt-1">{formatDate(post.updatedAt)}</dd>
-                  </div>
-                ) : null}
-                <div>
-                  <dt className="text-muted">阅读时长</dt>
-                  <dd className="text-foreground mt-1">{post.readingTime.text}</dd>
-                </div>
-              </dl>
-            </div>
 
-            <div className="glass-panel rounded-[1.8rem] p-6">
-              <div className="text-accent-strong flex items-center gap-3">
-                <Hash className="h-5 w-5" />
-                <h2 className="font-medium">相关文章</h2>
-              </div>
-              <div className="mt-5 grid gap-4">
-                {relatedPosts.length ? (
-                  relatedPosts.map((entry) => (
-                    <Link
-                      key={entry.slug}
-                      href={`/blog/${entry.slug}`}
-                      className="border-border hover:border-accent/20 rounded-[1.25rem] border bg-white/35 p-4 text-sm dark:bg-white/5"
-                    >
-                      <p className="text-foreground font-medium">{entry.title}</p>
-                      <p className="text-muted mt-2 leading-7">{entry.summary}</p>
-                    </Link>
-                  ))
-                ) : (
-                  <p className="text-muted text-sm leading-7">
-                    更多相关文章会随着内容增加逐步丰富起来。
+              <div className="mt-5 space-y-4">
+                <div>
+                  <Link
+                    href={`/series/${seriesNavigation.series.slug}`}
+                    className="text-foreground hover:text-accent-strong font-medium"
+                  >
+                    {seriesNavigation.series.title}
+                  </Link>
+                  <p className="text-muted mt-2 text-sm leading-7">
+                    这是该专题的第 {seriesNavigation.index + 1} 篇，共{" "}
+                    {seriesNavigation.series.totalPosts} 篇。
                   </p>
-                )}
+                </div>
+
+                <div className="grid gap-2">
+                  {seriesNavigation.series.posts.map((entry, index) => {
+                    const isCurrent = entry.slug === post.slug;
+
+                    return (
+                      <Link
+                        key={entry.slug}
+                        href={`/blog/${entry.slug}`}
+                        aria-current={isCurrent ? "page" : undefined}
+                        className={`rounded-[1.2rem] border p-3 text-sm transition ${
+                          isCurrent
+                            ? "border-accent/30 bg-accent-soft text-accent-strong"
+                            : "border-border text-muted hover:border-accent/20 hover:text-accent-strong bg-white/35 dark:bg-white/5"
+                        }`}
+                      >
+                        <span className="block text-xs opacity-75">第 {index + 1} 篇</span>
+                        <span className="mt-1 block leading-6">{entry.title}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
               </div>
             </div>
-          </>
+          ) : null
         }
       >
         <header className="glass-panel overflow-hidden rounded-[2.2rem]">
