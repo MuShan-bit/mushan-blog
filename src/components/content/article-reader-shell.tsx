@@ -73,58 +73,8 @@ export function ArticleReaderShell({
       .filter((heading) => heading.text.length > 0);
 
     setTocHeadings(headings);
-    setActiveHeadingId((current) => {
-      if (!headings.length) {
-        return null;
-      }
-
-      if (current && headings.some((heading) => heading.id === current)) {
-        return current;
-      }
-
-      return headings[0].id;
-    });
+    setActiveHeadingId(null);
   }, [tocRootId]);
-
-  useEffect(() => {
-    if (!tocHeadings.length) {
-      setActiveHeadingId(null);
-      return;
-    }
-
-    const headings = tocHeadings
-      .map((heading) => document.getElementById(heading.id))
-      .filter((heading): heading is HTMLElement => heading !== null);
-
-    if (!headings.length) {
-      return;
-    }
-
-    const updateActiveHeading = () => {
-      const activationOffset = 144;
-      let nextActiveId = headings[0].id;
-
-      for (const heading of headings) {
-        if (heading.getBoundingClientRect().top <= activationOffset) {
-          nextActiveId = heading.id;
-          continue;
-        }
-
-        break;
-      }
-
-      setActiveHeadingId((current) => (current === nextActiveId ? current : nextActiveId));
-    };
-
-    updateActiveHeading();
-    window.addEventListener("scroll", updateActiveHeading, { passive: true });
-    window.addEventListener("resize", updateActiveHeading);
-
-    return () => {
-      window.removeEventListener("scroll", updateActiveHeading);
-      window.removeEventListener("resize", updateActiveHeading);
-    };
-  }, [tocHeadings]);
 
   useEffect(() => {
     if (!activeHeadingId) {
@@ -288,7 +238,8 @@ export function ArticleReaderShell({
         <aside
           className={cn(
             "hidden space-y-5 md:block",
-            !wideReading && "xl:sticky xl:top-28 xl:self-start",
+            !wideReading &&
+              "xl:sticky xl:top-28 xl:max-h-[calc(100vh-7rem)] xl:self-start xl:overflow-y-auto xl:pr-1",
             wideReading && "md:hidden",
           )}
         >
