@@ -1062,11 +1062,11 @@ body[data-gallery-lightbox="open"] .site-footer {
 .site-header__shell--scrolled {
   border-radius: 0;
   border-inline-width: 0;
-  background-color: color-mix(in oklab, var(--surface-strong) 72%, transparent);
+  background-color: var(--background-muted);
   box-shadow:
     0 16px 34px color-mix(in oklab, var(--shadow) 24%, transparent),
     inset 0 1px 0 color-mix(in oklab, var(--border) 52%, transparent);
-  opacity: 0.92;
+  opacity: 1;
   transform: translate3d(0, 0, 0) scale(1);
 }
 
