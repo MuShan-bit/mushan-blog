@@ -589,7 +589,7 @@ textarea {
 .timeline-axis-line {
   position: absolute;
   left: 50%;
-  top: 1.35rem;
+  top: 2.15rem;
   bottom: 1.2rem;
   width: 2px;
   transform: translateX(-50%);
@@ -610,7 +610,7 @@ textarea {
 .timeline-axis-now {
   position: absolute;
   left: 50%;
-  top: 0.5rem;
+  top: 1.2rem;
   z-index: 20;
   display: inline-flex;
   align-items: center;
