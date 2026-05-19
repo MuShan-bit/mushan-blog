@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, Palette } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
 import { colorPalettes } from "@/lib/color-themes";
 import { applyPalette } from "@/components/theme/color-theme-provider";
@@ -11,10 +11,6 @@ export function PaletteSwitcher() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const activePalette = useColorPalette();
-
-  const current = useMemo(() => {
-    return colorPalettes.find((palette) => palette.id === activePalette) ?? colorPalettes[0];
-  }, [activePalette]);
 
   useEffect(() => {
     if (!open) {
@@ -52,12 +48,11 @@ export function PaletteSwitcher() {
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
         className={cn(
-          "glass-panel soft-ring text-foreground/80 inline-flex h-10 items-center gap-1.5 rounded-full px-3 text-sm sm:h-11 sm:gap-2 sm:px-4",
+          "glass-panel soft-ring text-foreground/80 inline-flex h-10 w-10 items-center justify-center rounded-full sm:h-11 sm:w-11",
           "hover:text-foreground hover:-translate-y-0.5",
         )}
       >
         <Palette className="h-4 w-4" />
-        <span className="hidden sm:inline">{current.name}</span>
       </button>
 
       {open ? (

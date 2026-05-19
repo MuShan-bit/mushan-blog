@@ -83,7 +83,7 @@ export const siteConfig = {
     { href: "/portfolio", label: "作品集" },
     { href: "/gallery", label: "相册" },
     { href: "/friends", label: "友链" },
-    { href: "/about", label: "关于木杉" },
+    { href: "/about", label: "关于" },
   ],
   author: {
     name: "木杉",
