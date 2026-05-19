@@ -205,44 +205,46 @@ export default async function PostPage({ params }: PostPageProps) {
               {seriesNavigation.previousPost ? (
                 <Link
                   href={`/blog/${seriesNavigation.previousPost.slug}`}
-                  className="glass-panel hover:border-accent/20 rounded-[1.8rem] border border-transparent p-6 transition"
+                  className="glass-panel hover:border-accent/20 rounded-[1.8rem] border border-transparent p-4 transition sm:p-6"
                 >
                   <p className="text-muted inline-flex items-center gap-2 text-sm">
                     <ArrowLeft className="h-4 w-4" />
                     上一篇
                   </p>
-                  <h3 className="font-display text-foreground mt-4 text-2xl font-semibold tracking-[-0.04em]">
+                  <h3 className="font-display text-foreground mt-4 hidden text-2xl font-semibold tracking-[-0.04em] sm:block">
                     {seriesNavigation.previousPost.title}
                   </h3>
-                  <p className="text-muted mt-3 text-sm leading-7">
+                  <p className="text-muted mt-3 hidden text-sm leading-7 sm:block">
                     {seriesNavigation.previousPost.summary}
                   </p>
                 </Link>
               ) : (
-                <div className="glass-panel rounded-[1.8rem] p-6">
-                  <p className="text-muted text-sm">这是这个专题的第一篇，已经到起点了。</p>
+                <div className="glass-panel rounded-[1.8rem] p-4 sm:p-6">
+                  <p className="text-muted text-sm">上一篇</p>
+                  <p className="text-muted mt-3 hidden text-sm sm:block">这是这个专题的第一篇，已经到起点了。</p>
                 </div>
               )}
 
               {seriesNavigation.nextPost ? (
                 <Link
                   href={`/blog/${seriesNavigation.nextPost.slug}`}
-                  className="glass-panel hover:border-accent/20 rounded-[1.8rem] border border-transparent p-6 transition"
+                  className="glass-panel hover:border-accent/20 rounded-[1.8rem] border border-transparent p-4 transition sm:p-6"
                 >
                   <p className="text-muted inline-flex items-center gap-2 text-sm">
                     下一篇
                     <ArrowRight className="h-4 w-4" />
                   </p>
-                  <h3 className="font-display text-foreground mt-4 text-2xl font-semibold tracking-[-0.04em]">
+                  <h3 className="font-display text-foreground mt-4 hidden text-2xl font-semibold tracking-[-0.04em] sm:block">
                     {seriesNavigation.nextPost.title}
                   </h3>
-                  <p className="text-muted mt-3 text-sm leading-7">
+                  <p className="text-muted mt-3 hidden text-sm leading-7 sm:block">
                     {seriesNavigation.nextPost.summary}
                   </p>
                 </Link>
               ) : (
-                <div className="glass-panel rounded-[1.8rem] p-6">
-                  <p className="text-muted text-sm">这是这个专题的最后一篇，已经读到终点了。</p>
+                <div className="glass-panel rounded-[1.8rem] p-4 sm:p-6">
+                  <p className="text-muted text-sm">下一篇</p>
+                  <p className="text-muted mt-3 hidden text-sm sm:block">这是这个专题的最后一篇，已经读到终点了。</p>
                 </div>
               )}
             </div>
