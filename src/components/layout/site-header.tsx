@@ -19,23 +19,57 @@ export function SiteHeader() {
 
   useEffect(() => {
     let frameId = 0;
+    let visibleState = !isImmersiveHome;
+    let scrolledState = false;
+
+    const applyState = (nextVisible: boolean, nextScrolled: boolean) => {
+      if (visibleState !== nextVisible) {
+        visibleState = nextVisible;
+        setVisible(nextVisible);
+      }
+
+      if (scrolledState !== nextScrolled) {
+        scrolledState = nextScrolled;
+        setScrolled(nextScrolled);
+      }
+    };
 
     const updateHeaderState = () => {
       const currentScrollY = window.scrollY;
       const homeRevealThreshold = Math.max(window.innerHeight - 72, window.innerHeight * 0.92);
 
       if (isImmersiveHome) {
-        if (currentScrollY < homeRevealThreshold) {
-          setVisible(false);
-          setScrolled(false);
+        const revealEnterThreshold = homeRevealThreshold;
+        const revealExitThreshold = Math.max(0, homeRevealThreshold - 40);
+        const shouldReveal = visibleState
+          ? currentScrollY >= revealExitThreshold
+          : currentScrollY >= revealEnterThreshold;
+
+        if (!shouldReveal) {
+          applyState(false, false);
           frameId = 0;
           return;
         }
+
+        const scrolledBaseThreshold = homeRevealThreshold + 24;
+        const scrolledEnterThreshold = scrolledBaseThreshold + 18;
+        const scrolledExitThreshold = scrolledBaseThreshold - 18;
+        const shouldUseScrolledHeader = scrolledState
+          ? currentScrollY >= scrolledExitThreshold
+          : currentScrollY >= scrolledEnterThreshold;
+
+        applyState(true, shouldUseScrolledHeader);
+        frameId = 0;
+        return;
       }
 
-      const scrolledThreshold = isImmersiveHome ? homeRevealThreshold + 24 : 16;
-      setVisible(true);
-      setScrolled(currentScrollY > scrolledThreshold);
+      const scrolledEnterThreshold = 36;
+      const scrolledExitThreshold = 8;
+      const shouldUseScrolledHeader = scrolledState
+        ? currentScrollY >= scrolledExitThreshold
+        : currentScrollY >= scrolledEnterThreshold;
+
+      applyState(true, shouldUseScrolledHeader);
       frameId = 0;
     };
 
@@ -49,6 +83,7 @@ export function SiteHeader() {
 
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
+    applyState(!isImmersiveHome, false);
     updateHeaderState();
 
     return () => {
