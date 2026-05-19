@@ -21,7 +21,7 @@ export function PortfolioCard({ entry, className }: PortfolioCardProps) {
     <InteractiveCard
       className={cn("glass-panel group overflow-hidden rounded-[1.75rem]", className)}
     >
-      <div className="relative aspect-[16/10] overflow-hidden">
+      <div className="relative aspect-[2/1] overflow-hidden">
         <Image
           src={entry.cover}
           alt={entry.title}

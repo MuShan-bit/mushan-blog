@@ -21,7 +21,7 @@ export function SeriesCard({ series, className }: SeriesCardProps) {
         className,
       )}
     >
-      <div className="relative aspect-[16/10] overflow-hidden">
+      <div className="relative aspect-[2/1] overflow-hidden">
         <Image
           src={series.cover}
           alt={series.title}
