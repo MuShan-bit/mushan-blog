@@ -207,7 +207,7 @@ export default async function PostPage({ params }: PostPageProps) {
                   href={`/blog/${seriesNavigation.previousPost.slug}`}
                   className="glass-panel hover:border-accent/20 rounded-[1.8rem] border border-transparent p-4 transition sm:p-6"
                 >
-                  <p className="text-muted inline-flex items-center gap-2 text-sm">
+                  <p className="text-muted inline-flex w-full items-center justify-center gap-2 text-sm sm:w-auto sm:justify-start">
                     <ArrowLeft className="h-4 w-4" />
                     上一篇
                   </p>
@@ -220,7 +220,7 @@ export default async function PostPage({ params }: PostPageProps) {
                 </Link>
               ) : (
                 <div className="glass-panel rounded-[1.8rem] p-4 sm:p-6">
-                  <p className="text-muted text-sm">上一篇</p>
+                  <p className="text-muted text-center text-sm sm:text-left">无</p>
                   <p className="text-muted mt-3 hidden text-sm sm:block">这是这个专题的第一篇，已经到起点了。</p>
                 </div>
               )}
@@ -230,7 +230,7 @@ export default async function PostPage({ params }: PostPageProps) {
                   href={`/blog/${seriesNavigation.nextPost.slug}`}
                   className="glass-panel hover:border-accent/20 rounded-[1.8rem] border border-transparent p-4 transition sm:p-6"
                 >
-                  <p className="text-muted inline-flex items-center gap-2 text-sm">
+                  <p className="text-muted inline-flex w-full items-center justify-center gap-2 text-sm sm:w-auto sm:justify-start">
                     下一篇
                     <ArrowRight className="h-4 w-4" />
                   </p>
@@ -243,7 +243,7 @@ export default async function PostPage({ params }: PostPageProps) {
                 </Link>
               ) : (
                 <div className="glass-panel rounded-[1.8rem] p-4 sm:p-6">
-                  <p className="text-muted text-sm">下一篇</p>
+                  <p className="text-muted text-center text-sm sm:text-left">无</p>
                   <p className="text-muted mt-3 hidden text-sm sm:block">这是这个专题的最后一篇，已经读到终点了。</p>
                 </div>
               )}
