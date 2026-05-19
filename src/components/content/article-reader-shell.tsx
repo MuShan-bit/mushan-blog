@@ -3,14 +3,13 @@
 import {
   ArrowUp,
   Check,
-  ChevronRight,
   Menu,
   PanelRightClose,
   PanelRightOpen,
   Share2,
   X,
 } from "lucide-react";
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties, MouseEvent, ReactNode } from "react";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/cn";
@@ -88,12 +87,12 @@ export function ArticleReaderShell({
   const [tocHeadings, setTocHeadings] = useState<TocHeading[]>([]);
   const [tocTree, setTocTree] = useState<TocNode[]>([]);
   const [tocParentsById, setTocParentsById] = useState<Record<string, string | null>>({});
-  const [manuallyExpandedTocIds, setManuallyExpandedTocIds] = useState<Set<string>>(new Set());
   const [activeHeadingId, setActiveHeadingId] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const shareTimerRef = useRef<number | null>(null);
   const tocListRef = useRef<HTMLDivElement>(null);
   const tocLinkRefs = useRef(new Map<string, HTMLAnchorElement>());
+  const tocNavigationLockRef = useRef<{ headingId: string; expiresAt: number } | null>(null);
   const portalRoot = useSyncExternalStore(
     () => () => {},
     () => document.body,
@@ -113,7 +112,7 @@ export function ArticleReaderShell({
       setTocHeadings([]);
       setTocTree([]);
       setTocParentsById({});
-      setManuallyExpandedTocIds(new Set());
+      tocNavigationLockRef.current = null;
       setActiveHeadingId(null);
       return;
     }
@@ -124,7 +123,7 @@ export function ArticleReaderShell({
       setTocHeadings([]);
       setTocTree([]);
       setTocParentsById({});
-      setManuallyExpandedTocIds(new Set());
+      tocNavigationLockRef.current = null;
       setActiveHeadingId(null);
       return;
     }
@@ -142,7 +141,7 @@ export function ArticleReaderShell({
     setTocHeadings(headings);
     setTocTree(roots);
     setTocParentsById(parentById);
-    setManuallyExpandedTocIds(new Set());
+    tocNavigationLockRef.current = null;
     setActiveHeadingId(null);
   }, [tocRootId]);
 
@@ -175,12 +174,40 @@ export function ArticleReaderShell({
     const updateActiveHeadingByScroll = () => {
       const headerShell = document.querySelector<HTMLElement>(".site-header__shell");
       const headerOffset = (headerShell?.getBoundingClientRect().height ?? 72) + 34;
+      const snapBuffer = 22;
+
+      const navigationLock = tocNavigationLockRef.current;
+
+      if (navigationLock) {
+        const targetHeading = document.getElementById(navigationLock.headingId);
+        const targetHeadingTop = targetHeading?.getBoundingClientRect().top ?? Number.POSITIVE_INFINITY;
+        const reachedTarget = Math.abs(targetHeadingTop - headerOffset) <= 18 || targetHeadingTop < headerOffset + 8;
+        const expired = performance.now() >= navigationLock.expiresAt;
+
+        if (!reachedTarget && !expired) {
+          setActiveHeadingId((current) =>
+            current === navigationLock.headingId ? current : navigationLock.headingId,
+          );
+          frameId = 0;
+          return;
+        }
+
+        tocNavigationLockRef.current = null;
+      }
+
       let nextActiveId = headingElements[0].id;
 
-      for (const element of headingElements) {
-        if (element.getBoundingClientRect().top <= headerOffset) {
+      for (let index = 0; index < headingElements.length; index += 1) {
+        const element = headingElements[index];
+        const headingTop = element.getBoundingClientRect().top;
+
+        if (headingTop <= headerOffset) {
           nextActiveId = element.id;
           continue;
+        }
+
+        if (headingTop - headerOffset <= snapBuffer) {
+          nextActiveId = element.id;
         }
 
         break;
@@ -251,48 +278,40 @@ export function ArticleReaderShell({
     }
   }
 
-  const onTocItemClick = (headingId: string) => {
+  const onTocItemClick = (event: MouseEvent<HTMLAnchorElement>, headingId: string) => {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) {
+      return;
+    }
+
+    event.preventDefault();
+    tocNavigationLockRef.current = {
+      headingId,
+      expiresAt: performance.now() + 980,
+    };
     setActiveHeadingId(headingId);
-  };
 
-  const onToggleTocBranch = (headingId: string) => {
-    setManuallyExpandedTocIds((current) => {
-      const next = new Set(current);
+    const targetHeading = document.getElementById(headingId);
 
-      if (next.has(headingId)) {
-        next.delete(headingId);
-      } else {
-        next.add(headingId);
-      }
+    if (targetHeading) {
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      targetHeading.scrollIntoView({
+        block: "start",
+        behavior: reduceMotion ? "auto" : "smooth",
+      });
+    }
 
-      return next;
-    });
+    window.history.replaceState(null, "", `#${headingId}`);
   };
 
   const renderTocNodes = (nodes: TocNode[]) => {
     return nodes.map((node) => {
       const hasChildren = node.children.length > 0;
       const isActive = activeHeadingId === node.id;
-      const isExpanded =
-        hasChildren && (activeHeadingPath.has(node.id) || manuallyExpandedTocIds.has(node.id));
+      const isExpanded = hasChildren && activeHeadingPath.has(node.id);
 
       return (
         <div key={node.id} className="article-toc__node" style={{ "--toc-level": node.depth } as CSSProperties}>
           <div className="article-toc__row" data-active={isActive ? "true" : "false"}>
-            {hasChildren ? (
-              <button
-                type="button"
-                className="article-toc__toggle"
-                data-expanded={isExpanded ? "true" : "false"}
-                onClick={() => onToggleTocBranch(node.id)}
-                aria-label={isExpanded ? `折叠 ${node.text}` : `展开 ${node.text}`}
-                aria-expanded={isExpanded}
-              >
-                <ChevronRight className="h-3.5 w-3.5" />
-              </button>
-            ) : (
-              <span className="article-toc__toggle-spacer" aria-hidden />
-            )}
             <a
               href={`#${node.id}`}
               ref={(linkNode) => {
@@ -305,7 +324,7 @@ export function ArticleReaderShell({
               }}
               data-active={isActive ? "true" : "false"}
               className="article-toc__item"
-              onClick={() => onTocItemClick(node.id)}
+              onClick={(event) => onTocItemClick(event, node.id)}
             >
               {node.text}
             </a>

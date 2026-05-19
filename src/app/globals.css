@@ -2524,7 +2524,7 @@ body[data-gallery-lightbox="open"] .site-footer {
   padding-left: calc(var(--toc-level, 0) * 0.8rem);
 }
 
-.article-toc__toggle,
+.article-toc__branch-marker,
 .article-toc__toggle-spacer {
   display: inline-flex;
   align-items: center;
@@ -2535,33 +2535,21 @@ body[data-gallery-lightbox="open"] .site-footer {
   flex: none;
 }
 
-.article-toc__toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid transparent;
-  border-radius: 0.58rem;
-  background: transparent;
-  color: color-mix(in oklab, var(--muted) 82%, transparent);
+.article-toc__branch-marker::before {
+  display: block;
+  width: 0.56rem;
+  height: 0.24rem;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--muted) 54%, transparent);
+  content: "";
   transition:
-    color 180ms ease,
-    border-color 180ms ease,
-    background-color 180ms ease,
-    transform 180ms ease;
+    width 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 180ms ease;
 }
 
-.article-toc__toggle:hover {
-  border-color: color-mix(in oklab, var(--accent) 20%, transparent);
-  background: color-mix(in oklab, var(--accent-soft) 60%, transparent);
-  color: var(--accent-strong);
-}
-
-.article-toc__toggle svg {
-  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.article-toc__toggle[data-expanded="true"] svg {
-  transform: rotate(90deg);
+.article-toc__branch-marker[data-expanded="true"]::before {
+  width: 0.86rem;
+  background: color-mix(in oklab, var(--accent) 62%, transparent);
 }
 
 .article-toc__item {
@@ -2594,18 +2582,20 @@ body[data-gallery-lightbox="open"] .site-footer {
   color: var(--accent-strong);
 }
 
-.article-toc__row[data-active="true"] .article-toc__toggle {
-  border-color: color-mix(in oklab, var(--accent) 24%, transparent);
-  background: color-mix(in oklab, var(--accent-soft) 72%, transparent);
-  color: var(--accent-strong);
+.article-toc__row[data-active="true"] .article-toc__branch-marker::before {
+  background: color-mix(in oklab, var(--accent) 76%, transparent);
 }
 
 .dark .article-toc__item:hover {
   background: color-mix(in oklab, var(--accent-soft) 42%, transparent);
 }
 
-.dark .article-toc__toggle:hover {
-  background: color-mix(in oklab, var(--accent-soft) 42%, transparent);
+.dark .article-toc__branch-marker::before {
+  background: color-mix(in oklab, var(--muted) 42%, transparent);
+}
+
+.dark .article-toc__branch-marker[data-expanded="true"]::before {
+  background: color-mix(in oklab, var(--accent) 66%, transparent);
 }
 
 .reader-fab-stack {
