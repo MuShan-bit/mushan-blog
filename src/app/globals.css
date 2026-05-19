@@ -589,7 +589,7 @@ textarea {
 .timeline-axis-line {
   position: absolute;
   left: 50%;
-  top: 2.15rem;
+  top: 1.3rem;
   bottom: 1.2rem;
   width: 2px;
   transform: translateX(-50%);
@@ -605,23 +605,6 @@ textarea {
 .timeline-axis-line--mobile {
   left: 1.625rem;
   transform: none;
-}
-
-.timeline-axis-now {
-  position: absolute;
-  left: 50%;
-  top: 1.2rem;
-  z-index: 20;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 1.5rem;
-  width: 1.5rem;
-  border: 1px solid color-mix(in oklab, var(--accent) 26%, transparent);
-  border-radius: 999px;
-  background: color-mix(in oklab, var(--surface-strong) 88%, transparent);
-  color: var(--accent-strong);
-  transform: translateX(-50%);
 }
 
 .timeline-year-chip {
@@ -698,13 +681,6 @@ textarea {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
     0 18px 38px rgba(0, 0, 0, 0.26);
-}
-
-@media (max-width: 767px) {
-  .timeline-axis-now {
-    left: 1.625rem;
-    transform: none;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

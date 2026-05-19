@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import Link from "next/link";
-import { ArrowUp, Clock3, FileText, FolderKanban } from "lucide-react";
+import { Clock3, FileText, FolderKanban } from "lucide-react";
 import { JsonLd } from "@/components/seo/json-ld";
 import { getAllPortfolioEntries, getPublishedPosts } from "@/lib/content";
 import { cn } from "@/lib/cn";
@@ -216,9 +216,6 @@ export default async function TimelinePage() {
       <section className="timeline-shell relative overflow-hidden rounded-[2rem] px-5 py-8 sm:px-7 sm:py-10">
         <div className="timeline-axis-line hidden md:block" aria-hidden />
         <div className="timeline-axis-line timeline-axis-line--mobile md:hidden" aria-hidden />
-        <div className="timeline-axis-now" aria-label="时间轴起点">
-          <ArrowUp className="h-3.5 w-3.5" />
-        </div>
 
         <div className="relative z-10 space-y-0 pt-12">
           {timelineItems.map((item) => {
