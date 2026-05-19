@@ -5,19 +5,50 @@ import { InteractiveCard } from "@/components/content/interactive-card";
 import type { GalleryAlbum } from "@/lib/types";
 
 export function AlbumCard({ album }: { album: GalleryAlbum }) {
+  const previewPhotos = album.photos.length
+    ? album.photos.slice(0, 3)
+    : [
+        { src: album.cover, alt: album.title },
+        { src: album.cover, alt: album.title },
+        { src: album.cover, alt: album.title },
+      ];
+
   return (
-    <InteractiveCard className="glass-panel group overflow-hidden rounded-[1.75rem]">
-      <div className="relative aspect-[4/3] overflow-hidden">
-        <Image
-          src={album.cover}
-          alt={album.title}
-          fill
-          className="object-cover transition duration-500 group-hover:scale-[1.04]"
-          sizes="(min-width: 1024px) 30vw, 100vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-white/10" />
+    <InteractiveCard className="glass-panel album-folder-card group rounded-[1.75rem] p-4 sm:p-5">
+      <div className="album-folder-visual relative aspect-[4/3]">
+        <div className="album-folder-shell">
+          <div className="album-folder-deck">
+            <div className="album-folder-photo album-folder-photo--1">
+              <Image
+                src={previewPhotos[0].src}
+                alt=""
+                fill
+                className="object-cover"
+                sizes="(min-width: 1024px) 24vw, 88vw"
+              />
+            </div>
+            <div className="album-folder-photo album-folder-photo--2">
+              <Image
+                src={previewPhotos[1]?.src ?? previewPhotos[0].src}
+                alt=""
+                fill
+                className="object-cover"
+                sizes="(min-width: 1024px) 24vw, 88vw"
+              />
+            </div>
+            <div className="album-folder-photo album-folder-photo--3">
+              <Image
+                src={previewPhotos[2]?.src ?? previewPhotos[0].src}
+                alt=""
+                fill
+                className="object-cover"
+                sizes="(min-width: 1024px) 24vw, 88vw"
+              />
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="space-y-3 p-6">
+      <div className="space-y-3 px-2 pb-2">
         <div className="text-muted flex items-center justify-between gap-3 text-sm">
           <span className="bg-accent-soft text-accent-strong rounded-full px-3 py-1">
             {album.theme}

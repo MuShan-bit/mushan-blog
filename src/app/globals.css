@@ -431,6 +431,180 @@ textarea {
   );
 }
 
+.album-folder-visual {
+  padding-top: 0.35rem;
+}
+
+.album-folder-shell {
+  position: relative;
+  height: 100%;
+  border: 1px solid color-mix(in oklab, var(--border) 86%, transparent);
+  border-radius: 1.45rem;
+  padding: 1.25rem 0.95rem 0.95rem;
+  background:
+    linear-gradient(
+      158deg,
+      color-mix(in oklab, var(--surface-strong) 84%, white 16%) 0%,
+      color-mix(in oklab, var(--surface) 86%, var(--accent-soft) 14%) 56%,
+      color-mix(in oklab, var(--surface-soft) 88%, var(--background-muted) 12%) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    0 20px 56px color-mix(in oklab, var(--shadow) 18%, transparent);
+  backdrop-filter: blur(20px) saturate(1.08);
+}
+
+.album-folder-shell::before {
+  position: absolute;
+  left: 0.95rem;
+  top: -0.46rem;
+  width: 34%;
+  min-width: 6rem;
+  max-width: 8.5rem;
+  height: 0.95rem;
+  border: 1px solid color-mix(in oklab, var(--border) 74%, transparent);
+  border-bottom: none;
+  border-radius: 0.8rem 0.8rem 0.35rem 0.35rem;
+  background: color-mix(in oklab, var(--surface-strong) 86%, white 14%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.34);
+  content: "";
+}
+
+.album-folder-shell::after {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    128deg,
+    rgba(255, 255, 255, 0.26) 0%,
+    rgba(255, 255, 255, 0.08) 24%,
+    transparent 42%,
+    transparent 100%
+  );
+  content: "";
+  pointer-events: none;
+}
+
+.album-folder-deck {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--border) 86%, transparent);
+  border-radius: 1.1rem;
+  background: color-mix(in oklab, var(--background-muted) 76%, var(--surface-strong) 24%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -12px 26px color-mix(in oklab, var(--accent-soft) 24%, transparent);
+}
+
+.album-folder-photo {
+  position: absolute;
+  width: 76%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--border) 78%, transparent);
+  border-radius: 0.9rem;
+  box-shadow:
+    0 14px 30px color-mix(in oklab, var(--shadow) 22%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  transition:
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 260ms ease;
+}
+
+.album-folder-photo img {
+  transition: transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.album-folder-photo::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0.06) 28%,
+    transparent 52%
+  );
+  content: "";
+  pointer-events: none;
+}
+
+.album-folder-photo--1 {
+  left: 8%;
+  top: 16%;
+  z-index: 1;
+  transform: rotate(-8deg) translate3d(0, 0, 0);
+}
+
+.album-folder-photo--2 {
+  left: 19%;
+  top: 10%;
+  z-index: 2;
+  transform: rotate(-2deg) translate3d(0, 0, 0);
+}
+
+.album-folder-photo--3 {
+  left: 31%;
+  top: 6%;
+  z-index: 3;
+  transform: rotate(6deg) translate3d(0, 0, 0);
+}
+
+.album-folder-card:hover .album-folder-photo--1,
+.album-folder-card:focus-within .album-folder-photo--1 {
+  transform: rotate(-10deg) translate3d(-0.35rem, 0.16rem, 0);
+}
+
+.album-folder-card:hover .album-folder-photo--2,
+.album-folder-card:focus-within .album-folder-photo--2 {
+  transform: rotate(-3deg) translate3d(-0.08rem, -0.14rem, 0);
+}
+
+.album-folder-card:hover .album-folder-photo--3,
+.album-folder-card:focus-within .album-folder-photo--3 {
+  transform: rotate(8deg) translate3d(0.32rem, -0.2rem, 0);
+}
+
+.album-folder-card:hover .album-folder-photo img,
+.album-folder-card:focus-within .album-folder-photo img {
+  transform: scale(1.06);
+}
+
+.dark .album-folder-shell {
+  border-color: color-mix(in oklab, var(--border) 78%, transparent);
+  background:
+    linear-gradient(
+      158deg,
+      color-mix(in oklab, var(--surface-strong) 78%, #0e161d 22%) 0%,
+      color-mix(in oklab, var(--surface) 80%, #101922 20%) 56%,
+      color-mix(in oklab, var(--surface-soft) 74%, #0d141c 26%) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 22px 56px rgba(0, 0, 0, 0.3);
+}
+
+.dark .album-folder-shell::before {
+  border-color: color-mix(in oklab, var(--border) 72%, transparent);
+  background: color-mix(in oklab, var(--surface-strong) 72%, #111a22 28%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.dark .album-folder-deck {
+  border-color: color-mix(in oklab, var(--border) 74%, transparent);
+  background: color-mix(in oklab, var(--background-muted) 72%, #0f171f 28%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -14px 30px color-mix(in oklab, var(--accent-soft) 28%, transparent);
+}
+
+.dark .album-folder-photo {
+  border-color: color-mix(in oklab, var(--border) 72%, transparent);
+  box-shadow:
+    0 16px 36px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
 .home-hero {
   position: relative;
   min-height: 100svh;
