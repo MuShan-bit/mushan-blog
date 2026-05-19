@@ -578,6 +578,9 @@ textarea {
 }
 
 .timeline-shell {
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
   background:
     radial-gradient(
       circle at 14% 12%,
@@ -625,15 +628,13 @@ textarea {
   z-index: 20;
   display: inline-flex;
   align-items: center;
-  gap: 0.32rem;
-  border: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
+  justify-content: center;
+  height: 1.5rem;
+  width: 1.5rem;
+  border: 1px solid color-mix(in oklab, var(--accent) 26%, transparent);
   border-radius: 999px;
   background: color-mix(in oklab, var(--surface-strong) 88%, transparent);
   color: var(--accent-strong);
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 0.24rem 0.56rem;
   transform: translateX(-50%);
 }
 
