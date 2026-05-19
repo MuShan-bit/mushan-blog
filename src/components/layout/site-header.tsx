@@ -13,49 +13,27 @@ export function SiteHeader() {
   const pathname = usePathname();
   const isImmersiveHome = pathname === "/";
   const [visible, setVisible] = useState(!isImmersiveHome);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    let lastScrollY = window.scrollY;
     let frameId = 0;
 
-    const updateVisibility = () => {
+    const updateHeaderState = () => {
       const currentScrollY = window.scrollY;
-      const delta = currentScrollY - lastScrollY;
       const homeRevealThreshold = Math.max(window.innerHeight - 72, window.innerHeight * 0.92);
-      const homeAutoHideThreshold = homeRevealThreshold + 112;
 
       if (isImmersiveHome) {
         if (currentScrollY < homeRevealThreshold) {
           setVisible(false);
-          lastScrollY = currentScrollY;
-          frameId = 0;
-          return;
-        }
-
-        if (lastScrollY < homeRevealThreshold && currentScrollY >= homeRevealThreshold) {
-          setVisible(true);
-          lastScrollY = currentScrollY;
-          frameId = 0;
-          return;
-        }
-
-        if (currentScrollY < homeAutoHideThreshold) {
-          setVisible(true);
-          lastScrollY = currentScrollY;
+          setScrolled(false);
           frameId = 0;
           return;
         }
       }
 
-      if (currentScrollY <= 12 && !isImmersiveHome) {
-        setVisible((current) => (current ? current : true));
-      } else if (delta > 10) {
-        setVisible((current) => (current ? false : current));
-      } else if (delta < -10) {
-        setVisible((current) => (current ? current : true));
-      }
-
-      lastScrollY = currentScrollY;
+      const scrolledThreshold = isImmersiveHome ? homeRevealThreshold + 24 : 16;
+      setVisible(true);
+      setScrolled(currentScrollY > scrolledThreshold);
       frameId = 0;
     };
 
@@ -64,11 +42,12 @@ export function SiteHeader() {
         return;
       }
 
-      frameId = window.requestAnimationFrame(updateVisibility);
+      frameId = window.requestAnimationFrame(updateHeaderState);
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    updateVisibility();
+    window.addEventListener("resize", onScroll);
+    updateHeaderState();
 
     return () => {
       if (frameId !== 0) {
@@ -76,6 +55,7 @@ export function SiteHeader() {
       }
 
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
   }, [isImmersiveHome]);
 
@@ -85,10 +65,16 @@ export function SiteHeader() {
         "site-header z-40 px-5 pt-5 sm:px-8 lg:px-10",
         isImmersiveHome ? "site-header--floating" : "sticky top-0",
         visible ? "site-header--visible" : "site-header--hidden",
+        scrolled && "site-header--scrolled",
       )}
     >
-      <div className="mx-auto max-w-7xl">
-        <div className="border-border/90 bg-surface-strong flex items-center justify-between gap-4 rounded-[2rem] border px-4 py-3 shadow-[0_18px_60px_rgba(17,34,28,0.1)] sm:px-6">
+      <div className={cn("site-header__frame mx-auto max-w-7xl", scrolled && "site-header__frame--scrolled")}>
+        <div
+          className={cn(
+            "site-header__shell border-border/90 bg-surface-strong flex items-center justify-between gap-4 rounded-[2rem] border px-4 py-3 shadow-[0_18px_60px_rgba(17,34,28,0.1)] sm:px-6",
+            scrolled && "site-header__shell--scrolled",
+          )}
+        >
           <Link href="/" className="group hidden min-w-0 items-center gap-3 lg:flex">
             <SiteAvatar className="h-11 w-11 shrink-0" sizes="44px" priority />
             <div className="min-w-0">
