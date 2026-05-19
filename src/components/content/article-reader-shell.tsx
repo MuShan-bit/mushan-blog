@@ -286,17 +286,27 @@ export function ArticleReaderShell({
     event.preventDefault();
     tocNavigationLockRef.current = {
       headingId,
-      expiresAt: performance.now() + 980,
+      expiresAt: performance.now() + 480,
     };
     setActiveHeadingId(headingId);
 
     const targetHeading = document.getElementById(headingId);
 
     if (targetHeading) {
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      targetHeading.scrollIntoView({
-        block: "start",
-        behavior: reduceMotion ? "auto" : "smooth",
+      const htmlElement = document.documentElement;
+      const previousScrollBehavior = htmlElement.style.scrollBehavior;
+      htmlElement.style.scrollBehavior = "auto";
+
+      const headerShell = document.querySelector<HTMLElement>(".site-header__shell");
+      const headerOffset = (headerShell?.getBoundingClientRect().height ?? 72) + 34;
+      const targetY = Math.max(
+        0,
+        window.scrollY + targetHeading.getBoundingClientRect().top - headerOffset,
+      );
+
+      window.scrollTo({ top: targetY, behavior: "auto" });
+      window.requestAnimationFrame(() => {
+        htmlElement.style.scrollBehavior = previousScrollBehavior;
       });
     }
 
