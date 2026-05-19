@@ -419,7 +419,7 @@ export function ArticleReaderShell({
             setWideReading((current) => !current);
             setMenuOpen(false);
           }}
-          className={cn("reader-fab hidden md:inline-flex", wideReading && "reader-fab--active")}
+          className={cn("reader-fab hidden lg:inline-flex", wideReading && "reader-fab--active")}
           aria-label={wideReading ? "退出宽屏阅读" : "开启宽屏阅读"}
           aria-pressed={wideReading}
           title={wideReading ? "退出宽屏阅读" : "开启宽屏阅读"}
@@ -450,13 +450,13 @@ export function ArticleReaderShell({
       <article
         className={cn(
           "article-reader grid gap-6",
-          wideReading ? "xl:grid-cols-1" : "xl:grid-cols-[minmax(0,1fr)_20rem]",
+          wideReading ? "lg:grid-cols-1" : "lg:grid-cols-[minmax(0,1fr)_20rem]",
         )}
       >
         <div
           className={cn(
             "min-w-0 space-y-6",
-            wideReading && "xl:mx-auto xl:w-full xl:max-w-[78rem]",
+            wideReading && "lg:mx-auto lg:w-full lg:max-w-[78rem]",
           )}
         >
           {children}
@@ -464,8 +464,8 @@ export function ArticleReaderShell({
         <aside
           className={cn(
             "hidden space-y-5 md:block",
-            !wideReading && "xl:sticky xl:top-28 xl:self-start",
-            wideReading && "md:hidden",
+            !wideReading && "lg:sticky lg:top-28 lg:self-start",
+            wideReading && "lg:hidden",
           )}
         >
           {tocHeadings.length ? (
