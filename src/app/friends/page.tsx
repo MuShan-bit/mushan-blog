@@ -1,4 +1,3 @@
-import { PageIntro } from "@/components/content/page-intro";
 import { FriendCard } from "@/components/content/friend-card";
 import { JsonLd } from "@/components/seo/json-ld";
 import { friends } from "@/data/friends";
@@ -19,12 +18,6 @@ export default function FriendsPage() {
           { name: "首页", path: "/" },
           { name: "友链", path: "/friends" },
         ])}
-      />
-
-      <PageIntro
-        eyebrow="Friends"
-        title="开往下一站的列车，从这里开始"
-        description="愿你在旅途中，邂逅不同的风景，聆听各异的故事。我在等风起，也在等你归来。"
       />
 
       <section className="grid gap-4">

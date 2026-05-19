@@ -1,4 +1,3 @@
-import { PageIntro } from "@/components/content/page-intro";
 import { AlbumCard } from "@/components/content/album-card";
 import { JsonLd } from "@/components/seo/json-ld";
 import { galleryAlbums } from "@/data/gallery";
@@ -19,12 +18,6 @@ export default function GalleryPage() {
           { name: "首页", path: "/" },
           { name: "相册", path: "/gallery" },
         ])}
-      />
-
-      <PageIntro
-        eyebrow="Gallery"
-        title="主题相册与视觉片段"
-        description="相册不按时间线排列，而是按氛围和主题展开。这样每个系列都能保持自己的情绪和光线。"
       />
 
       <section className="grid gap-5 lg:grid-cols-3">

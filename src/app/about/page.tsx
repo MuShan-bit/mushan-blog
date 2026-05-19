@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Github, Mail, MapPin } from "lucide-react";
 import { AboutScene } from "@/components/about/about-scene";
-import { PageIntro } from "@/components/content/page-intro";
 import { JsonLd } from "@/components/seo/json-ld";
 import { profile } from "@/data/profile";
 import { createBreadcrumbJsonLd, createPageMetadata, createPersonJsonLd } from "@/lib/seo";
@@ -29,12 +28,6 @@ export default function AboutPage() {
           { name: "首页", path: "/" },
           { name: "关于木杉", path: "/about" },
         ])}
-      />
-
-      <PageIntro
-        eyebrow="About Mushan"
-        title="关于木杉"
-        description="这页不只是常规的个人资料页，我更想把“我是谁、我在意什么、我如何把感觉做成界面”一起放进来。"
       />
 
       <section className="grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">

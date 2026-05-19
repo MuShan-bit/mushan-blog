@@ -1,6 +1,3 @@
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { PageIntro } from "@/components/content/page-intro";
 import { PortfolioCard } from "@/components/content/portfolio-card";
 import { JsonLd } from "@/components/seo/json-ld";
 import { getAllPortfolioEntries } from "@/lib/content";
@@ -23,21 +20,6 @@ export default async function PortfolioPage() {
           { name: "首页", path: "/" },
           { name: "作品集", path: "/portfolio" },
         ])}
-      />
-
-      <PageIntro
-        eyebrow="Portfolio"
-        title="作品集与案例细节"
-        description="我更喜欢完整讲清一个项目从起点到落地的过程，所以每个作品都保留独立详情页，能把背景、决策与结果一起记下来。"
-        actions={
-          <Link
-            href="/about"
-            className="border-border text-foreground hover:border-accent/20 hover:text-accent-strong inline-flex items-center gap-2 rounded-full border bg-white/45 px-5 py-3 text-sm dark:bg-white/5"
-          >
-            了解我的能力地图
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        }
       />
 
       <section className="grid gap-5 lg:grid-cols-2">

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Hash, Layers3 } from "lucide-react";
-import { PageIntro } from "@/components/content/page-intro";
 import { PostCard } from "@/components/content/post-card";
 import {
   getAllSeries,
@@ -34,12 +33,6 @@ export default async function BlogPage() {
   return (
     <>
       <JsonLd data={breadcrumb} />
-
-      <PageIntro
-        eyebrow="Blog"
-        title="文章与长期记录"
-        description="这里是整个站点的主轴，技术实践、设计观察、影像笔记和生活写作都会在这里累积。"
-      />
 
       <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_22rem]">
         <div className="grid gap-5 lg:grid-cols-2">

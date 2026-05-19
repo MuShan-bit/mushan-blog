@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { PageIntro } from "@/components/content/page-intro";
 import { PostCard } from "@/components/content/post-card";
 import { JsonLd } from "@/components/seo/json-ld";
 import { getPostsByTagSlug, getTagSummaries } from "@/lib/content";
@@ -48,12 +47,6 @@ export default async function TagPage({ params }: TagPageProps) {
           { name: "文章", path: "/blog" },
           { name: tag.label, path: `/tags/${tag.slug}` },
         ])}
-      />
-
-      <PageIntro
-        eyebrow="Tag"
-        title={`# ${tag.label}`}
-        description={`这个标签目前关联 ${tag.count} 篇文章，适合从更细的兴趣点切入。`}
       />
 
       <section className="grid gap-5 lg:grid-cols-2">

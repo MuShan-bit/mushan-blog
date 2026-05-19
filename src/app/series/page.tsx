@@ -1,6 +1,4 @@
-import Link from "next/link";
-import { ArrowRight, Layers3 } from "lucide-react";
-import { PageIntro } from "@/components/content/page-intro";
+import { Layers3 } from "lucide-react";
 import { SeriesCard } from "@/components/content/series-card";
 import { JsonLd } from "@/components/seo/json-ld";
 import { getAllSeries } from "@/lib/content";
@@ -23,21 +21,6 @@ export default async function SeriesPage() {
           { name: "首页", path: "/" },
           { name: "专题", path: "/series" },
         ])}
-      />
-
-      <PageIntro
-        eyebrow="Series"
-        title="专题与连续阅读"
-        description="这里把同一主题下的多篇文章按顺序组织起来。比起零散地跳着看，它更适合从一个问题出发，连续读到一个阶段性的答案。"
-        actions={
-          <Link
-            href="/blog"
-            className="border-border text-accent-strong hover:border-accent/20 hover:text-accent inline-flex items-center gap-2 rounded-full border bg-white/40 px-4 py-2 text-sm dark:bg-white/5"
-          >
-            返回文章列表
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        }
       />
 
       <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">

@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { PageIntro } from "@/components/content/page-intro";
 import { PostCard } from "@/components/content/post-card";
 import { JsonLd } from "@/components/seo/json-ld";
 import { getCategorySummaries, getPostsByCategorySlug } from "@/lib/content";
@@ -48,12 +47,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           { name: "文章", path: "/blog" },
           { name: category.label, path: `/categories/${category.slug}` },
         ])}
-      />
-
-      <PageIntro
-        eyebrow="Category"
-        title={category.label}
-        description={`这个分类下目前有 ${category.count} 篇文章，内容会围绕同一类主题展开。`}
       />
 
       <section className="grid gap-5 lg:grid-cols-2">
