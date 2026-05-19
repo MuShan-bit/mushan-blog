@@ -6,6 +6,7 @@ import { Fraunces, Manrope } from "next/font/google";
 import { SiteBackground } from "@/components/layout/site-background";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { SiteSearch } from "@/components/layout/site-search";
 import { ViewTracker } from "@/components/analytics/view-tracker";
 import { ThemeClickFeedback } from "@/components/theme/theme-click-feedback";
 import { ColorThemeProvider } from "@/components/theme/color-theme-provider";
@@ -150,6 +151,7 @@ export default function RootLayout({
               </div>
               <MusicFloatingPlayer />
               <ThemeClickFeedback />
+              <SiteSearch />
               <ViewTracker />
             </MusicPlayerProvider>
           </ColorThemeProvider>

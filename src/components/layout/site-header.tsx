@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Search } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SiteAvatar } from "@/components/layout/site-avatar";
@@ -8,6 +9,7 @@ import { SiteMobileNav } from "@/components/layout/site-mobile-nav";
 import { SiteNavTabs } from "@/components/layout/site-nav-tabs";
 import { AppearanceSwitcher } from "@/components/theme/appearance-switcher";
 import { cn } from "@/lib/cn";
+import { openSiteSearch } from "@/lib/site-search";
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -102,6 +104,17 @@ export function SiteHeader() {
 
           <div className="flex items-center gap-3">
             <SiteNavTabs />
+            <button
+              type="button"
+              onClick={() => openSiteSearch()}
+              aria-label="打开全站搜索"
+              className={cn(
+                "glass-panel soft-ring text-foreground/80 inline-flex h-10 w-10 items-center justify-center rounded-full sm:h-11 sm:w-11",
+                "hover:text-foreground hover:-translate-y-0.5",
+              )}
+            >
+              <Search className="h-4.5 w-4.5" />
+            </button>
             <AppearanceSwitcher />
           </div>
         </div>
