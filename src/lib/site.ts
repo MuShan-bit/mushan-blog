@@ -78,6 +78,7 @@ export const siteConfig = {
   showIcpRecord: deployRegion === "cn",
   nav: [
     { href: "/blog", label: "文章" },
+    { href: "/timeline", label: "时间轴" },
     { href: "/series", label: "专题" },
     { href: "/portfolio", label: "作品集" },
     { href: "/gallery", label: "相册" },

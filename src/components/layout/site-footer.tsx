@@ -19,6 +19,9 @@ export function SiteFooter() {
             <Link href="/series" className="hover:text-foreground">
               专题
             </Link>
+            <Link href="/timeline" className="hover:text-foreground">
+              时间轴
+            </Link>
             <Link href="/about" className="hover:text-foreground">
               关于木杉
             </Link>

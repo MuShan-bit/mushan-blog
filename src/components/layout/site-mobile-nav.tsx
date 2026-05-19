@@ -1,7 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpenText, Camera, House, Layers3, Menu, Rss, UserRound, Users, X } from "lucide-react";
+import {
+  BookOpenText,
+  Camera,
+  Clock3,
+  House,
+  Layers3,
+  Menu,
+  Rss,
+  UserRound,
+  Users,
+  X,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -28,6 +39,12 @@ type MobileMenuItem = {
 const mobileMenuItems: MobileMenuItem[] = [
   { href: "/", label: "首页", icon: House, description: "回到内容入口与站点总览。", exact: true },
   { href: "/blog", label: "文章", icon: BookOpenText, description: "技术、设计、摄影与长期记录。" },
+  {
+    href: "/timeline",
+    label: "时间轴",
+    icon: Clock3,
+    description: "按时间回看文章与项目的创建、更新轨迹。",
+  },
   { href: "/series", label: "专题", icon: Layers3, description: "按顺序组织起来的系列阅读内容。" },
   {
     href: "/portfolio",
