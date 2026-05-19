@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, CalendarDays, Clock3, Layers3 } from "lucide-react";
+import { CalendarDays, Clock3, Layers3 } from "lucide-react";
 import { notFound } from "next/navigation";
 import { ViewCount } from "@/components/analytics/view-count";
 import { ArticleReaderShell } from "@/components/content/article-reader-shell";
@@ -207,16 +207,7 @@ export default async function PostPage({ params }: PostPageProps) {
                   href={`/blog/${seriesNavigation.previousPost.slug}`}
                   className="glass-panel hover:border-accent/20 rounded-[1.8rem] border border-transparent p-4 transition sm:p-6"
                 >
-                  <p className="text-muted block text-sm sm:hidden">
-                    <span className="relative mx-auto inline-flex min-w-16 items-center justify-center">
-                      <ArrowLeft className="absolute left-0 h-4 w-4" />
-                      <span>上一篇</span>
-                    </span>
-                  </p>
-                  <p className="text-muted hidden items-center gap-2 text-sm sm:inline-flex">
-                    <ArrowLeft className="h-4 w-4" />
-                    上一篇
-                  </p>
+                  <p className="text-muted text-center text-sm sm:text-left">上一篇</p>
                   <h3 className="font-display text-foreground mt-4 hidden text-2xl font-semibold tracking-[-0.04em] sm:block">
                     {seriesNavigation.previousPost.title}
                   </h3>
@@ -236,16 +227,7 @@ export default async function PostPage({ params }: PostPageProps) {
                   href={`/blog/${seriesNavigation.nextPost.slug}`}
                   className="glass-panel hover:border-accent/20 rounded-[1.8rem] border border-transparent p-4 transition sm:p-6"
                 >
-                  <p className="text-muted block text-sm sm:hidden">
-                    <span className="relative mx-auto inline-flex min-w-16 items-center justify-center">
-                      <span>下一篇</span>
-                      <ArrowRight className="absolute right-0 h-4 w-4" />
-                    </span>
-                  </p>
-                  <p className="text-muted hidden items-center gap-2 text-sm sm:inline-flex">
-                    下一篇
-                    <ArrowRight className="h-4 w-4" />
-                  </p>
+                  <p className="text-muted text-center text-sm sm:text-left">下一篇</p>
                   <h3 className="font-display text-foreground mt-4 hidden text-2xl font-semibold tracking-[-0.04em] sm:block">
                     {seriesNavigation.nextPost.title}
                   </h3>
