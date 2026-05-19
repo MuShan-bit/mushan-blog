@@ -213,7 +213,7 @@ export default async function TimelinePage() {
         ])}
       />
 
-      <section className="timeline-shell relative overflow-hidden rounded-[2rem] p-5 sm:p-7">
+      <section className="timeline-shell relative overflow-hidden rounded-[2rem] px-5 py-8 sm:px-7 sm:py-10">
         <div className="timeline-axis-line hidden md:block" aria-hidden />
         <div className="timeline-axis-line timeline-axis-line--mobile md:hidden" aria-hidden />
         <div className="timeline-axis-now" aria-label="时间轴起点">
