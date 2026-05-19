@@ -201,7 +201,7 @@ export default async function PostPage({ params }: PostPageProps) {
               </Link>
             </div>
 
-            <div className="grid gap-5 lg:grid-cols-2">
+            <div className="grid grid-cols-2 gap-3 sm:gap-5">
               {seriesNavigation.previousPost ? (
                 <Link
                   href={`/blog/${seriesNavigation.previousPost.slug}`}
