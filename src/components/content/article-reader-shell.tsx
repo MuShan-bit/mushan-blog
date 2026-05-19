@@ -1,6 +1,15 @@
 "use client";
 
-import { ArrowUp, Check, Menu, PanelRightClose, PanelRightOpen, Share2, X } from "lucide-react";
+import {
+  ArrowUp,
+  Check,
+  ChevronRight,
+  Menu,
+  PanelRightClose,
+  PanelRightOpen,
+  Share2,
+  X,
+} from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
@@ -19,6 +28,54 @@ type TocHeading = {
   level: number;
 };
 
+type TocNode = TocHeading & {
+  parentId: string | null;
+  depth: number;
+  children: TocNode[];
+};
+
+type TocTreeResult = {
+  roots: TocNode[];
+  parentById: Record<string, string | null>;
+};
+
+function buildTocTree(headings: TocHeading[]): TocTreeResult {
+  const roots: TocNode[] = [];
+  const stack: TocNode[] = [];
+  const parentById: Record<string, string | null> = {};
+
+  for (const heading of headings) {
+    const node: TocNode = {
+      ...heading,
+      parentId: null,
+      depth: 0,
+      children: [],
+    };
+
+    while (stack.length > 0 && stack[stack.length - 1].level >= node.level) {
+      stack.pop();
+    }
+
+    const parent = stack[stack.length - 1] ?? null;
+
+    if (parent) {
+      node.parentId = parent.id;
+      node.depth = parent.depth + 1;
+      parent.children.push(node);
+    } else {
+      roots.push(node);
+    }
+
+    parentById[node.id] = node.parentId;
+    stack.push(node);
+  }
+
+  return {
+    roots,
+    parentById,
+  };
+}
+
 export function ArticleReaderShell({
   children,
   sidebar,
@@ -29,6 +86,9 @@ export function ArticleReaderShell({
   const [menuOpen, setMenuOpen] = useState(false);
   const [shareState, setShareState] = useState<"idle" | "done">("idle");
   const [tocHeadings, setTocHeadings] = useState<TocHeading[]>([]);
+  const [tocTree, setTocTree] = useState<TocNode[]>([]);
+  const [tocParentsById, setTocParentsById] = useState<Record<string, string | null>>({});
+  const [manuallyExpandedTocIds, setManuallyExpandedTocIds] = useState<Set<string>>(new Set());
   const [activeHeadingId, setActiveHeadingId] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const shareTimerRef = useRef<number | null>(null);
@@ -51,6 +111,9 @@ export function ArticleReaderShell({
   useEffect(() => {
     if (!tocRootId) {
       setTocHeadings([]);
+      setTocTree([]);
+      setTocParentsById({});
+      setManuallyExpandedTocIds(new Set());
       setActiveHeadingId(null);
       return;
     }
@@ -59,6 +122,9 @@ export function ArticleReaderShell({
 
     if (!root) {
       setTocHeadings([]);
+      setTocTree([]);
+      setTocParentsById({});
+      setManuallyExpandedTocIds(new Set());
       setActiveHeadingId(null);
       return;
     }
@@ -72,7 +138,11 @@ export function ArticleReaderShell({
       }))
       .filter((heading) => heading.text.length > 0);
 
+    const { roots, parentById } = buildTocTree(headings);
     setTocHeadings(headings);
+    setTocTree(roots);
+    setTocParentsById(parentById);
+    setManuallyExpandedTocIds(new Set());
     setActiveHeadingId(null);
   }, [tocRootId]);
 
@@ -84,6 +154,63 @@ export function ArticleReaderShell({
     const link = tocLinkRefs.current.get(activeHeadingId);
     link?.scrollIntoView({ block: "nearest", inline: "nearest" });
   }, [activeHeadingId]);
+
+  useEffect(() => {
+    if (!tocHeadings.length) {
+      setActiveHeadingId(null);
+      return;
+    }
+
+    const headingElements = tocHeadings
+      .map((heading) => document.getElementById(heading.id))
+      .filter((element): element is HTMLElement => element instanceof HTMLElement);
+
+    if (!headingElements.length) {
+      setActiveHeadingId(null);
+      return;
+    }
+
+    let frameId = 0;
+
+    const updateActiveHeadingByScroll = () => {
+      const headerShell = document.querySelector<HTMLElement>(".site-header__shell");
+      const headerOffset = (headerShell?.getBoundingClientRect().height ?? 72) + 34;
+      let nextActiveId = headingElements[0].id;
+
+      for (const element of headingElements) {
+        if (element.getBoundingClientRect().top <= headerOffset) {
+          nextActiveId = element.id;
+          continue;
+        }
+
+        break;
+      }
+
+      setActiveHeadingId((current) => (current === nextActiveId ? current : nextActiveId));
+      frameId = 0;
+    };
+
+    const onScroll = () => {
+      if (frameId !== 0) {
+        return;
+      }
+
+      frameId = window.requestAnimationFrame(updateActiveHeadingByScroll);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    updateActiveHeadingByScroll();
+
+    return () => {
+      if (frameId !== 0) {
+        window.cancelAnimationFrame(frameId);
+      }
+
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [tocHeadings]);
 
   useEffect(() => {
     if (!menuOpen) {
@@ -113,12 +240,82 @@ export function ArticleReaderShell({
     };
   }, [menuOpen]);
 
-  const minTocLevel = tocHeadings.length
-    ? Math.min(...tocHeadings.map((heading) => heading.level))
-    : 2;
+  const activeHeadingPath = new Set<string>();
+
+  if (activeHeadingId) {
+    let cursor: string | null = activeHeadingId;
+
+    while (cursor) {
+      activeHeadingPath.add(cursor);
+      cursor = tocParentsById[cursor] ?? null;
+    }
+  }
 
   const onTocItemClick = (headingId: string) => {
     setActiveHeadingId(headingId);
+  };
+
+  const onToggleTocBranch = (headingId: string) => {
+    setManuallyExpandedTocIds((current) => {
+      const next = new Set(current);
+
+      if (next.has(headingId)) {
+        next.delete(headingId);
+      } else {
+        next.add(headingId);
+      }
+
+      return next;
+    });
+  };
+
+  const renderTocNodes = (nodes: TocNode[]) => {
+    return nodes.map((node) => {
+      const hasChildren = node.children.length > 0;
+      const isActive = activeHeadingId === node.id;
+      const isExpanded =
+        hasChildren && (activeHeadingPath.has(node.id) || manuallyExpandedTocIds.has(node.id));
+
+      return (
+        <div key={node.id} className="article-toc__node" style={{ "--toc-level": node.depth } as CSSProperties}>
+          <div className="article-toc__row" data-active={isActive ? "true" : "false"}>
+            {hasChildren ? (
+              <button
+                type="button"
+                className="article-toc__toggle"
+                data-expanded={isExpanded ? "true" : "false"}
+                onClick={() => onToggleTocBranch(node.id)}
+                aria-label={isExpanded ? `折叠 ${node.text}` : `展开 ${node.text}`}
+                aria-expanded={isExpanded}
+              >
+                <ChevronRight className="h-3.5 w-3.5" />
+              </button>
+            ) : (
+              <span className="article-toc__toggle-spacer" aria-hidden />
+            )}
+            <a
+              href={`#${node.id}`}
+              ref={(linkNode) => {
+                if (linkNode) {
+                  tocLinkRefs.current.set(node.id, linkNode);
+                  return;
+                }
+
+                tocLinkRefs.current.delete(node.id);
+              }}
+              data-active={isActive ? "true" : "false"}
+              className="article-toc__item"
+              onClick={() => onTocItemClick(node.id)}
+            >
+              {node.text}
+            </a>
+          </div>
+          {hasChildren && isExpanded ? (
+            <div className="article-toc__children">{renderTocNodes(node.children)}</div>
+          ) : null}
+        </div>
+      );
+    });
   };
 
   const scrollToTop = () => {
@@ -246,31 +443,7 @@ export function ArticleReaderShell({
             <section className="glass-panel article-toc rounded-[1.8rem] p-6">
               <h2 className="text-accent-strong font-medium">目录</h2>
               <div ref={tocListRef} className="article-toc__list mt-5">
-                {tocHeadings.map((heading) => {
-                  const depth = Math.max(0, heading.level - minTocLevel);
-                  const isActive = activeHeadingId === heading.id;
-
-                  return (
-                    <a
-                      key={heading.id}
-                      href={`#${heading.id}`}
-                      ref={(node) => {
-                        if (node) {
-                          tocLinkRefs.current.set(heading.id, node);
-                          return;
-                        }
-
-                        tocLinkRefs.current.delete(heading.id);
-                      }}
-                      data-active={isActive ? "true" : "false"}
-                      className="article-toc__item"
-                      style={{ "--toc-level": depth } as CSSProperties}
-                      onClick={() => onTocItemClick(heading.id)}
-                    >
-                      {heading.text}
-                    </a>
-                  );
-                })}
+                {renderTocNodes(tocTree)}
               </div>
             </section>
           ) : null}
