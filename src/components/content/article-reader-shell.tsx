@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowUp, Check, Menu, PanelRightClose, PanelRightOpen, Share2, X } from "lucide-react";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/cn";
@@ -10,14 +10,30 @@ type ArticleReaderShellProps = {
   children: ReactNode;
   sidebar: ReactNode;
   shareTitle: string;
+  tocRootId?: string;
 };
 
-export function ArticleReaderShell({ children, sidebar, shareTitle }: ArticleReaderShellProps) {
+type TocHeading = {
+  id: string;
+  text: string;
+  level: number;
+};
+
+export function ArticleReaderShell({
+  children,
+  sidebar,
+  shareTitle,
+  tocRootId,
+}: ArticleReaderShellProps) {
   const [wideReading, setWideReading] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [shareState, setShareState] = useState<"idle" | "done">("idle");
+  const [tocHeadings, setTocHeadings] = useState<TocHeading[]>([]);
+  const [activeHeadingId, setActiveHeadingId] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const shareTimerRef = useRef<number | null>(null);
+  const tocListRef = useRef<HTMLDivElement>(null);
+  const tocLinkRefs = useRef(new Map<string, HTMLAnchorElement>());
   const portalRoot = useSyncExternalStore(
     () => () => {},
     () => document.body,
@@ -31,6 +47,93 @@ export function ArticleReaderShell({ children, sidebar, shareTitle }: ArticleRea
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (!tocRootId) {
+      setTocHeadings([]);
+      setActiveHeadingId(null);
+      return;
+    }
+
+    const root = document.getElementById(tocRootId);
+
+    if (!root) {
+      setTocHeadings([]);
+      setActiveHeadingId(null);
+      return;
+    }
+
+    const headings = Array.from(root.querySelectorAll<HTMLElement>("h2,h3,h4,h5,h6"))
+      .filter((heading) => heading.id.trim().length > 0)
+      .map((heading) => ({
+        id: heading.id,
+        text: heading.textContent?.trim() ?? "",
+        level: Number(heading.tagName.slice(1)),
+      }))
+      .filter((heading) => heading.text.length > 0);
+
+    setTocHeadings(headings);
+    setActiveHeadingId((current) => {
+      if (!headings.length) {
+        return null;
+      }
+
+      if (current && headings.some((heading) => heading.id === current)) {
+        return current;
+      }
+
+      return headings[0].id;
+    });
+  }, [tocRootId]);
+
+  useEffect(() => {
+    if (!tocHeadings.length) {
+      setActiveHeadingId(null);
+      return;
+    }
+
+    const headings = tocHeadings
+      .map((heading) => document.getElementById(heading.id))
+      .filter((heading): heading is HTMLElement => heading !== null);
+
+    if (!headings.length) {
+      return;
+    }
+
+    const updateActiveHeading = () => {
+      const activationOffset = 144;
+      let nextActiveId = headings[0].id;
+
+      for (const heading of headings) {
+        if (heading.getBoundingClientRect().top <= activationOffset) {
+          nextActiveId = heading.id;
+          continue;
+        }
+
+        break;
+      }
+
+      setActiveHeadingId((current) => (current === nextActiveId ? current : nextActiveId));
+    };
+
+    updateActiveHeading();
+    window.addEventListener("scroll", updateActiveHeading, { passive: true });
+    window.addEventListener("resize", updateActiveHeading);
+
+    return () => {
+      window.removeEventListener("scroll", updateActiveHeading);
+      window.removeEventListener("resize", updateActiveHeading);
+    };
+  }, [tocHeadings]);
+
+  useEffect(() => {
+    if (!activeHeadingId) {
+      return;
+    }
+
+    const link = tocLinkRefs.current.get(activeHeadingId);
+    link?.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }, [activeHeadingId]);
 
   useEffect(() => {
     if (!menuOpen) {
@@ -59,6 +162,14 @@ export function ArticleReaderShell({ children, sidebar, shareTitle }: ArticleRea
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [menuOpen]);
+
+  const minTocLevel = tocHeadings.length
+    ? Math.min(...tocHeadings.map((heading) => heading.level))
+    : 2;
+
+  const onTocItemClick = (headingId: string) => {
+    setActiveHeadingId(headingId);
+  };
 
   const scrollToTop = () => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -181,6 +292,38 @@ export function ArticleReaderShell({ children, sidebar, shareTitle }: ArticleRea
             wideReading && "md:hidden",
           )}
         >
+          {tocHeadings.length ? (
+            <section className="glass-panel article-toc rounded-[1.8rem] p-6">
+              <h2 className="text-accent-strong font-medium">目录</h2>
+              <div ref={tocListRef} className="article-toc__list mt-5">
+                {tocHeadings.map((heading) => {
+                  const depth = Math.max(0, heading.level - minTocLevel);
+                  const isActive = activeHeadingId === heading.id;
+
+                  return (
+                    <a
+                      key={heading.id}
+                      href={`#${heading.id}`}
+                      ref={(node) => {
+                        if (node) {
+                          tocLinkRefs.current.set(heading.id, node);
+                          return;
+                        }
+
+                        tocLinkRefs.current.delete(heading.id);
+                      }}
+                      data-active={isActive ? "true" : "false"}
+                      className="article-toc__item"
+                      style={{ "--toc-level": depth } as CSSProperties}
+                      onClick={() => onTocItemClick(heading.id)}
+                    >
+                      {heading.text}
+                    </a>
+                  );
+                })}
+              </div>
+            </section>
+          ) : null}
           {sidebar}
         </aside>
       </article>

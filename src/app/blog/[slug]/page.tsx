@@ -72,6 +72,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
       <ArticleReaderShell
         shareTitle={post.title}
+        tocRootId="reader-mdx-content"
         sidebar={
           <>
             {seriesNavigation ? (
@@ -234,7 +235,7 @@ export default async function PostPage({ params }: PostPageProps) {
           </div>
         </header>
 
-        <section className="glass-panel rounded-[2.2rem] p-7 sm:p-10">
+        <section id="reader-mdx-content" className="glass-panel rounded-[2.2rem] p-7 sm:p-10">
           <MdxContent source={post.content} />
         </section>
       </ArticleReaderShell>

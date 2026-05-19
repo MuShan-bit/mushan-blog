@@ -49,6 +49,7 @@ export default async function PortfolioDetailPage({ params }: PortfolioDetailPag
 
       <ArticleReaderShell
         shareTitle={entry.title}
+        tocRootId="reader-mdx-content"
         sidebar={
           <div className="glass-panel rounded-[1.8rem] p-6">
             <h2 className="text-accent-strong font-medium">项目链接</h2>
@@ -145,7 +146,7 @@ export default async function PortfolioDetailPage({ params }: PortfolioDetailPag
             </div>
           </section>
 
-          <section className="glass-panel rounded-[2.2rem] p-7 sm:p-10">
+          <section id="reader-mdx-content" className="glass-panel rounded-[2.2rem] p-7 sm:p-10">
             <MdxContent source={entry.content} />
           </section>
         </>
