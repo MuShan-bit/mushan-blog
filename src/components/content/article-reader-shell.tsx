@@ -238,8 +238,7 @@ export function ArticleReaderShell({
         <aside
           className={cn(
             "hidden space-y-5 md:block",
-            !wideReading &&
-              "xl:sticky xl:top-28 xl:max-h-[calc(100vh-7rem)] xl:self-start xl:overflow-y-auto xl:pr-1",
+            !wideReading && "xl:sticky xl:top-28 xl:self-start",
             wideReading && "md:hidden",
           )}
         >
